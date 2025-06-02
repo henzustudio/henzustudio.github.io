@@ -253,8 +253,23 @@
     <script>
         // Mencegah browser mengembalikan posisi scroll sebelumnya
         window.history.scrollRestoration = 'manual';
-        // Gulir ke bagian paling atas halaman segera setelah body dimuat
-        window.scrollTo(0, 0);
+
+        // Mengatur scroll ke atas dan mengunci scroll secara eksplisit saat halaman dimuat
+        window.addEventListener('load', function() {
+            window.scrollTo(0, 0); // Gulir ke paling atas
+            
+            const weddingDate = new Date("September 25, 2025 11:00:00").getTime();
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            if (distance < 0) {
+                // Jika acara sudah lewat, izinkan scrolling
+                document.body.style.overflow = 'auto';
+            } else {
+                // Jika acara belum lewat, paksa overflow: hidden
+                document.body.style.overflow = 'hidden';
+            }
+        });
     </script>
     <header class="header-bg relative h-screen flex items-center justify-center text-center text-white">
         <div class="absolute inset-0 bg-black opacity-40"></div>
@@ -486,28 +501,6 @@
             }
         }, 1000);
 
-        // Initialize the visibility of the post-event message section
-        // It should be hidden by default until the countdown finishes
-        window.onload = function() {
-            // Scroll to the top of the page on load
-            window.scrollTo(0, 0);
-            if (new Date().getTime() >= weddingDate) {
-                document.getElementById("countdown").style.display = 'none';
-                postEventMessageSection.style.display = 'block';
-            } else {
-                postEventMessageSection.style.display = 'none';
-            }
-
-            // Read guest name from URL on load
-            const urlParams = new URLSearchParams(window.location.search);
-            const guestName = urlParams.get('to');
-            if (guestName) {
-                document.getElementById('guest-name-input').value = decodeURIComponent(guestName);
-            }
-            showSlides(slideIndex); // Initialize slideshow on page load
-        };
-
-
         // Copy to Clipboard Function
         function copyToClipboard(elementId) {
             const copyText = document.getElementById(elementId).innerText;
@@ -678,129 +671,24 @@
             }
 
             // Set the height of the slideshow container based on viewport height
-            const viewportHeight = window.innerHeight;
-            const containerHeight = viewportHeight * 0.7; // 70% of viewport height
-            slideshowWrapper.parentElement.style.height = `${containerHeight}px`;
+            const slideshowContainer = document.querySelector(".slideshow-container");
+            slideshowContainer.style.height = `${slideshowContainer.offsetWidth * 0.6}px`; // Adjust as needed for aspect ratio
 
-            let allSlides = document.getElementsByClassName("mySlides");
-
-            // Define base dimensions for active slide
-            const activeSlideRatio = 0.6; // 60% of container width for active
-            const inactiveScaleFactor1 = 0.8; // Scale for adjacent
-            const inactiveScaleFactor2 = 0.6; // Scale for further
-            const overlapPixels = 30; // How many pixels inactive slides overlap the active one
-
-            for (let i = 0; i < allSlides.length; i++) {
-                const slide = allSlides[i];
-                const distance = Math.abs(i - (slideIndex - 1));
-
-                // Reset individual slide styles before applying new ones
-                slide.classList.remove('active-slide');
-                slide.style.filter = 'none';
-                slide.style.opacity = '1';
-                slide.style.zIndex = '1';
-                slide.style.transform = 'none'; // Reset individual transform
-
-                let currentZIndex;
-                let currentFilter;
-                let currentOpacity;
-                let currentScale = 1;
-                let currentTranslateX = 0; // This is for individual slide's translateX
-
-                if (i === slideIndex - 1) {
-                    // Active slide
-                    currentZIndex = 10;
-                    currentFilter = 'none';
-                    currentOpacity = 1;
-                    currentScale = 1; // Explicitly 1 for active
-                    slide.style.width = `${slideshowWrapper.parentElement.offsetWidth * activeSlideRatio}px`;
-                    slide.style.height = `${containerHeight}px`; // Full height
-                } else if (distance === 1) {
-                    // Adjacent slides
-                    currentZIndex = 5;
-                    currentFilter = 'blur(2px)';
-                    currentOpacity = 0.7;
-                    currentScale = inactiveScaleFactor1;
-                    slide.style.width = `${slideshowWrapper.parentElement.offsetWidth * activeSlideRatio * inactiveScaleFactor1}px`; // Scale width
-                    slide.style.height = `${containerHeight * inactiveScaleFactor1}px`; // Scale height
-                    currentTranslateX = (i < slideIndex - 1) ? overlapPixels : -overlapPixels; // Overlap
-                } else {
-                    // Further slides
-                    currentZIndex = 2;
-                    currentFilter = 'blur(4px)';
-                    currentOpacity = 0.5;
-                    currentScale = inactiveScaleFactor2;
-                    slide.style.width = `${slideshowWrapper.parentElement.offsetWidth * activeSlideRatio * inactiveScaleFactor2}px`; // Scale width
-                    slide.style.height = `${containerHeight * inactiveScaleFactor2}px`; // Scale height
-                    currentTranslateX = (i < slideIndex - 1) ? (overlapPixels * 1.5) : -(overlapPixels * 1.5); // More overlap
-                }
-
-                slide.style.zIndex = currentZIndex;
-                slide.style.filter = currentFilter;
-                slide.style.opacity = currentOpacity;
-                // Apply scale and individual translateX
-                slide.style.transform = `scale(${currentScale}) translateX(${currentTranslateX}px)`;
-            }
+            // Update transform for smooth horizontal scrolling
+            // Calculate the total width of one slide including its margin (20px total: 10px left + 10px right)
+            const slideWidth = slides[0].offsetWidth + 20; // Assuming all slides have same width and margin
+            const offset = (slideIndex - 1) * slideWidth; // Calculate the offset needed
+            slideshowWrapper.style.transform = `translateX(-${offset}px)`;
 
             // Add active class to the current dot
             dots[slideIndex - 1].className += " active";
 
-            // Force reflow here to ensure all individual slide transforms are applied
-            slideshowWrapper.offsetHeight; // Read a layout-triggering property
-
-            // Calculate the current position of the active slide's center relative to the slideshowWrapper's left edge
-            const activeSlideElement = allSlides[slideIndex - 1]; // Re-get reference for clarity
-            const activeSlideLeft = activeSlideElement.offsetLeft;
-            const activeSlideWidth = activeSlideElement.offsetWidth; // Get the computed width after scaling
-            const activeSlideCenterInWrapper = activeSlideLeft + (activeSlideWidth / 2);
-
-            // Calculate the target center of the container
-            const containerWidth = slideshowWrapper.parentElement.offsetWidth;
-            const targetContainerCenter = containerWidth / 2;
-
-            // The amount to shift the wrapper to bring the active slide's center to the container's center
-            let newTranslateXValue = targetContainerCenter - activeSlideCenterInWrapper;
-
-            // Apply specific offset adjustments based on slide index and direction
-            if (direction === -1) { // Logic specific to 'previous' button
-                if (slideIndex === 1) {
-                    newTranslateXValue -= 40; // Foto 1: Shift left by 40px from its original centered position
-                } else if (slideIndex === 2) {
-                    newTranslateXValue -= (activeSlideWidth / 3) + 20; // Foto 2: Shift left by 1/3 width + 20px
-                } else if (slideIndex >= 3 && slideIndex <= 5) { // Foto 3, 4, 5: Shift left by 1/3 width, then add 20px (less left shift)
-                    newTranslateXValue -= (activeSlideWidth / 3) + 20; // Shift left by 1/3 width + 20px
-                } else if (slideIndex === 6) { // Foto 6: Unchanged from 'next' behavior
-                    newTranslateXValue += (activeSlideWidth / 3);
-                }
-            } else { // Logic for 'next' button, dot click, or initial load/resize (direction === 1 or 0)
-                if (slideIndex === 1) {
-                    if (direction === 0) { // Only for initial load/resize of slide 1
-                        newTranslateXValue -= (activeSlideWidth / 3);
-                        newTranslateXValue += 150; // Add 150px shift to the right for initial load
-                    } else { // For next slide navigation
-                        newTranslateXValue -= (activeSlideWidth / 3);
-                    }
-                } else if (slideIndex === 2) {
-                    newTranslateXValue += 30;
-                } else if (slideIndex >= 3 && slideIndex <= 6) {
-                    newTranslateXValue += (activeSlideWidth / 3);
-                }
-            }
-
-            slideshowWrapper.style.transform = `translateX(${newTranslateXValue}px)`;
-
-            // Clear and set a new timer for the next slide
-            clearTimeout(slideshowTimer);
-            slideshowTimer = setTimeout(function() {
-                plusSlides(1); // Auto-advance to the next slide
-            }, 5000); // Change image every 5 seconds
+            // Restart auto-slide only if not manually controlled (direction is 0 for currentSlide)
+            // If direction is not 0 (meaning plusSlides was called), the timer will be restarted
+            // inside the plusSlides function.
+            // If it's a currentSlide call (direction=0), we restart the timer here.
+            slideshowTimer = setTimeout(() => plusSlides(1), 5000); // Change image every 5 seconds
         }
-
-        // Add a resize event listener to re-calculate and re-center the slideshow
-        window.addEventListener('resize', () => {
-            showSlides(slideIndex, 0); // Recalculate and re-center on resize, no specific direction
-        });
-
     </script>
 </body>
 </html>
