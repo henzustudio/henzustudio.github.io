@@ -250,6 +250,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Balinese&display=swap" rel="stylesheet">
 </head>
 <body class="antialiased">
+    <script>
+        // Mencegah browser mengembalikan posisi scroll sebelumnya
+        window.history.scrollRestoration = 'manual';
+        // Gulir ke bagian paling atas halaman segera setelah body dimuat
+        window.scrollTo(0, 0);
+    </script>
     <header class="header-bg relative h-screen flex items-center justify-center text-center text-white">
         <div class="absolute inset-0 bg-black opacity-40"></div>
         <div class="relative z-10 p-6 max-w-4xl mx-auto">
