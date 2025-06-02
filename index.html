@@ -250,27 +250,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Balinese&display=swap" rel="stylesheet">
 </head>
 <body class="antialiased">
-    <script>
-        // Mencegah browser mengembalikan posisi scroll sebelumnya
-        window.history.scrollRestoration = 'manual';
-
-        // Mengatur scroll ke atas dan mengunci scroll secara eksplisit saat halaman dimuat
-        window.addEventListener('load', function() {
-            window.scrollTo(0, 0); // Gulir ke paling atas
-            
-            const weddingDate = new Date("September 25, 2025 11:00:00").getTime();
-            const now = new Date().getTime();
-            const distance = weddingDate - now;
-
-            if (distance < 0) {
-                // Jika acara sudah lewat, izinkan scrolling
-                document.body.style.overflow = 'auto';
-            } else {
-                // Jika acara belum lewat, paksa overflow: hidden
-                document.body.style.overflow = 'hidden';
-            }
-        });
-    </script>
     <header class="header-bg relative h-screen flex items-center justify-center text-center text-white">
         <div class="absolute inset-0 bg-black opacity-40"></div>
         <div class="relative z-10 p-6 max-w-4xl mx-auto">
@@ -474,6 +453,38 @@
     </button>
 
     <script>
+        // Mencegah browser mengembalikan posisi scroll sebelumnya
+        window.history.scrollRestoration = 'manual';
+
+        // Semua logika inisialisasi halaman akan dijalankan di sini
+        window.addEventListener('load', function() {
+            // Gulir ke paling atas halaman
+            window.scrollTo(0, 0);
+            
+            // Logika untuk mengunci scroll sebelum tombol "Buka Undangan" ditekan
+            const weddingDate = new Date("September 25, 2025 11:00:00").getTime();
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            if (distance < 0) {
+                // Jika acara sudah lewat, izinkan scrolling
+                document.body.style.overflow = 'auto';
+            } else {
+                // Jika acara belum lewat, paksa overflow: hidden
+                document.body.style.overflow = 'hidden';
+            }
+
+            // Baca nama tamu dari URL pada saat load dan isi input field
+            const urlParams = new URLSearchParams(window.location.search);
+            const guestName = urlParams.get('to');
+            if (guestName) {
+                document.getElementById('guest-name-input').value = decodeURIComponent(guestName);
+            }
+            
+            // Inisialisasi slideshow pada saat load
+            showSlides(slideIndex);
+        });
+
         // Countdown Timer
         const weddingDate = new Date("September 25, 2025 11:00:00").getTime(); // Updated to 25 September 2025, 11:00:00
         const postEventMessageSection = document.getElementById("post-event-message");
