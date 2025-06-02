@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan Hendra & Maylin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F4E3; /* Cream lembut */
+            color: #4A4A4A; /* Abu-abu gelap */
+            overflow: hidden; /* Mencegah pengguliran secara default */
+        }
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+        .header-bg {
+            background-image: url('./Asset/IMG_20221023_173518.jpg'); /* Placeholder image, goldish tone */
+            background-size: cover;
+            background-position: 50% 30%;
+            background-attachment: fixed; /* Parallax effect */
+        }
+        .section-title {
+            color: #8B4513; /* Coklat Tua / Sepia */
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 2px;
+            background-color: #D4AF37; /* Gold */
+        }
+        .btn-primary {
+            background-color: #D4AF37; /* Gold */
+            color: white;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary:hover {
+            background-color: #B8860B; /* Darker Gold */
+            transform: translateY(-2px);
+        }
+        .card {
+            background-color: white;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border-radius: 1rem;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .text-accent {
+            color: #D4AF37; /* Gold */
+        }
+        .countdown-digit {
+            background-color: #8B4513; /* Coklat Tua */
+            color: white;
+            font-weight: 700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            /* Responsive sizing using vw units */
+            width: 20vw; /* Default for smaller screens */
+            height: 20vw;
+            font-size: 10vw;
+        }
+        @media (min-width: 640px) { /* sm breakpoint */
+            .countdown-digit {
+                width: 15vw;
+                height: 15vw;
+                font-size: 8vw;
+            }
+        }
+        @media (min-width: 768px) { /* md breakpoint */
+            .countdown-digit {
+                width: 12vw;
+                height: 12vw;
+                font-size: 6vw;
+            }
+        }
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .countdown-digit {
+                width: 8vw;
+                height: 8vw;
+                font-size: 4vw;
+            }
+        }
+        @media (min-width: 1280px) { /* xl breakpoint */
+            .countdown-digit {
+                width: 6vw;
+                height: 6vw;
+                font-size: 3vw;
+            }
+        }
+
+        .event-card {
+            border: 1px solid #D4AF37; /* Gold border */
+            background-color: #FFFFFF;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        .event-card:hover {
+            transform: translateY(-5px);
+        }
+        /* Slideshow specific styles */
+        .slideshow-container {
+            position: relative;
+            max-width: 900px; /* Lebar maksimum container */
+            width: 100%; /* Make it responsive to its parent */
+            margin: auto;
+            overflow: hidden; /* Clips the overflow */
+            border-radius: 1rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            display: flex; /* Menggunakan flexbox untuk centering wrapper */
+            align-items: flex-end; /* Vertically align to bottom */
+        }
+
+        .slides-wrapper {
+            display: flex; /* Mengatur gambar secara horizontal */
+            height: 100%;
+            transition: transform 0.8s ease-in-out; /* Transisi halus untuk pergeseran */
+            /* Removed absolute positioning */
+        }
+
+        .mySlides {
+            flex-shrink: 0; /* Mencegah gambar menyusut */
+            object-fit: cover; /* Menutupi area tanpa distorsi */
+            margin: 0 10px; /* Spasi antar gambar */
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.5s ease-in-out; /* Smooth transitions for all properties */
+            transform-origin: bottom center; /* Crucial for scaling from bottom */
+            /* Removed position: relative; */
+        }
+
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -22px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: 0.6s ease;
+            user-select: none;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+        .prev {
+            left: 0; /* Memperbaiki posisi tombol previous */
+            border-radius: 0 3px 3px 0;
+        }
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+        .prev:hover, .next:hover {
+            background-color: rgba(0,0,0,0.8);
+        }
+        .dot-container {
+            text-align: center;
+            padding: 20px;
+            background-color: #F8F4E3;
+            border-bottom-left-radius: 1rem;
+            border-bottom-right-radius: 1rem;
+        }
+        .dot {
+            cursor: pointer;
+            height: 12px;
+            width: 12px;
+            margin: 0 4px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+        }
+        .active, .dot:hover {
+            background-color: #D4AF37; /* Gold */
+        }
+
+        /* Style for Balinese script */
+        .balinese-script {
+            font-family: 'Noto Sans Balinese', sans-serif; /* Fallback to sans-serif */
+            font-size: 2.5rem; /* Adjust as needed */
+            color: #8B4513; /* Match section title color */
+            margin-bottom: 1rem;
+        }
+        /* Floating Play/Pause Button */
+        .music-toggle-button {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background-color: #D4AF37; /* Gold */
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 1000;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: none; /* Hidden by default */
+        }
+        .music-toggle-button:hover {
+            background-color: #B8860B; /* Darker Gold */
+            transform: scale(1.05);
+        }
+        .music-toggle-button svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+        .map-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+            height: 0;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            margin-top: 1.5rem;
+        }
+        .map-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Balinese&display=swap" rel="stylesheet">
+</head>
+<body class="antialiased">
+    <header class="header-bg relative h-screen flex items-center justify-center text-center text-white">
+        <div class="absolute inset-0 bg-black opacity-40"></div>
+        <div class="relative z-10 p-6 max-w-4xl mx-auto">
+            <p class="text-xl md:text-2xl mb-4 tracking-wider">Pawiwahan</p>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight text-shadow-lg">Hendra & Maylin</h1>
+            <p class="text-lg md:text-xl italic mb-4">Dengan Segala Hormat, Kami Mengundang Anda</p>
+            <input type="text" id="guest-name-input" class="mt-2 px-4 py-2 rounded-lg text-center text-gray-800 bg-white bg-opacity-80 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-D4AF37 w-full max-w-xs md:max-w-sm mx-auto" placeholder="Nama Tamu Undangan">
+            <button id="open-invitation-button" class="mt-8 px-8 py-4 rounded-full btn-primary text-xl font-semibold">Buka Undangan</button>
+        </div>
+    </header>
+
+    <section id="about" class="py-20 px-4 md:px-8 text-center bg-F8F4E3">
+        <div class="max-w-5xl mx-auto">
+            <div class="balinese-script mb-6">ᬑᬁ ᬲ᭄ᬯᬲ᭄ᬢ᭄ᬬᬲ᭄ᬢᬸ</div>
+            <p class="text-lg leading-relaxed mb-10 max-w-3xl mx-auto">
+                Atas Asung Kertha Wara Nugraha Ida Sang Hyang Widhi Wasa/Tuhan Yang Maha Esa kami bermaksud memberitahukan Bapak/Ibu/Saudara/i acara resepsi pernikahan kami
+            </p>
+            <div class="flex flex-col md:flex-row items-center justify-center space-y-12 md:space-y-0 md:space-x-20">
+                <div class="flex flex-col items-center">
+                    <img src="./Asset/About Me.jpg" alt="Hendra" class="w-48 h-48 rounded-full object-cover shadow-xl border-4 border-D4AF37 mb-6">
+                    <h3 class="text-3xl font-semibold text-accent mb-2">Hendra</h3>
+                    <p class="text-md text-gray-600">Putra dari Bapak [Nama Ayah Hendra] & Ibu [Nama Ibu Hendra]</p>
+                </div>
+                <div class="text-6xl text-accent font-bold">&</div>
+                <div class="flex flex-col items-center">
+                    <img src="./Asset/About Girl.jpg" alt="Maylin" class="w-48 h-48 rounded-full object-cover shadow-xl border-4 border-D4AF37 mb-6">
+                    <h3 class="text-3xl font-semibold text-accent mb-2">Maylin</h3>
+                    <p class="text-md text-gray-600">Putri dari Bapak [Nama Ayah Maylin] & Ibu [Nama Ibu Maylin]</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="events" class="py-20 px-4 md:px-8 text-center bg-white">
+        <h2 class="text-5xl section-title mb-4">Detail Acara</h2>
+        <p class="text-lg leading-relaxed mb-10 max-w-3xl mx-auto">
+            Merupakan suatu kehormatan dan kebahagiaan bagi kami sekeluarga, apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu kepada kedua mempelai pada:
+        </p>
+        <div class="flex flex-col md:flex-row justify-center items-stretch space-y-12 md:space-y-0 md:space-x-12 max-w-6xl mx-auto">
+            <div class="event-card flex-1 flex flex-col items-center justify-between">
+                <h3 class="text-4xl font-semibold text-accent mb-6">Resepsi</h3>
+                <p class="text-lg mb-3">Hari/Tanggal: <span class="font-medium text-gray-800" id="event-date">Kamis, 25 September 2025</span></p>
+                <p class="text-lg mb-3">Waktu: <span class="font-medium text-gray-800" id="event-time">11:00 - 22:00 WITA</span></p>
+                <p class="text-lg mb-6">Lokasi: <span class="font-medium text-gray-800" id="event-location">Jl. Warapsari No.2, Gelgel, Kec. Klungkung, Kabupaten Klungkung, Bali</span></p>
+                <div class="map-container">
+                    <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=115.40328907966615,-8.55799982705574,115.40597379207612,-8.55663017294426&layer=mapnik&marker=-8.557315,115.404631" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mt-6">
+                    <button onclick="saveDateToCalendar()" class="px-7 py-3 rounded-full btn-primary text-lg font-medium">Simpan Tanggal</button>
+                    <a href="https://maps.app.goo.gl/8j65mjChcSp8XeBV9" target="_blank" class="px-7 py-3 rounded-full btn-primary text-lg font-medium">Lihat di Google Maps</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="countdown" class="py-20 px-4 md:px-8 text-center bg-F8F4E3">
+        <h2 class="text-5xl section-title mb-12">Hitung Mundur Menuju Hari Bahagia</h2>
+        <div class="flex justify-center space-x-6 md:space-x-12">
+            <div class="flex flex-col items-center ml-4 md:ml-8">
+                <span id="days" class="countdown-digit mb-3">00</span>
+                <span class="text-xl md:text-2xl font-medium text-gray-700">Hari</span>
+            </div>
+            <div class="flex flex-col items-center">
+                <span id="hours" class="countdown-digit mb-3">00</span>
+                <span class="text-xl md:text-2xl font-medium text-gray-700">Jam</span>
+            </div>
+            <div class="flex flex-col items-center">
+                <span id="minutes" class="countdown-digit mb-3">00</span>
+                <span class="text-xl md:text-2xl font-medium text-gray-700">Menit</span>
+            </div>
+            <div class="flex flex-col items-center mr-4 md:mr-8">
+                <span id="seconds" class="countdown-digit mb-3">00</span>
+                <span class="text-xl md:text-2xl font-medium text-gray-700">Detik</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="post-event-message" class="py-10 px-4 md:px-8 text-center bg-F8F4E3">
+        <div class="max-w-3xl mx-auto">
+            <p class="text-xl italic text-gray-700">Terima kasih telah menjadi bagian dari hari bahagia kami.</p>
+        </div>
+    </section>
+
+    <section id="gallery" class="py-20 px-4 md:px-8 text-center bg-white">
+        <h2 class="text-5xl section-title mb-16">Momen Berharga Kami</h2>
+        <div class="slideshow-container">
+            <div class="slides-wrapper">
+                <img class="mySlides" src="./Asset/20220502_182443.jpg" alt="Foto Pernikahan 1">
+                <img class="mySlides" src="./Asset/IMG-20220502-WA0025.jpg" alt="Foto Pernikahan 2">
+                <img class="mySlides" src="./Asset/IMG_20220629_204740.jpg" alt="Foto Pernikahan 3">
+                <img class="mySlides" src="./Asset/IMG_20221023_165429.jpg" alt="Foto Pernikahan 4">
+                <img class="mySlides" src="./Asset/IMG_20221023_173518.jpg" alt="Foto Pernikahan 5">
+                <img class="mySlides" src="./Asset/IMG-20221023-WA0043~2.jpg" alt="Foto Pernikahan 6">
+            </div>
+
+            <a class="prev" onclick="plusSlides(-1)">❮</a>
+            <a class="next" onclick="plusSlides(1)">❯</a>
+        </div>
+        <br>
+        <div class="dot-container">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+            <span class="dot" onclick="currentSlide(4)"></span>
+            <span class="dot" onclick="currentSlide(5)"></span>
+            <span class="dot" onclick="currentSlide(6)"></span>
+        </div>
+    </section>
+
+    <section id="rsvp" class="py-20 px-4 md:px-8 bg-F8F4E3">
+        <div class="max-w-4xl mx-auto card p-10 rounded-lg shadow-xl">
+            <h2 class="text-5xl section-title mb-12 text-center">Konfirmasi Kehadiran Anda</h2>
+            <form class="space-y-8">
+                <div>
+                    <label for="name" class="block text-xl font-medium text-gray-700 mb-3">Nama Lengkap</label>
+                    <input type="text" id="name" name="name" class="mt-1 block w-full px-5 py-4 border border-gray-300 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-lg" placeholder="Masukkan nama Anda" required>
+                </div>
+                <div>
+                    <label for="guests" class="block text-xl font-medium text-gray-700 mb-3">Jumlah Tamu</label>
+                    <select id="guests" name="guests" class="mt-1 block w-full px-5 py-4 border border-gray-300 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-lg">
+                        <option value="1">1 Orang</option>
+                        <option value="2">2 Orang</option>
+                        <option value="3">3 Orang</option>
+                        <option value="4">4 Orang</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xl font-medium text-gray-700 mb-3">Kehadiran</label>
+                    <div class="mt-4 space-y-3">
+                        <div class="flex items-center">
+                            <input type="radio" id="attend" name="attendance" value="hadir" class="focus:ring-D4AF37 h-6 w-6 text-D4AF37 border-gray-300" required>
+                            <label for="attend" class="ml-4 block text-xl text-gray-700">Akan Hadir</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="radio" id="not-attend" name="attendance" value="tidak-hadir" class="focus:ring-D4AF37 h-6 w-6 text-D4AF37 border-gray-300">
+                            <label for="not-attend" class="ml-4 block text-xl text-gray-700">Tidak Dapat Hadir</label>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label for="message" class="block text-xl font-medium text-gray-700 mb-3">Pesan & Doa</label>
+                    <textarea id="message" name="message" rows="5" class="mt-1 block w-full px-5 py-4 border border-gray-300 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-lg" placeholder="Tulis pesan atau doa terbaik Anda"></textarea>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="px-10 py-5 rounded-full btn-primary text-2xl font-semibold">Kirim Konfirmasi</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section id="thank-you-message" class="py-20 px-4 md:px-8 text-center bg-F8F4E3">
+        <div class="max-w-3xl mx-auto">
+            <p class="text-xl leading-relaxed text-gray-700">
+                Merupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kami. Atas kehadiran dan doa restunya kami ucapkan terima kasih.
+            </p>
+        </div>
+    </section>
+
+    <section id="gifts" class="py-20 px-4 md:px-8 text-center bg-white">
+        <h2 class="text-5xl section-title mb-12">Kirim Tanda Kasih</h2>
+        <div class="max-w-3xl mx-auto card p-10 rounded-lg shadow-xl">
+            <p class="text-lg leading-relaxed mb-8">
+                Doa restu dari Anda adalah hadiah terindah bagi kami. Namun, jika Anda ingin memberikan tanda kasih, Anda dapat mengirimkannya melalui:
+            </p>
+            <div class="space-y-6 mb-8">
+                <div class="text-left p-6 bg-gray-50 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-xl text-gray-800">Bank [Nama Bank]</p>
+                    <p class="text-lg">No. Rekening: <span id="bank-account" class="font-mono text-gray-700 text-xl">1234567890</span></p>
+                    <p class="text-lg">Atas Nama: Hendra</p>
+                    <button onclick="copyToClipboard('bank-account')" class="mt-4 px-6 py-3 rounded-full btn-primary text-md font-medium">Salin No. Rekening</button>
+                </div>
+                <div class="text-left p-6 bg-gray-50 rounded-lg border border-gray-200">
+                    <p class="font-semibold text-xl text-gray-800">E-Wallet [Nama E-Wallet]</p>
+                    <p class="text-lg">No. Telekening: <span id="e-wallet-number" class="font-mono text-gray-700 text-xl">081234567890</span></p>
+                    <p class="text-lg">Atas Nama: Maylin</p>
+                    <button onclick="copyToClipboard('e-wallet-number')" class="mt-4 px-6 py-3 rounded-full btn-primary text-md font-medium">Salin No. Telepon</button>
+                </div>
+            </div>
+            <p class="text-lg text-gray-600 italic">
+                Terima kasih atas perhatian dan kebaikan hati Anda.
+            </p>
+        </div>
+    </section>
+
+    <footer class="py-10 px-4 md:px-8 text-center bg-gray-900 text-white">
+        <p class="text-xl mb-3">Kami yang berbahagia,</p>
+        <p class="text-3xl font-semibold text-accent mb-6">Hendra & Maylin</p>
+        <p class="mt-4 text-sm text-gray-400">© 2025 Undangan Pernikahan Hendra & Maylin. Hak Cipta Dilindungi.</p>
+    </footer>
+
+    <audio id="background-music" loop>
+        <source src="./Asset/Christina Perri - A Thousand Years.mp3 by Fabiano Clauber.mp3" type="audio/mp3">
+        Browser Anda tidak mendukung elemen audio.
+    </audio>
+
+    <button id="music-toggle-button" class="music-toggle-button">
+        <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="display: block;">
+            <path d="M8 5v14l11-7z"/>
+        </svg>
+        <svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="display: none;">
+            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+        </svg>
+    </button>
+
+    <script>
+        // Countdown Timer
+        const weddingDate = new Date("September 25, 2025 11:00:00").getTime(); // Updated to 25 September 2025, 11:00:00
+        const postEventMessageSection = document.getElementById("post-event-message");
+
+        const x = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerHTML = String(days).padStart(2, '0');
+            document.getElementById("hours").innerHTML = String(hours).padStart(2, '0');
+            document.getElementById("minutes").innerHTML = String(minutes).padStart(2, '0');
+            document.getElementById("seconds").innerHTML = String(seconds).padStart(2, '0');
+
+            if (distance < 0) {
+                clearInterval(x);
+                // Hide the countdown timer and show the post-event message
+                document.getElementById("countdown").style.display = 'none';
+                postEventMessageSection.style.display = 'block'; // Make sure this section is visible
+            } else {
+                postEventMessageSection.style.display = 'none';
+            }
+        }, 1000);
+
+        // Initialize the visibility of the post-event message section
+        // It should be hidden by default until the countdown finishes
+        window.onload = function() {
+            if (new Date().getTime() >= weddingDate) {
+                document.getElementById("countdown").style.display = 'none';
+                postEventMessageSection.style.display = 'block';
+            } else {
+                postEventMessageSection.style.display = 'none';
+            }
+
+            // Read guest name from URL on load
+            const urlParams = new URLSearchParams(window.location.search);
+            const guestName = urlParams.get('to');
+            if (guestName) {
+                document.getElementById('guest-name-input').value = decodeURIComponent(guestName);
+            }
+            showSlides(slideIndex); // Initialize slideshow on page load
+        };
+
+
+        // Copy to Clipboard Function
+        function copyToClipboard(elementId) {
+            const copyText = document.getElementById(elementId).innerText;
+            const textArea = document.createElement("textarea");
+            textArea.value = copyText;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            alertMessage("Nomor berhasil disalin!");
+        }
+
+        // Custom Alert Message
+        function alertMessage(message) {
+            const alertBox = document.createElement('div');
+            alertBox.className = 'fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-7 py-4 rounded-full shadow-xl text-lg opacity-0 transition-opacity duration-300 z-50';
+            alertBox.innerText = message;
+            document.body.appendChild(alertBox);
+
+            setTimeout(() => {
+                alertBox.style.opacity = '1';
+            }, 10);
+
+            setTimeout(() => {
+                alertBox.style.opacity = '0';
+                alertBox.addEventListener('transitionend', () => alertBox.remove());
+            }, 3000);
+        }
+
+        // Music functionality for local file
+        const backgroundMusic = document.getElementById('background-music');
+        const musicToggleButton = document.getElementById('music-toggle-button');
+        const playIcon = document.getElementById('play-icon');
+        const pauseIcon = document.getElementById('pause-icon');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                backgroundMusic.pause();
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+            } else {
+                backgroundMusic.play().catch(error => {
+                    console.log("Autoplay was prevented:", error);
+                    // Inform the user they might need to click play manually
+                    alertMessage("Klik tombol play di pojok kanan bawah untuk memutar musik!");
+                });
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+                isPlaying = true;
+            }
+            isPlaying = !isPlaying;
+        }
+
+        musicToggleButton.addEventListener('click', toggleMusic);
+
+        // Function to scroll to the next section and show/play music
+        document.getElementById('open-invitation-button').addEventListener('click', function() {
+            // Mengizinkan pengguliran setelah tombol "Buka Undangan" dipencet
+            document.body.style.overflow = 'auto';
+
+            const guestNameInput = document.getElementById('guest-name-input');
+            const guestName = guestNameInput.value.trim();
+
+            if (guestName) {
+                const currentUrl = new URL(window.location.href);
+                currentUrl.searchParams.set('to', encodeURIComponent(guestName));
+                window.history.pushState({}, '', currentUrl.toString());
+            }
+
+            const aboutSection = document.getElementById('about');
+            if (aboutSection) {
+                aboutSection.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            // Show music toggle button and attempt to play music
+            musicToggleButton.style.display = 'flex'; // Show the button
+            if (!isPlaying) { // Only play if not already playing
+                backgroundMusic.play().catch(error => {
+                    console.log("Autoplay was prevented:", error);
+                    // Inform the user they might need to click play manually
+                    alertMessage("Klik tombol play di pojok kanan bawah untuk memutar musik!");
+                });
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+                    isPlaying = true;
+            }
+        });
+
+        // Function to save event to calendar (.ics file)
+        function saveDateToCalendar() {
+            const eventTitle = "Resepsi Pernikahan Hendra & Maylin 💍"; // Updated event title
+            const eventLocation = document.getElementById('event-location').innerText;
+            const eventDateText = document.getElementById('event-date').innerText;
+            const eventTimeText = document.getElementById('event-time').innerText;
+
+            // Parse date and time for .ics format
+            const dateParts = eventDateText.split(', ')[1].split(' '); // e.g., ["25", "September", "2025"]
+            const day = dateParts[0];
+            const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            const month = String(monthNames.indexOf(dateParts[1]) + 1).padStart(2, '0');
+            const year = dateParts[2];
+
+            const timeParts = eventTimeText.split(' - '); // e.g., ["11:00", "22:00", "WITA"]
+            const startTime = timeParts[0].replace(':', '') + '00'; // e.g., "110000"
+            const endTime = timeParts[1].replace(':', '').split(' ')[0] + '00'; // e.g., "220000"
+
+            const startDateTime = `${year}${month}${day}T${startTime}`;
+            const endDateTime = `${year}${month}${day}T${endTime}`;
+
+            const icsContent = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//Hendra & Maylin Wedding Invitation//NONSGML v1.0//EN',
+                'BEGIN:VEVENT',
+                'UID:' + new Date().toISOString(),
+                'DTSTAMP:' + new Date().toISOString().replace(/[-:]|\.\d{3}/g, ''),
+                'DTSTART:' + startDateTime,
+                'DTEND:' + endDateTime,
+                'SUMMARY:' + eventTitle,
+                'LOCATION:' + eventLocation,
+                'END:VEVENT',
+                'END:VCALENDAR'
+            ].join('\n');
+
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'Resepsi_Hendra_Maylin.ics';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            alertMessage("Tanggal berhasil disimpan ke kalender!");
+        }
+
+
+        // Slideshow functionality
+        let slideIndex = 1;
+        let slideshowTimer; // Variable to hold the timer for auto-slide
+        let slides = document.getElementsByClassName("mySlides");
+        let dots = document.getElementsByClassName("dot");
+        let slideshowWrapper = document.querySelector(".slides-wrapper"); // Get the wrapper
+
+        // Next/previous controls
+        function plusSlides(n) {
+            clearTimeout(slideshowTimer); // Clear existing timer
+            showSlides(slideIndex += n, n); // Pass 'n' as direction
+        }
+
+        // Thumbnail image controls
+        function currentSlide(n) {
+            clearTimeout(slideshowTimer); // Clear existing timer
+            showSlides(slideIndex = n, 0); // Pass 0 for no specific direction
+        }
+
+        function showSlides(n, direction = 0) { // Add direction parameter, default to 0
+            // Handle wrap-around for slide index
+            if (n > slides.length) {
+                slideIndex = 1;
+            }
+            if (n < 1) {
+                slideIndex = slides.length;
+            }
+
+            // Remove active class from all dots
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+
+            // Set the height of the slideshow container based on viewport height
+            const viewportHeight = window.innerHeight;
+            const containerHeight = viewportHeight * 0.7; // 70% of viewport height
+            slideshowWrapper.parentElement.style.height = `${containerHeight}px`;
+
+            let allSlides = document.getElementsByClassName("mySlides");
+
+            // Define base dimensions for active slide
+            const activeSlideRatio = 0.6; // 60% of container width for active
+            const inactiveScaleFactor1 = 0.8; // Scale for adjacent
+            const inactiveScaleFactor2 = 0.6; // Scale for further
+            const overlapPixels = 30; // How many pixels inactive slides overlap the active one
+
+            for (let i = 0; i < allSlides.length; i++) {
+                const slide = allSlides[i];
+                const distance = Math.abs(i - (slideIndex - 1));
+
+                // Reset individual slide styles before applying new ones
+                slide.classList.remove('active-slide');
+                slide.style.filter = 'none';
+                slide.style.opacity = '1';
+                slide.style.zIndex = '1';
+                slide.style.transform = 'none'; // Reset individual transform
+
+                let currentZIndex;
+                let currentFilter;
+                let currentOpacity;
+                let currentScale = 1;
+                let currentTranslateX = 0; // This is for individual slide's translateX
+
+                if (i === slideIndex - 1) {
+                    // Active slide
+                    currentZIndex = 10;
+                    currentFilter = 'none';
+                    currentOpacity = 1;
+                    currentScale = 1; // Explicitly 1 for active
+                    slide.style.width = `${slideshowWrapper.parentElement.offsetWidth * activeSlideRatio}px`;
+                    slide.style.height = `${containerHeight}px`; // Full height
+                } else if (distance === 1) {
+                    // Adjacent slides
+                    currentZIndex = 5;
+                    currentFilter = 'blur(2px)';
+                    currentOpacity = 0.7;
+                    currentScale = inactiveScaleFactor1;
+                    slide.style.width = `${slideshowWrapper.parentElement.offsetWidth * activeSlideRatio * inactiveScaleFactor1}px`; // Scale width
+                    slide.style.height = `${containerHeight * inactiveScaleFactor1}px`; // Scale height
+                    currentTranslateX = (i < slideIndex - 1) ? overlapPixels : -overlapPixels; // Overlap
+                } else {
+                    // Further slides
+                    currentZIndex = 2;
+                    currentFilter = 'blur(4px)';
+                    currentOpacity = 0.5;
+                    currentScale = inactiveScaleFactor2;
+                    slide.style.width = `${slideshowWrapper.parentElement.offsetWidth * activeSlideRatio * inactiveScaleFactor2}px`; // Scale width
+                    slide.style.height = `${containerHeight * inactiveScaleFactor2}px`; // Scale height
+                    currentTranslateX = (i < slideIndex - 1) ? (overlapPixels * 1.5) : -(overlapPixels * 1.5); // More overlap
+                }
+
+                slide.style.zIndex = currentZIndex;
+                slide.style.filter = currentFilter;
+                slide.style.opacity = currentOpacity;
+                // Apply scale and individual translateX
+                slide.style.transform = `scale(${currentScale}) translateX(${currentTranslateX}px)`;
+            }
+
+            // Add active class to the current dot
+            dots[slideIndex - 1].className += " active";
+
+            // Force reflow here to ensure all individual slide transforms are applied
+            slideshowWrapper.offsetHeight; // Read a layout-triggering property
+
+            // Calculate the current position of the active slide's center relative to the slideshowWrapper's left edge
+            const activeSlideElement = allSlides[slideIndex - 1]; // Re-get reference for clarity
+            const activeSlideLeft = activeSlideElement.offsetLeft;
+            const activeSlideWidth = activeSlideElement.offsetWidth; // Get the computed width after scaling
+            const activeSlideCenterInWrapper = activeSlideLeft + (activeSlideWidth / 2);
+
+            // Calculate the target center of the container
+            const containerWidth = slideshowWrapper.parentElement.offsetWidth;
+            const targetContainerCenter = containerWidth / 2;
+
+            // The amount to shift the wrapper to bring the active slide's center to the container's center
+            let newTranslateXValue = targetContainerCenter - activeSlideCenterInWrapper;
+
+            // Apply specific offset adjustments based on slide index and direction
+            if (direction === -1) { // Logic specific to 'previous' button
+                if (slideIndex === 1) {
+                    newTranslateXValue -= 40; // Foto 1: Shift left by 40px from its original centered position
+                } else if (slideIndex === 2) {
+                    newTranslateXValue -= (activeSlideWidth / 3) + 20; // Foto 2: Shift left by 1/3 width + 20px
+                } else if (slideIndex >= 3 && slideIndex <= 5) { // Foto 3, 4, 5: Shift left by 1/3 width, then add 20px (less left shift)
+                    newTranslateXValue -= (activeSlideWidth / 3) + 20; // Shift left by 1/3 width + 20px
+                } else if (slideIndex === 6) { // Foto 6: Unchanged from 'next' behavior
+                    newTranslateXValue += (activeSlideWidth / 3);
+                }
+            } else { // Logic for 'next' button, dot click, or initial load/resize (direction === 1 or 0)
+                if (slideIndex === 1) {
+                    if (direction === 0) { // Only for initial load/resize of slide 1
+                        newTranslateXValue -= (activeSlideWidth / 3);
+                        newTranslateXValue += 150; // Add 150px shift to the right for initial load
+                    } else { // For next slide navigation
+                        newTranslateXValue -= (activeSlideWidth / 3);
+                    }
+                } else if (slideIndex === 2) {
+                    newTranslateXValue += 30;
+                } else if (slideIndex >= 3 && slideIndex <= 6) {
+                    newTranslateXValue += (activeSlideWidth / 3);
+                }
+            }
+
+            slideshowWrapper.style.transform = `translateX(${newTranslateXValue}px)`;
+
+            // Clear and set a new timer for the next slide
+            clearTimeout(slideshowTimer);
+            slideshowTimer = setTimeout(function() {
+                plusSlides(1); // Auto-advance to the next slide
+            }, 5000); // Change image every 5 seconds
+        }
+
+        // Add a resize event listener to re-calculate and re-center the slideshow
+        window.addEventListener('resize', () => {
+            showSlides(slideIndex, 0); // Recalculate and re-center on resize, no specific direction
+        });
+    </script>
+</body>
+</html>
