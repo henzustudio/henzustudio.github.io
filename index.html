@@ -4,21 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Undangan Pernikahan Hendra & Maylin</title>
-    <link rel="icon" type="image/x-icon" href="./assets/favicon.png">
+    <link rel="icon" type="image/x-xicon" href="./assets/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Balinese&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore-compat.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #F8F4E3; /* Cream lembut */
             color: #4A4A4A; /* Abu-abu gelap */
-            overflow: hidden; /* Mencegah pengguliran secara default */
+            overflow-x: hidden; /* Prevent horizontal scroll */
         }
         h1, h2, h3 {
             font-family: 'Playfair Display', serif;
         }
+        /* Adjusted for cover screen to align content to bottom */
+        .cover-header-bg {
+            background-image: url('./assets/Photo1.jpg');
+            background-size: cover;
+            background-position: 50% 50%; /* Center background vertically */
+            background-attachment: fixed; /* Parallax effect */
+            display: flex; /* Use flexbox for content alignment */
+            flex-direction: column; /* Stack content vertically */
+            justify-content: flex-end; /* Align content to the bottom */
+            align-items: center; /* Center content horizontally */
+            padding-bottom: 2.5rem; /* pb-10 in Tailwind is 2.5rem */
+        }
         .header-bg {
-            background-image: url('./assets/IMG_20221023_173518.jpg'); /* Placeholder image, goldish tone */
+            background-image: url('./assets/Photo2.jpg');
             background-size: cover;
             background-position: 50% 30%;
             background-attachment: fixed; /* Parallax effect */
@@ -63,48 +80,74 @@
         .text-accent {
             color: #D4AF37; /* Gold */
         }
-        .countdown-digit {
-            background-color: #8B4513; /* Coklat Tua */
+        /* Styling for the countdown boxes including labels */
+        .countdown-box {
+            /* Changed background to dark, transparent, and added blur */
+            background-color: rgba(26, 32, 44, 0.5); /* bg-gray-900 with 50% opacity */
+            backdrop-filter: blur(4px); /* backdrop-blur-sm */
+            -webkit-backdrop-filter: blur(4px); /* For Safari */
             color: white;
             font-weight: 700;
-            border-radius: 50%;
+            border-radius: 0.75rem; /* Rounded corners */
             display: flex;
+            flex-direction: column; /* Stack number and label vertically */
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            /* Responsive sizing using vw units */
-            width: 20vw; /* Default for smaller screens */
-            height: 20vw;
-            font-size: 10vw;
+            width: 80px; /* Default width for boxes */
+            height: 80px; /* Default height for boxes */
+            padding: 0.5rem; /* Padding inside the box */
+            text-align: center;
         }
+        .countdown-box .digit {
+            font-size: 2.25rem; /* Larger font for numbers */
+            line-height: 1; /* Remove extra line height */
+            margin-bottom: 0.25rem; /* Small margin below number */
+        }
+        .countdown-box .label {
+            font-size: 0.875rem; /* Smaller font for labels */
+            line-height: 1; /* Remove extra line height */
+            color: rgba(255, 255, 255, 0.8); /* Slightly less white for labels */
+        }
+
+        /* Responsive adjustments for countdown boxes */
         @media (min-width: 640px) { /* sm breakpoint */
-            .countdown-digit {
-                width: 15vw;
-                height: 15vw;
-                font-size: 8vw;
+            .countdown-box {
+                width: 90px;
+                height: 90px;
+            }
+            .countdown-box .digit {
+                font-size: 2.75rem;
+            }
+            .countdown-box .label {
+                font-size: 1rem;
             }
         }
         @media (min-width: 768px) { /* md breakpoint */
-            .countdown-digit {
-                width: 12vw;
-                height: 12vw;
-                font-size: 6vw;
+            .countdown-box {
+                width: 100px;
+                height: 100px;
+            }
+            .countdown-box .digit {
+                font-size: 3.25rem;
+            }
+            .countdown-box .label {
+                font-size: 1.125rem;
             }
         }
         @media (min-width: 1024px) { /* lg breakpoint */
-            .countdown-digit {
-                width: 8vw;
-                height: 8vw;
-                font-size: 4vw;
+            .countdown-box {
+                width: 110px;
+                height: 110px;
+            }
+            .countdown-box .digit {
+                font-size: 3.75rem;
+            }
+            .countdown-box .label {
+                font-size: 1.25rem;
             }
         }
-        @media (min-width: 1280px) { /* xl breakpoint */
-            .countdown-digit {
-                width: 6vw;
-                height: 6vw;
-                font-size: 3vw;
-            }
-        }
+
 
         .event-card {
             border: 1px solid #D4AF37; /* Gold border */
@@ -117,84 +160,6 @@
         .event-card:hover {
             transform: translateY(-5px);
         }
-        /* Slideshow specific styles */
-        .slideshow-container {
-            position: relative;
-            max-width: 900px; /* Lebar maksimum container */
-            width: 100%; /* Make it responsive to its parent */
-            margin: auto;
-            overflow: hidden; /* Clips the overflow */
-            border-radius: 1rem;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            display: flex; /* Menggunakan flexbox untuk centering wrapper */
-            align-items: flex-end; /* Vertically align to bottom */
-        }
-
-        .slides-wrapper {
-            display: flex; /* Mengatur gambar secara horizontal */
-            height: 100%;
-            transition: transform 0.8s ease-in-out; /* Transisi halus untuk pergeseran */
-            /* Removed absolute positioning */
-        }
-
-        .mySlides {
-            flex-shrink: 0; /* Mencegah gambar menyusut */
-            object-fit: cover; /* Menutupi area tanpa distorsi */
-            margin: 0 10px; /* Spasi antar gambar */
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            transition: all 0.5s ease-in-out; /* Smooth transitions for all properties */
-            transform-origin: bottom center; /* Crucial for scaling from bottom */
-            /* Removed position: relative; */
-        }
-
-        .prev, .next {
-            cursor: pointer;
-            position: absolute;
-            top: 50%;
-            width: auto;
-            padding: 16px;
-            margin-top: -22px;
-            color: white;
-            font-weight: bold;
-            font-size: 18px;
-            transition: 0.6s ease;
-            user-select: none;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 10;
-        }
-        .prev {
-            left: 0; /* Memperbaiki posisi tombol previous */
-            border-radius: 0 3px 3px 0;
-        }
-        .next {
-            right: 0;
-            border-radius: 3px 0 0 3px;
-        }
-        .prev:hover, .next:hover {
-            background-color: rgba(0,0,0,0.8);
-        }
-        .dot-container {
-            text-align: center;
-            padding: 20px;
-            background-color: #F8F4E3;
-            border-bottom-left-radius: 1rem;
-            border-bottom-right-radius: 1rem;
-        }
-        .dot {
-            cursor: pointer;
-            height: 12px;
-            width: 12px;
-            margin: 0 4px;
-            background-color: #bbb;
-            border-radius: 50%;
-            display: inline-block;
-            transition: background-color 0.6s ease;
-        }
-        .active, .dot:hover {
-            background-color: #D4AF37; /* Gold */
-        }
-
         /* Style for Balinese script */
         .balinese-script {
             font-family: 'Noto Sans Balinese', sans-serif; /* Fallback to sans-serif */
@@ -247,200 +212,505 @@
             height: 100%;
             border: 0;
         }
+
+        /* New styles for Photo Carousel (circular photos) */
+        .circular-photo {
+            border-radius: 50%;
+            object-fit: cover;
+            width: 150px; /* Default size */
+            height: 150px; /* Default size */
+            /* Removed box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */ /* Shadow removed here */
+        }
+
+        .photo-carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 1152px; /* Increased max-width to accommodate 4 photos better */
+            margin: 0 auto;
+            overflow: hidden; /* Crucial for clipping photos outside view */
+            cursor: grab; /* Indicate draggable */
+        }
+        .photo-carousel-container.dragging {
+            cursor: grabbing; /* Indicate dragging */
+        }
+
+        .photo-carousel-wrapper {
+            display: flex;
+            gap: 1rem; /* Added gap between items */
+            /* Transition will be managed by JS for drag/snap */
+            transition: transform 0.8s ease-in-out; /* Default transition for auto-slide and snap */
+        }
+
+        .photo-carousel-item {
+            flex-shrink: 0; /* Prevent items from shrinking */
+            /* Calculate width to fit 4 items with 3 gaps of 1rem (16px) across all screen sizes */
+            width: calc((100% - 3 * 1rem) / 4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /* Removed media queries for .photo-carousel-item to force 4 photos on all sizes */
+        /* Adjusted circular-photo size for smaller screens to ensure visibility */
+        @media (max-width: 768px) {
+            .circular-photo {
+                width: 100px; /* Smaller size for tablets */
+                height: 100px;
+            }
+        }
+        @media (max-width: 480px) {
+            .circular-photo {
+                width: 80px; /* Even smaller for mobile phones */
+                height: 80px;
+            }
+        }
+
+        /* Styles for Our Gallery slideshow */
+        #thumbnail-carousel-container {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+        #thumbnail-carousel-container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        /* CSS untuk frame foto utama galeri */
+        #our-gallery .max-w-4xl.mx-auto { /* Menargetkan div spesifik */
+            position: relative;
+            width: 100%;
+            padding-bottom: 75%; /* Rasio aspek 4:3 (tinggi 75% dari lebar) */
+            height: 0; /* Penting agar padding-bottom berfungsi untuk rasio aspek */
+            overflow: hidden;
+            /* border-radius dan shadow yang sudah ada akan diterapkan */
+        }
+
+        #main-gallery-preview {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Memastikan gambar menutupi area, memotong jika perlu */
+            /* Kelas rounded-lg yang sudah ada akan diterapkan */
+        }
+
+        .gallery-thumbnail-item {
+            position: relative; /* Diperlukan untuk penentuan posisi pseudo-elemen */
+            width: 150px; /* Lebar tetap untuk thumbnail */
+            height: 112.5px; /* Tinggi 4:3 yang dihitung berdasarkan lebar 150px */
+            object-fit: cover; /* Memastikan gambar menutupi area, memotong jika perlu */
+            border: 3px solid transparent; /* Border transparan secara default */
+            transition: border-color 0.3s ease, transform 0.3s ease;
+            border-radius: 0.5rem; /* Menambahkan sudut membulat ke thumbnail */
+            cursor: pointer; /* Menunjukkan dapat diklik */
+        }
+        .gallery-thumbnail-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4); /* Overlay gelap, opasitas 40% */
+            border-radius: 0.5rem; /* Sesuai dengan border-radius thumbnail */
+            transition: opacity 0.3s ease; /* Transisi halus untuk overlay */
+            z-index: 1; /* Memastikan berada di atas gambar tetapi di bawah border */
+        }
+        .gallery-thumbnail-item.active-thumbnail {
+            border-color: #D4AF37; /* Border emas untuk thumbnail aktif */
+            transform: scale(1.08); /* Sedikit memperbesar thumbnail aktif */
+        }
+        .gallery-thumbnail-item.active-thumbnail::before {
+            opacity: 0; /* Sembunyikan overlay untuk thumbnail aktif */
+        }
+
+        /* Style for guest name input with blur */
+        #guest-name-input {
+            background-color: rgba(255, 255, 255, 0.2); /* Slightly transparent white */
+            backdrop-filter: blur(8px); /* Apply blur */
+            -webkit-backdrop-filter: blur(8px); /* For Safari */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Lighter border for blur effect */
+        }
+
+        /* Styles for hero-after-cover background slideshow */
+        #hero-after-cover {
+            position: fixed; /* Make it fixed to the viewport */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh; /* Use vh for viewport height */
+            z-index: -1; /* Place it behind the main content */
+            overflow: hidden; /* Crucial to hide off-screen slides */
+        }
+
+        #background-slideshow {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            /* No overflow hidden here, let the parent handle it */
+        }
+
+        .bg-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%; /* Fill the container */
+            object-fit: cover; /* Maintain aspect ratio and cover */
+            object-position: 50% 50%; /* Center the image */
+            opacity: 0; /* Hidden by default */
+            left: 100%; /* Initial position off-screen right for all slides */
+            transition: opacity 1s ease-in-out, left 1s ease-in-out; /* Transition opacity and left */
+            transform: scale(1.2); /* Scale for parallax, translateY will be added here */
+        }
+
+        /* New section for content that scrolls over the fixed hero */
+        #hero-content-overlay {
+            position: relative; /* To contain its z-indexed children */
+            height: 100vh; /* Occupy full viewport height */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 3rem; /* Adjust as needed */
+            z-index: 1; /* Ensure it's above the fixed background */
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 50%, #8B4513 100%);
+        }
+
+        /* Parallax styles for RSVP and Gifts sections */
+        #rsvp, #gifts {
+            position: relative; /* Needed for absolute positioning of overlay */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* This creates the parallax effect */
+            color: white; /* Ensure text is white for readability */
+        }
+
+        #rsvp {
+            background-image: url('./assets/Photo4.jpg'); /* Example image for RSVP */
+        }
+
+        #gifts {
+            background-image: url('./assets/Photo5.jpg'); /* Example image for Gifts */
+        }
+
+        /* Overlay for RSVP and Gifts to ensure text readability */
+        .section-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.4); /* Dark overlay */
+            z-index: 0; /* Below content */
+        }
+
+        /* Ensure content is above the overlay */
+        #rsvp .card, #gifts .card {
+            position: relative;
+            z-index: 1;
+            background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent white card */
+            color: #4A4A4A; /* Original text color for card content */
+            backdrop-filter: blur(8px); /* Apply blur to the card background */
+            -webkit-backdrop-filter: blur(8px); /* For Safari */
+        }
+        #rsvp .section-title, #gifts .section-title {
+            color: white; /* Section title on parallax background should be white */
+        }
+        #rsvp .section-title::after, #gifts .section-title::after {
+            background-color: white; /* Line under title on parallax background should be white */
+        }
+
+        /* Custom font for elegant names */
+        .font-elegant {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 700; /* Ensure it's bold */
+        }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Balinese&display=swap" rel="stylesheet">
 </head>
 <body class="antialiased">
-    <header class="header-bg relative h-screen flex items-center justify-center text-center text-white">
-        <div class="absolute inset-0 bg-black opacity-40"></div>
-        <div class="relative z-10 p-6 max-w-4xl mx-auto">
-            <p class="text-xl md:text-2xl mb-4 tracking-wider">Pawiwahan</p>
-            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight text-shadow-lg">Hendra & Maylin</h1>
-            <p class="text-lg md:text-xl italic mb-4">Dengan Segala Hormat, Kami Mengundang Bapak/Ibu/Saudara/i</p>
-            <input type="text" id="guest-name-input" class="mt-2 px-4 py-2 rounded-lg text-center text-gray-800 bg-white bg-opacity-80 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-D4AF37 w-full max-w-xs md:max-w-sm mx-auto" placeholder="Nama Tamu Undangan">
-            <p class="text-lg leading-relaxed mb-10 max-w-3xl mx-auto">
-            <button id="open-invitation-button" class="mt-8 px-8 py-4 rounded-full btn-primary text-xl font-semibold">Buka Undangan</button>
-            </p>
-        </div>
-    </header>
-
-    <section id="about" class="py-20 px-4 md:px-8 text-center bg-F8F4E3">
-        <div class="max-w-5xl mx-auto">
-            <div class="balinese-script mb-6">ᬒᬁ ᬲ᭄ᬯᬲ᭄ᬢ᭄ᬬᬲ᭄ᬢᬸ</div>
-            <p class="text-lg leading-relaxed mb-10 max-w-3xl mx-auto">
-                Atas Asung Kertha Wara Nugraha Ida Sang Hyang Widhi Wasa/Tuhan Yang Maha Esa kami bermaksud menyelenggarakan acara resepsi pernikahan putra putri kami
-            </p>
-            <div class="flex flex-col md:flex-row items-center justify-center space-y-12 md:space-y-0 md:space-x-20">
-                <div class="flex flex-col items-center">
-                    <img src="./assets/About Me.jpg" alt="Hendra" class="w-48 h-48 rounded-full object-cover shadow-xl border-4 border-D4AF37 mb-6">
-                    <h3 class="text-3xl font-semibold text-accent mb-2">Hendra</h3>
-                    <p class="text-md text-gray-600">Putra dari Bapak [Nama Ayah Hendra] & Ibu [Nama Ibu Hendra]</p>
-                </div>
-                <div class="text-6xl text-accent font-bold">&</div>
-                <div class="flex flex-col items-center">
-                    <img src="./assets/About Girl.jpg" alt="Maylin" class="w-48 h-48 rounded-full object-cover shadow-xl border-4 border-D4AF37 mb-6">
-                    <h3 class="text-3xl font-semibold text-accent mb-2">Maylin</h3>
-                    <p class="text-md text-gray-600">Putri dari Bapak [Nama Ayah Maylin] & Ibu [Nama Ibu Maylin]</p>
-                </div>
+    <div id="cover-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-F8F4E3 transition-transform duration-1000 ease-in-out">
+        <header class="cover-header-bg relative h-full w-full text-center text-white">
+            <div class="absolute inset-0 bg-black opacity-40"></div>
+            <div class="relative z-10 p-6 max-w-4xl mx-auto flex flex-col items-center">
+                <p class="text-base md:text-lg mb-0 tracking-wider">Pawiwahan</p>
+                <h1 class="text-3xl md:text-5xl font-bold mb-1 leading-tight text-shadow-lg">Hendra & Maylin</h1>
+                <p class="text-sm md:text-base italic mb-1">Kepada Bapak/Ibu/Saudara/i</p>
+                <input type="text" id="guest-name-input" class="mt-0.5 px-3 py-2 rounded-lg text-center text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-D4AF37 w-full max-w-xs md:max-w-sm mx-auto text-base" placeholder="Nama Tamu Undangan">
+                <button id="open-invitation-button" class="mt-2 px-6 py-3 rounded-full btn-primary text-base font-semibold">Buka Undangan</button>
             </div>
-        </div>
-    </section>
+        </header>
+    </div>
 
-    <section id="events" class="py-20 px-4 md:px-8 text-center bg-white">
-        <h2 class="text-5xl section-title mb-4">Detail Acara</h2>
-        <div class="flex flex-col md:flex-row justify-center items-stretch space-y-12 md:space-y-0 md:space-x-12 max-w-6xl mx-auto">
-            <div class="event-card flex-1 flex flex-col items-center justify-between">
-                <h3 class="text-4xl font-semibold text-accent mb-6">Resepsi</h3>
-                <p class="text-lg mb-3">Hari/Tanggal: <span class="font-medium text-gray-800" id="event-date">Kamis, 25 September 2025</span></p>
-                <p class="text-lg mb-3">Waktu: <span class="font-medium text-gray-800" id="event-time">11:00 - 22:00 WITA</span></p>
-                <p class="text-lg mb-6">Lokasi: <span class="font-medium text-gray-800" id="event-location">Jl. Warapsari No.2, Gelgel, Kec. Klungkung, Kabupaten Klungkung, Bali</span></p>
-                <div class="map-container">
-                    <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=115.40328907966615,-8.55799982705574,115.40597379207612,-8.55663017294426&layer=mapnik&marker=-8.557315,115.404631" allowfullscreen="" loading="lazy"></iframe>
-                </div>
-                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mt-6">
-                    <button onclick="saveDateToCalendar()" class="px-7 py-3 rounded-full btn-primary text-lg font-medium">Simpan Tanggal</button>
-                    <a href="https://maps.app.goo.gl/8j65mjChcSp8XeBV9" target="_blank" class="px-7 py-3 rounded-full btn-primary text-lg font-medium">Lihat di Google Maps</a>
+    <div id="main-content">
+        <section id="hero-content-overlay" class="relative">
+            <div class="relative z-20 p-6 max-w-4xl mx-auto flex flex-col items-center w-full h-full justify-end">
+                <p class="text-lg md:text-xl mb-0 tracking-wider text-white">Pawiwahan</p>
+                <h1 class="text-4xl md:text-6xl font-bold mb-2 leading-tight text-white">Hendra & Maylin</h1>
+                
+                <div id="hero-countdown-container" class="flex justify-center space-x-4 mt-2">
+                    <div class="countdown-box">
+                        <span id="hero-days" class="digit">00</span>
+                        <span class="label">Hari</span>
+                    </div>
+                    <div class="countdown-box">
+                        <span id="hero-hours" class="digit">00</span>
+                        <span class="label">Jam</span>
+                    </div>
+                    <div class="countdown-box">
+                        <span id="hero-minutes" class="digit">00</span>
+                        <span class="label">Menit</span>
+                    </div>
+                    <div class="countdown-box">
+                        <span id="hero-seconds" class="digit">00</span>
+                        <span class="label">Detik</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="max-w-3xl mx-auto mt-8">
-            <p class="text-lg leading-relaxed text-gray-700">
-                Merupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kami. Atas kehadiran dan doa restunya kami ucapkan terima kasih.
-            </p>
-            <div class="balinese-script mt-6">ᬒᬁ ᬰᬦ᭄ᬢᬶᬄ ᬰᬦ᭄ᬢᬶᬄ ᬰᬦ᭄ᬢᬶᬄ ᬒᬁ</div>
-        </div>
-    </section>
-    
-    
-    <section id="countdown" class="py-20 px-4 md:px-8 text-center bg-F8F4E3">
-        <h2 class="text-5xl section-title mb-12">Hitung Mundur Menuju Hari Bahagia</h2>
-        <div class="flex justify-center space-x-6 md:space-x-12">
-            <div class="flex flex-col items-center ml-4 md:ml-8">
-                <span id="days" class="countdown-digit mb-3">00</span>
-                <span class="text-xl md:text-2xl font-medium text-gray-700">Hari</span>
-            </div>
-            <div class="flex flex-col items-center">
-                <span id="hours" class="countdown-digit mb-3">00</span>
-                <span class="text-xl md:text-2xl font-medium text-gray-700">Jam</span>
-            </div>
-            <div class="flex flex-col items-center">
-                <span id="minutes" class="countdown-digit mb-3">00</span>
-                <span class="text-xl md:text-2xl font-medium text-gray-700">Menit</span>
-            </div>
-            <div class="flex flex-col items-center mr-4 md:mr-8">
-                <span id="seconds" class="countdown-digit mb-3">00</span>
-                <span class="text-xl md:text-2xl font-medium text-gray-700">Detik</span>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="post-event-message" class="py-10 px-4 md:px-8 text-center bg-F8F4E3">
-        <div class="max-w-3xl mx-auto">
-            <p class="text-xl italic text-gray-700">Terima kasih telah menjadi bagian dari hari bahagia kami.</p>
-        </div>
-    </section>
-
-    <section id="gallery" class="py-20 px-4 md:px-8 text-center bg-white">
-        <h2 class="text-5xl section-title mb-16">Momen Berharga Kami</h2>
-        <div class="slideshow-container">
-            <div class="slides-wrapper">
-                <img class="mySlides" src="./assets/20220502_182443.jpg" alt="Foto Pernikahan 1">
-                <img class="mySlides" src="./assets/IMG-20220502-WA0025.jpg" alt="Foto Pernikahan 2">
-                <img class="mySlides" src="./assets/IMG_20220629_204740.jpg" alt="Foto Pernikahan 3">
-                <img class="mySlides" src="./assets/IMG_20221023_165429.jpg" alt="Foto Pernikahan 4">
-                <img class="mySlides" src="./assets/IMG_20221023_173518.jpg" alt="Foto Pernikahan 5">
-                <img class="mySlides" src="./assets/IMG-20221023-WA0043~2.jpg" alt="Foto Pernikahan 6">
+        <section id="hero-after-cover">
+            <div id="background-slideshow">
+                <img class="bg-slide" src="./assets/Photo3.jpg" alt="Background 1">
+                <img class="bg-slide" src="./assets/Photo2.jpg" alt="Background 2">
+                <img class="bg-slide" src="./assets/Photo1.jpg" alt="Background 3">
             </div>
+            </section>
 
-            <a class="prev" onclick="plusSlides(-1)">❮</a>
-            <a class="next" onclick="plusSlides(1)">❯</a>
-        </div>
-        <br>
-        <div class="dot-container">
-            <span class="dot" onclick="currentSlide(1)"></span>
-            <span class="dot" onclick="currentSlide(2)"></span>
-            <span class="dot" onclick="currentSlide(3)"></span>
-            <span class="dot" onclick="currentSlide(4)"></span>
-            <span class="dot" onclick="currentSlide(5)"></span>
-            <span class="dot" onclick="currentSlide(6)"></span>
-        </div>
-    </section>
+        <section id="opening-message" class="py-10 px-4 md:px-8 text-center" style="background-color: #8B4513;">
+            <div class="max-w-3xl mx-auto">
+                <br>
+                <div class="balinese-script text-3xl md:text-4xl mb-4 text-white">ᬒᬁ ᬲ᭄ᬯᬲ᭄ᬢ᭄ᬬᬲ᭄ᬢᬸ</div>
+                <br>
+                <p class="text-lg leading-relaxed text-gray-200">
+                    Atas Asung Kertha Wara Nugraha Ida Sang Hyang Widhi Wasa/Tuhan Yang Maha Esa, kami bermaksud mengundang Bapak/Ibu/Saudara pada acara Resepsi Pernikahan putra putri kami
+                </p>
+            </div>
+        </section>
 
-    <section id="rsvp" class="py-20 px-4 md:px-8 bg-F8F4E3">
-        <div class="max-w-4xl mx-auto card p-10 rounded-lg shadow-xl">
-            <h2 class="text-5xl section-title mb-12 text-center">Konfirmasi Kehadiran Anda</h2>
-            <form class="space-y-8">
-                <div>
-                    <label for="name" class="block text-xl font-medium text-gray-700 mb-3">Nama Lengkap</label>
-                    <input type="text" id="name" name="name" class="mt-1 block w-full px-5 py-4 border border-gray-300 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-lg" placeholder="Masukkan nama Anda" required>
+        <section id="about" class="py-20 px-4 md:px-8 text-center bg-white">
+            <div class="max-w-5xl mx-auto">
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-12 md:space-y-0 md:space-x-20">
+                    <div class="flex flex-col items-center">
+                        <img src="./assets/About Me.jpg" alt="Hendra" class="w-48 h-48 rounded-full object-cover shadow-xl border-4 border-D4AF37 mb-6">
+                        <h3 class="text-3xl font-semibold text-accent mb-2">Hendra</h3>
+                        <p class="text-md text-gray-600">Putra dari Bapak [Nama Ayah Hendra] & Ibu [Nama Ibu Hendra]</p>
+                        <a href="https://www.instagram.com/hendrasupradnyana/" target="_blank" class="mt-4 inline-flex items-center px-4 py-2 btn-primary rounded-full text-md font-medium">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                            </svg>
+                            <span class="font-medium">@hendrasupradnyana</span>
+                        </a>
+                    </div>
+                    <div class="text-6xl text-accent font-bold">&</div>
+                    <div class="flex flex-col items-center">
+                        <img src="./assets/About Girl.jpg" alt="Maylin" class="w-48 h-48 rounded-full object-cover shadow-xl border-4 border-D4AF37 mb-6">
+                        <h3 class="text-3xl font-semibold text-accent mb-2">Maylin</h3>
+                        <p class="text-md text-gray-600">Putri dari Bapak [Nama Aylin] & Ibu [Nama Ibu Maylin]</p>
+                        <a href="https://www.instagram.com/maylinfranz/" target="_blank" class="mt-4 inline-flex items-center px-4 py-2 btn-primary rounded-full text-md font-medium">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                            </svg>
+                            <span class="font-medium">@maylinfranz</span>
+                        </a>
+                    </div>
                 </div>
-                <div>
-                    <label for="guests" class="block text-xl font-medium text-gray-700 mb-3">Jumlah Tamu</label>
-                    <select id="guests" name="guests" class="mt-1 block w-full px-5 py-4 border border-gray-300 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-lg">
-                        <option value="1">1 Orang</option>
-                        <option value="2">2 Orang</option>
-                        <option value="3">3 Orang</option>
-                        <option value="4">4 Orang</option>
-                    </select>
+            </div>
+        </section>
+
+        <section id="wedding-quote" class="py-20 px-4 md:px-8 text-center" style="background-color: #8B4513;">
+            <div class="max-w-3xl mx-auto">
+                <p class="text-lg md:text-xl italic leading-relaxed text-white mb-6">
+                    "Ya Tuhan Yang Maha Pengasih, anugrahkan kepada pasangan ini tanpa terpisahkan, panjang umur, semoga pernikahan ini dianugrahkan putra-putri dan cucu yang memberi penghiburan, tinggal di rumah yang penuh kebahagiaan."
+                </p>
+                <p class="text-lg font-semibold text-gray-200">(Reg Weda X. 85.42)</p>
+            </div>
+        </section>
+
+        <section id="photo-carousel-section" class="py-0 px-4 md:px-8 text-center" style="background: linear-gradient(to bottom, #8B4513 50%, #FFFFFF 50%);">
+            <div class="photo-carousel-container">
+                <div class="photo-carousel-wrapper">
+                    <div class="photo-carousel-item">
+                        <img src="./assets/Photo1.jpg" alt="Momen 1" class="circular-photo">
+                    </div>
+                    <div class="photo-carousel-item">
+                        <img src="./assets/Photo2.jpg" alt="Momen 2" class="circular-photo">
+                    </div>
+                    <div class="photo-carousel-item">
+                        <img src="./assets/Photo3.jpg" alt="Momen 3" class="circular-photo">
+                    </div>
+                    <div class="photo-carousel-item">
+                        <img src="./assets/Photo4.jpg" alt="Momen 4" class="circular-photo">
+                    </div>
+                    <div class="photo-carousel-item">
+                        <img src="./assets/Photo5.jpg" alt="Momen 5" class="circular-photo">
+                    </div>
+                    <div class="photo-carousel-item">
+                        <img src="./assets/Photo6.jpg" alt="Momen 6" class="circular-photo">
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-xl font-medium text-gray-700 mb-3">Kehadiran</label>
-                    <div class="mt-4 space-y-3">
-                        <div class="flex items-center">
-                            <input type="radio" id="attend" name="attendance" value="hadir" class="focus:ring-D4AF37 h-6 w-6 text-D4AF37 border-gray-300" required>
-                            <label for="attend" class="ml-4 block text-xl text-gray-700">Akan Hadir</label>
+            </div>
+        </section>
+
+        <section id="events" class="py-20 px-4 md:px-8 text-center bg-white">
+            <h2 class="text-5xl section-title mb-4">Detail Acara</h2>
+            <div class="flex flex-col md:flex-row justify-center items-stretch space-y-12 md:space-y-0 md:space-x-12 max-w-6xl mx-auto">
+                <div class="event-card flex-1 flex flex-col items-center justify-between">
+                    <h3 class="text-4xl font-semibold text-accent mb-6">Resepsi</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+                        <div class="flex flex-col items-center justify-center text-center">
+                            <p class="text-xl font-bold text-gray-800 mb-3" id="event-date">Kamis, 25 September 2025</p>
+                            <p class="text-lg mb-3"><span class="font-medium text-gray-800" id="event-time">11:00 - 22:00 WITA</span></p>
+                            <p class="text-lg mb-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto text-accent mb-1" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                </svg>
+                                <strong>Lokasi:</strong><br>
+                                <span class="font-bold text-lg text-gray-800 mt-1">Kediaman Mempelai Pria</span><br>
+                                <span class="font-medium text-gray-800" id="event-location">Jl. Warapsari No.2, Gelgel, Kec. Klungkung, Kabupaten Klungkung, Bali</span>
+                            </p>
                         </div>
-                        <div class="flex items-center">
-                            <input type="radio" id="not-attend" name="attendance" value="tidak-hadir" class="focus:ring-D4AF37 h-6 w-6 text-D4AF37 border-gray-300">
-                            <label for="not-attend" class="ml-4 block text-xl text-gray-700">Tidak Dapat Hadir</label>
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="map-container w-full">
+                                <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=115.40328907966615,-8.55799982705574,115.40597379207612,-8.55663017294426&layer=mapnik&marker=-8.557315,115.404631" allowfullscreen="" loading="lazy"></iframe>
+                            </div>
+                            <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mt-6">
+                                <button onclick="saveDateToCalendar()" class="px-7 py-3 rounded-full btn-primary text-lg font-medium">Simpan Tanggal</button>
+                                <a id="open-map-button" href="#" target="_blank" class="px-7 py-3 rounded-full btn-primary text-lg font-medium">Buka Map</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div>
-                    <label for="message" class="block text-xl font-medium text-gray-700 mb-3">Pesan & Doa</label>
-                    <textarea id="message" name="message" rows="5" class="mt-1 block w-full px-5 py-4 border border-gray-300 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-lg" placeholder="Tulis pesan atau doa terbaik Anda"></textarea>
-                </div>
-                <div class="text-center">
-                    <button type="submit" class="px-10 py-5 rounded-full btn-primary text-2xl font-semibold">Kirim Konfirmasi</button>
-                </div>
-            </form>
-        </div>
-    </section>
+            </div>
 
-    <section id="gifts" class="py-20 px-4 md:px-8 text-center bg-white">
-        <div class="max-w-3xl mx-auto card p-10 rounded-lg shadow-xl">
-            <h2 class="text-5xl section-title mb-12">Kirim Tanda Kasih</h2>
-            <p class="text-lg leading-relaxed mb-8">
-                Doa restu dari Anda adalah hadiah terindah bagi kami. Namun, jika Anda ingin memberikan tanda kasih, Anda dapat mengirimkannya melalui:
-            </p>
-            <div class="space-y-6 mb-8">
-                <div class="text-left p-6 bg-gray-50 rounded-lg border border-gray-200">
-                    <p class="font-semibold text-xl text-gray-800">Bank [Nama Bank]</p>
-                    <p class="text-lg">No. Rekening: <span id="bank-account" class="font-mono text-gray-700 text-xl">1234567890</span></p>
-                    <p class="text-lg">Atas Nama: Hendra</p>
-                    <button onclick="copyToClipboard('bank-account')" class="mt-4 px-6 py-3 rounded-full btn-primary text-md font-medium">Salin No. Rekening</button>
+        </section>
+
+        <section id="rsvp" class="py-20 px-4 md:px-8 text-center">
+            <div class="section-overlay"></div>
+            <h2 class="text-5xl section-title mb-12">Konfirmasi Kehadiran (RSVP)</h2>
+            <div class="max-w-3xl mx-auto card p-10 rounded-lg shadow-xl">
+                <p class="text-lg leading-relaxed mb-8 text-gray-700">
+                    Mohon mengirimkan konfirmasi kehadiran melalui form berikut:
+                </p>
+                <div class="space-y-6 mb-8">
+                    <div class="text-left">
+                        <label for="rsvp-name" class="block text-lg font-medium text-gray-700 mb-2">Nama Lengkap:</label>
+                        <input type="text" id="rsvp-name" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-lg" placeholder="Masukkan nama lengkap Anda" required>
+                    </div>
+                    <div class="text-left">
+                        <label for="rsvp-guests" class="block text-lg font-medium text-gray-700 mb-2">Jumlah Tamu (termasuk Anda):</label>
+                        <input type="number" id="rsvp-guests" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-lg" value="1" min="1" max="5" required>
+                    </div>
                 </div>
-                <div class="text-left p-6 bg-gray-50 rounded-lg border border-gray-200">
-                    <p class="font-semibold text-xl text-gray-800">E-Wallet [Nama E-Wallet]</p>
-                    <p class="text-lg">No. Telekening: <span id="e-wallet-number" class="font-mono text-gray-700 text-xl">081234567890</span></p>
-                    <p class="text-lg">Atas Nama: Maylin</p>
-                    <button onclick="copyToClipboard('e-wallet-number')" class="mt-4 px-6 py-3 rounded-full btn-primary text-md font-medium">Salin No. Telepon</button>
+                <button onclick="sendRsvp()" class="px-8 py-4 rounded-full btn-primary text-xl font-semibold">Kirim</button>
+                <p class="text-sm text-gray-500 mt-6 italic">
+                    Setelah menekan tombol, Anda akan diarahkan ke formulir konfirmasi.
+                </p>
+            </div>
+        </section>
+
+        <section id="our-gallery" class="py-20 px-4 md:px-8 text-center bg-white">
+            <h2 class="text-5xl section-title mb-12">Our Gallery</h2>
+
+            <div id="gallery-slideshow-wrapper">
+                <div class="max-w-4xl mx-auto mb-8 rounded-lg shadow-xl overflow-hidden">
+                    <img id="main-gallery-preview" src="./assets/Photo7.jpg" alt="Main Gallery Photo" class="w-full h-auto object-cover rounded-lg">
+                </div>
+
+                <div id="thumbnail-carousel-container" class="relative w-full max-w-6xl mx-auto overflow-x-scroll whitespace-nowrap py-4 scroll-smooth">
+                    <div id="thumbnail-carousel-wrapper" class="inline-flex space-x-4 px-4">
+                        </div>
                 </div>
             </div>
-            <p class="text-lg text-gray-600 italic">
-                Terima kasih atas perhatian dan kebaikan hati Anda.
-            </p>
-        </div>
-    </section>
+        </section>
 
-    <footer class="py-10 px-4 md:px-8 text-center bg-gray-900 text-white">
-        <p class="text-xl mb-3">Kami yang berbahagia,</p>
-        <p class="text-3xl font-semibold text-accent mb-6">Hendra & Maylin</p>
-        <p class="mt-4 text-sm text-gray-400">© 2025 Undangan Pernikahan Hendra & Maylin. Hak Cipta Dilindungi.</p>
-    </footer>
+        <section id="gifts" class="py-20 px-4 md:px-8 text-center">
+            <div class="section-overlay"></div>
+            <h2 class="text-5xl section-title mb-12">Kirim Tanda Kasih</h2>
+            <div class="max-w-3xl mx-auto card p-10 rounded-lg shadow-xl">
+                <p class="text-lg leading-relaxed mb-8 text-gray-700">
+                    Tanpa mengurangi rasa hormat kami, bagi tamu yang ingin mengirim hadiah kepada kedua mempelai dapat mengirimnya melalui:
+                </p>
+                <div class="space-y-6 mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="text-left p-6 bg-gray-50 rounded-lg border border-gray-200">
+                            <p class="font-semibold text-xl text-gray-800">Bank Mandiri</p>
+                            <p class="text-lg">No. Rekening: <span id="bank-account" class="font-mono text-gray-700 text-xl">1234567890</span></p>
+                            <p class="text-lg">Atas Nama: Hendra</p>
+                            <button onclick="copyToClipboard('bank-account')" class="mt-4 px-6 py-3 rounded-full btn-primary text-md font-medium">Salin No. Rekening</button>
+                        </div>
+                        <div class="text-left p-6 bg-gray-50 rounded-lg border border-gray-200">
+                            <p class="font-semibold text-xl text-gray-800">Bank BCA</p>
+                            <p class="text-lg">No. Rekening: <span id="bank-account-2" class="font-mono text-gray-700 text-xl">081234567890</span></p>
+                            <p class="text-lg">Atas Nama: Maylin</p>
+                            <button onclick="copyToClipboard('bank-account-2')" class="mt-4 px-6 py-3 rounded-full btn-primary text-md font-medium">Salin No. Rekening</button>
+                        </div>
+                    </div>
+                    <div class="text-left p-6 bg-gray-50 rounded-lg border border-gray-200">
+                        <p class="font-semibold text-xl text-gray-800">Pengiriman Hadiah Fisik</p>
+                        <p class="text-lg">Maylin Franza</p>
+                        <p class="text-lg"><span id="alamat-hadiah" class="font-mono text-gray-700 text-xl">Jl. Warapsari No.2, Gelgel, Kec. Klungkung, Kabupaten Klungkung, Bali</span></p>
+                        <button onclick="copyToClipboard('alamat-hadiah')" class="mt-4 px-6 py-3 rounded-full btn-primary text-md font-medium">Salin</button>
+                    </div>
+                </div>
+                <p class="text-lg text-gray-600 italic">
+                    Terima kasih atas perhatian dan kebaikan hati Anda.
+                </p>
+            </div>
+        </section>
+
+        <section id="blessings" class="py-20 px-4 md:px-8 text-center bg-white">
+            <div class="max-w-3xl mx-auto card p-10 rounded-lg shadow-xl">
+                <h2 class="text-5xl section-title mb-12">Ucapan Doa Restu</h2>
+                <div class="flex flex-col md:flex-row gap-8">
+                    <div class="w-full md:w-2/5 space-y-6">
+                        <div class="text-left">
+                            <input type="text" id="blessing-name" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-lg" placeholder="Nama Anda" required>
+                        </div>
+                        <div class="text-left">
+                            <textarea id="blessing-message" rows="4" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-lg" placeholder="Tulis ucapan doa restu Anda di sini..." required></textarea>
+                        </div>
+                        <button onclick="sendBlessing()" class="px-8 py-4 rounded-full btn-primary text-xl font-semibold w-full">Kirim Ucapan</button>
+                    </div>
+                    <div class="w-full md:w-3/5 text-left">
+                        <h3 class="text-3xl font-semibold text-accent mb-6">Daftar Ucapan</h3>
+                        <div id="blessings-list" class="space-y-6">
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="closing-message" class="relative h-screen flex flex-col items-center justify-between text-center text-white overflow-hidden py-12">
+            <div class="header-bg absolute inset-0 z-0"></div> <div class="absolute inset-0 z-10" style="background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 50%, #8B4513 100%);"></div>
+            
+            <div class="relative z-20 p-6 max-w-4xl mx-auto flex flex-col items-center w-full text-top">
+                <p class="text-lg leading-relaxed text-gray-200 mb-6">
+                    Merupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kedua mempelai. Atas kehadiran dan doa restunya kami ucapkan terima kasih.
+                </p>
+                <div class="balinese-script text-3xl md:text-4xl text-white">ᬒᬁ ᬰᬦ᭄ᬢᬶᬄ ᬰᬦ᭄ᬢᬶᬄ ᬰᬦ᭄ᬢᬶᬄ ᬒᬁ</div>
+            </div>
+
+            <div class="relative z-20 p-6 max-w-4xl mx-auto flex flex-col items-center w-full text-bottom">
+                <p class="text-xl mb-3">Kami yang berbahagia,</p>
+                <p class="text-5xl font-semibold text-accent font-elegant">Hendra & Maylin</p>
+            </div>
+        </section>
+
+        <footer class="py-10 px-4 md:px-8 text-center text-white" style="background-color: #8B4513;">
+            <p class="text-lg mb-0">Designed with love by:</p>
+            <a href="https://www.instagram.com/henzustudio/" target="_blank" class="mt-1 inline-flex items-center px-4 py-2 bg-D4AF37 text-white rounded-full text-md font-medium hover:bg-B8860B transition-colors duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                <span class="font-medium">@henzustudio</span>
+            </a>
+            <p class="mt-4 text-sm text-gray-400">© 2025 Undangan Pernikahan Hendra & Maylin. Hak Cipta Dilindungi. <span id="user-id-display" class="text-xs text-gray-500"></span></p>
+        </footer>
+    </div>
 
     <audio id="background-music" loop>
-        <source src="./assets/Christina Perri - A Thousand Years.mp3 by Fabiano Clauber.mp3" type="audio/mp3">
+        <source src="./assets/music.mp3" type="audio/mp3">
         Browser Anda tidak mendukung elemen audio.
     </audio>
 
@@ -457,38 +727,9 @@
         // Mencegah browser mengembalikan posisi scroll sebelumnya
         window.history.scrollRestoration = 'manual';
 
-        // Semua logika inisialisasi halaman akan dijalankan di sini
-        window.addEventListener('load', function() {
-            // Gulir ke paling atas halaman
-            window.scrollTo(0, 0);
-            
-            // Logika untuk mengunci scroll sebelum tombol "Buka Undangan" ditekan
-            const weddingDate = new Date("September 25, 2025 11:00:00").getTime();
-            const now = new Date().getTime();
-            const distance = weddingDate - now;
-
-            if (distance < 0) {
-                // Jika acara sudah lewat, izinkan scrolling
-                document.body.style.overflow = 'auto';
-            } else {
-                // Jika acara belum lewat, paksa overflow: hidden
-                document.body.style.overflow = 'hidden';
-            }
-
-            // Baca nama tamu dari URL pada saat load dan isi input field
-            const urlParams = new URLSearchParams(window.location.search);
-            const guestName = urlParams.get('to');
-            if (guestName) {
-                document.getElementById('guest-name-input').value = decodeURIComponent(guestName);
-            }
-            
-            // Inisialisasi slideshow pada saat load
-            showSlides(slideIndex);
-        });
-
         // Countdown Timer
-        const weddingDate = new Date("September 25, 2025 11:00:00").getTime(); // Updated to 25 September 2025, 11:00:00
-        const postEventMessageSection = document.getElementById("post-event-message");
+        const weddingDate = new Date("September 25, 2025 11:00:00").getTime();
+        const heroCountdownContainer = document.getElementById("hero-countdown-container");
 
         const x = setInterval(function() {
             const now = new Date().getTime();
@@ -499,18 +740,16 @@
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            document.getElementById("days").innerHTML = String(days).padStart(2, '0');
-            document.getElementById("hours").innerHTML = String(hours).padStart(2, '0');
-            document.getElementById("minutes").innerHTML = String(minutes).padStart(2, '0');
-            document.getElementById("seconds").innerHTML = String(seconds).padStart(2, '0');
+            document.getElementById("hero-days").innerHTML = String(days).padStart(2, '0');
+            document.getElementById("hero-hours").innerHTML = String(hours).padStart(2, '0');
+            document.getElementById("hero-minutes").innerHTML = String(minutes).padStart(2, '0');
+            document.getElementById("hero-seconds").innerHTML = String(seconds).padStart(2, '0');
 
             if (distance < 0) {
                 clearInterval(x);
-                // Hide the countdown timer and show the post-event message
-                document.getElementById("countdown").style.display = 'none';
-                postEventMessageSection.style.display = 'block'; // Make sure this section is visible
+                heroCountdownContainer.style.display = 'none';
             } else {
-                postEventMessageSection.style.display = 'none';
+                heroCountdownContainer.style.display = 'flex'; // Mengembalikan ke flex jika ada waktu
             }
         }, 1000);
 
@@ -523,7 +762,12 @@
             textArea.select();
             document.execCommand('copy');
             document.body.removeChild(textArea);
-            alertMessage("Nomor berhasil disalin!");
+            // Check the elementId to provide specific alert messages
+            if (elementId === 'alamat-hadiah') {
+                alertMessage("Alamat berhasil disalin!");
+            } else {
+                alertMessage("Nomor berhasil disalin!");
+            }
         }
 
         // Custom Alert Message
@@ -548,264 +792,829 @@
         const musicToggleButton = document.getElementById('music-toggle-button');
         const playIcon = document.getElementById('play-icon');
         const pauseIcon = document.getElementById('pause-icon');
-        let isPlaying = false;
-
+        
         function toggleMusic() {
-            if (isPlaying) {
-                backgroundMusic.pause();
-                playIcon.style.display = 'block';
-                pauseIcon.style.display = 'none';
-            } else {
+            if (backgroundMusic.paused) {
                 backgroundMusic.play().catch(error => {
                     console.log("Autoplay was prevented:", error);
-                    // Inform the user they might need to click play manually
                     alertMessage("Klik tombol play di pojok kanan bawah untuk memutar musik!");
                 });
                 playIcon.style.display = 'none';
                 pauseIcon.style.display = 'block';
-                isPlaying = true;
+            } else {
+                backgroundMusic.pause();
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
             }
-            isPlaying = !isPlaying;
         }
 
         musicToggleButton.addEventListener('click', toggleMusic);
 
-        // Function to scroll to the next section and show/play music
-        document.getElementById('open-invitation-button').addEventListener('click', function() {
-            // Mengizinkan pengguliran setelah tombol "Buka Undangan" dipencet
-            document.body.style.overflow = 'auto';
+        // Background Slideshow for Hero After Cover
+        let currentBgSlide = 0;
+        let bgSlides = [];
+        let bgSlideshowInterval; // Variable to hold the interval ID
 
-            const guestNameInput = document.getElementById('guest-name-input');
-            const guestName = guestNameInput.value.trim();
+        function startHeroBackgroundSlideshow() {
+            bgSlides = document.querySelectorAll('#background-slideshow .bg-slide');
+            if (bgSlides.length === 0) return;
 
-            if (guestName) {
-                const currentUrl = new URL(window.location.href);
-                currentUrl.searchParams.set('to', encodeURIComponent(guestName));
-                window.history.pushState({}, '', currentUrl.toString());
+            // Initialize all slides
+            bgSlides.forEach((slide, index) => {
+                slide.style.opacity = '0';
+                slide.style.left = '100%'; // All non-active slides start off-screen right
+                // Parallax translateY will be handled by handleParallaxScroll, no need to set here
+            });
+
+            // Set the first slide as active
+            bgSlides[0].style.opacity = '1';
+            bgSlides[0].style.left = '0%'; // First slide starts on screen
+
+            // Apply initial parallax for all slides immediately
+            handleParallaxScroll();
+
+            clearInterval(bgSlideshowInterval); // Clear any existing interval
+            bgSlideshowInterval = setInterval(() => {
+                const prevBgSlide = bgSlides[currentBgSlide];
+                
+                currentBgSlide = (currentBgSlide + 1) % bgSlides.length;
+                const nextBgSlide = bgSlides[currentBgSlide];
+
+                // Animate previous slide out (fade and slide left)
+                prevBgSlide.style.opacity = '0';
+                prevBgSlide.style.left = '-100%';
+
+                // Animate next slide in (fade and slide from right)
+                // First, ensure it's positioned off-screen right for the transition to start
+                nextBgSlide.style.transition = 'none'; // Temporarily disable transition for instant positioning
+                nextBgSlide.style.left = '100%';
+                // Force reflow to apply the instant change before re-enabling transition
+                void nextBgSlide.offsetWidth; 
+                nextBgSlide.style.transition = 'opacity 1s ease-in-out, left 1s ease-in-out'; // Re-enable transition
+
+                nextBgSlide.style.opacity = '1';
+                nextBgSlide.style.left = '0%';
+
+                // After the previous slide's transitions are complete, reset its horizontal position
+                // so it's ready to slide in from the right again in a future cycle.
+                setTimeout(() => {
+                    prevBgSlide.style.transition = 'none'; // Disable transition for instant reset
+                    prevBgSlide.style.left = '100%'; // Reset horizontal position
+                    // Re-enable transition after a very short delay
+                    void prevBgSlide.offsetWidth; // Force reflow
+                    prevBgSlide.style.transition = 'opacity 1s ease-in-out, left 1s ease-in-out';
+                }, 1000); // Match opacity and left transition duration
+            }, 5000); // Change image every 5 seconds
+
+            // Add scroll listener for parallax after slideshow starts
+            window.removeEventListener('scroll', handleParallaxScroll); // Prevent multiple listeners
+            window.addEventListener('scroll', handleParallaxScroll);
+            handleParallaxScroll(); // Call once to set initial parallax position
+        }
+
+        // Function to handle parallax effect on scroll
+        function handleParallaxScroll() {
+            const scrollY = window.scrollY;
+            const parallaxFactor = 0.2; // Adjust this value. Smaller value = slower movement.
+
+            bgSlides.forEach(slide => {
+                const translateY = -scrollY * parallaxFactor;
+                // Only apply scale and translateY to the transform property
+                slide.style.transform = `scale(1.2) translateY(${translateY}px)`;
+            });
+        }
+
+        // Photo Carousel Logic (circular photos)
+        let currentPhotoSlideIndex = 0;
+        const photosPerView = 4; // Number of photos visible at once
+        const photoCarouselContainer = document.querySelector('.photo-carousel-container');
+        const photoCarouselWrapper = document.querySelector('.photo-carousel-wrapper');
+        let photoItems = []; // Will be populated after cloning
+        let totalUniquePhotos = 0; // Total number of unique photos
+        let carouselAutoSlideInterval; // Variable to hold the auto-slide interval
+        let isDragging = false;
+        let startX;
+        let currentTranslateX; // The translateX value when dragging starts
+        let itemWidth = 0; // Width of a single photo carousel item
+
+        function initializePhotoCarousel() {
+            const originalItems = Array.from(document.querySelectorAll('#photo-carousel-section .photo-carousel-item'));
+            totalUniquePhotos = originalItems.length;
+
+            // Clear existing photoItems array if re-initializing
+            photoItems = [];
+            photoCarouselWrapper.innerHTML = ''; // Clear wrapper before appending
+
+            // Append original items
+            originalItems.forEach(item => {
+                photoCarouselWrapper.appendChild(item);
+                photoItems.push(item);
+            });
+
+            // Clone the entire set of original photos and append them for seamless looping
+            // This creates a structure like [P1, P2, P3, P4, P5, P6, P1, P2, P3, P4, P5, P6]
+            originalItems.forEach(item => {
+                const clonedItem = item.cloneNode(true);
+                photoCarouselWrapper.appendChild(clonedItem);
+                photoItems.push(clonedItem);
+            });
+
+            // Calculate itemWidth after all items (including clones) are in the DOM
+            // Use a small timeout to ensure layout is rendered and offsetWidth is accurate
+            setTimeout(() => {
+                if (photoItems.length > 0) {
+                    // itemWidth should be the width of one item including its allocated space in the flex container
+                    // This is usually the offsetWidth of the item itself when using flex-shrink: 0 and calculated width
+                    itemWidth = photoItems[0].offsetWidth + 16; // Add 16px for the 1rem gap
+                    // Set the total width of the wrapper to accommodate all items and their gaps.
+                    // We just need to ensure the transform moves by the correct item width.
+                }
+                // Start auto-sliding
+                startPhotoAutoSlide();
+            }, 100); // Small delay to allow layout calculation
+
+            // Add event listeners for mouse and touch
+            photoCarouselContainer.addEventListener('mousedown', handlePhotoStart);
+            photoCarouselContainer.addEventListener('mousemove', handlePhotoMove);
+            photoCarouselContainer.addEventListener('mouseup', handlePhotoEnd);
+            photoCarouselContainer.addEventListener('mouseleave', handlePhotoEnd); // End drag if mouse leaves container
+
+            photoCarouselContainer.addEventListener('touchstart', handlePhotoStart);
+            photoCarouselContainer.addEventListener('touchmove', handlePhotoMove);
+            photoCarouselContainer.addEventListener('touchend', handlePhotoEnd);
+        }
+
+        function startPhotoAutoSlide() {
+            clearInterval(carouselAutoSlideInterval); // Clear any existing interval
+            carouselAutoSlideInterval = setInterval(nextPhotoSlide, 5000); // Slide every 5 seconds
+        }
+
+        function nextPhotoSlide() {
+            currentPhotoSlideIndex++;
+            smoothPhotoSlide();
+        }
+
+        function smoothPhotoSlide() {
+            // Recalculate itemWidth to ensure it's current, especially after window resize
+            const currentItemWidth = photoItems[0].offsetWidth + 16; // 16px for 1rem gap
+            
+            photoCarouselWrapper.style.transition = 'transform 0.8s ease-in-out';
+            photoCarouselWrapper.style.transform = `translateX(-${currentPhotoSlideIndex * currentItemWidth}px)`;
+
+            // If we've moved past the original set of photos, instantly jump back to the start of the cloned set
+            if (currentPhotoSlideIndex >= totalUniquePhotos) {
+                setTimeout(() => {
+                    photoCarouselWrapper.style.transition = 'none'; // Disable transition for instant jump
+                    currentPhotoSlideIndex = 0; // Reset index to the first original photo
+                    photoCarouselWrapper.style.transform = `translateX(-${currentPhotoSlideIndex * currentItemWidth}px)`;
+                    // Re-enable transition after a very short delay
+                    setTimeout(() => {
+                        photoCarouselWrapper.style.transition = 'transform 0.8s ease-in-out';
+                    }, 50);
+                }, 800); // Wait for the current slide transition to finish before jumping
+            }
+        }
+
+        function handlePhotoStart(e) {
+            isDragging = true;
+            photoCarouselContainer.classList.add('dragging');
+            startX = (e.clientX || e.touches[0].clientX);
+            // Get the current translateX value
+            const transformMatrix = window.getComputedStyle(photoCarouselWrapper).getPropertyValue('transform');
+            currentTranslateX = transformMatrix === 'none' ? 0 : parseFloat(transformMatrix.split(',')[4]);
+
+            clearInterval(carouselAutoSlideInterval); // Pause auto-slide
+            photoCarouselWrapper.style.transition = 'none'; // Disable transition during drag
+        }
+
+        function handlePhotoMove(e) {
+            if (!isDragging) return;
+            e.preventDefault(); // Prevent scrolling while dragging
+            const clientX = (e.clientX || e.touches[0].clientX);
+            const diffX = clientX - startX;
+            photoCarouselWrapper.style.transform = `translateX(${currentTranslateX + diffX}px)`;
+        }
+
+        function handlePhotoEnd(e) {
+            if (!isDragging) return;
+            isDragging = false;
+            photoCarouselContainer.classList.remove('dragging');
+
+            const endX = (e.clientX || (e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientX : startX));
+            const draggedDistance = endX - startX;
+            
+            // Recalculate itemWidth to ensure it's current before snapping
+            const currentItemWidth = photoItems[0].offsetWidth + 16; // 16px for 1rem gap
+            const dragThreshold = currentItemWidth / 4; // Minimum drag to trigger a slide
+
+            // Determine the target index based on drag direction and threshold
+            if (draggedDistance > dragThreshold) { // Dragged right, go to previous slide
+                currentPhotoSlideIndex = Math.max(0, currentPhotoSlideIndex - 1);
+            } else if (draggedDistance < -dragThreshold) { // Dragged left, go to next slide
+                currentPhotoSlideIndex = Math.min(totalUniquePhotos, currentPhotoSlideIndex + 1);
+            } else {
+                // If not enough drag, snap back to the current index (no change to currentPhotoSlideIndex)
+                // This is implicitly handled by smoothPhotoSlide applying the current index's transform
             }
 
-            const aboutSection = document.getElementById('about');
-            if (aboutSection) {
-                aboutSection.scrollIntoView({ behavior: 'smooth' });
+            smoothPhotoSlide(); // Snap to the calculated index with transition
+            startPhotoAutoSlide(); // Resume auto-slide
+        }
+
+
+        // Initial state: hide main content and ensure cover is visible
+        document.addEventListener('DOMContentLoaded', () => {
+            const mainContent = document.getElementById('main-content');
+            // Ensure body overflow is hidden on load if the event is in the future
+            const weddingDateForLock = new Date("September 25, 2025 11:00:00").getTime();
+            const nowForLock = new Date().getTime();
+            const distanceForLock = weddingDateForLock - nowForLock;
+
+            if (distanceForLock >= 0) { // Only hide if event is in future or now
+                document.body.style.overflow = 'hidden';
+            }
+            // mainContent starts with transform: translateY(100%) via CSS
+
+            // New logic to read 'to' parameter from URL and pre-fill input
+            const urlParams = new URLSearchParams(window.location.search);
+            const guestNameFromUrl = urlParams.get('to');
+            const guestNameInput = document.getElementById('guest-name-input');
+
+            if (guestNameFromUrl) {
+                guestNameInput.value = decodeURIComponent(guestNameFromUrl);
+            }
+        });
+
+        // Function to scroll to the next section and show/play music
+        document.getElementById('open-invitation-button').addEventListener('click', function() {
+            const coverScreen = document.getElementById('cover-screen');
+            // Apply slide-up animation to the cover screen
+            coverScreen.style.transform = 'translateY(-100%)';
+            // Allow scrolling immediately
+            document.body.style.overflow = 'auto'; 
+                
+            // Scroll to the new hero content overlay section
+            const heroContentOverlaySection = document.getElementById('hero-content-overlay');
+            if (heroContentOverlaySection) {
+                heroContentOverlaySection.scrollIntoView({ behavior: 'smooth' });
             }
 
             // Show music toggle button and attempt to play music
             musicToggleButton.style.display = 'flex'; // Show the button
-            if (!isPlaying) { // Only play if not already playing
-                backgroundMusic.play().catch(error => {
-                    console.log("Autoplay was prevented:", error);
-                    // Inform the user they might need to click play manually
-                    alertMessage("Klik tombol play di pojok kanan bawah untuk memutar musik!");
-                });
+            backgroundMusic.play().then(() => {
+                // Music started playing successfully
                 playIcon.style.display = 'none';
                 pauseIcon.style.display = 'block';
-                    isPlaying = true;
+            }).catch(error => {
+                // Autoplay was prevented or other error occurred
+                console.log("Autoplay was prevented or failed on initial click:", error);
+                alertMessage("Musik tidak dapat diputar otomatis. Silakan klik tombol play di pojok kanan bawah.");
+                // Ensure icons reflect paused state if autoplay failed
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+            });
+            
+            startHeroBackgroundSlideshow(); // Start the new background slideshow
+            initializePhotoCarousel(); // Initialize the new photo carousel
+            initializeOurGallery(); // Initialize the new Our Gallery slideshow
+
+            // Set the map button href after content is visible
+            const eventLocationText = document.getElementById('event-location').innerText;
+            const openMapButton = document.getElementById('open-map-button');
+            if (openMapButton && eventLocationText) {
+                // This will attempt to open the native map app first, then fallback to browser
+                openMapButton.onclick = function(e) {
+                    e.preventDefault(); // Prevent default link behavior
+                    openMapsApp(eventLocationText);
+                };
             }
+
+            // After the cover screen animation, hide it completely
+            setTimeout(() => {
+                coverScreen.style.display = 'none';
+            }, 1000); // Match this duration with the CSS transition duration
         });
 
-        // Function to save event to calendar (.ics file)
+        // Function to save event to calendar
         function saveDateToCalendar() {
-            const eventTitle = "Resepsi Pernikahan Hendra & Maylin 💍"; // Updated event title
-            const eventLocation = document.getElementById('event-location').innerText;
-            const eventDateText = document.getElementById('event-date').innerText;
-            const eventTimeText = document.getElementById('event-time').innerText;
+            const eventDateText = document.getElementById('event-date').innerText; // e.g., "Kamis, 25 September 2025"
+            const eventTimeText = document.getElementById('event-time').innerText; // e.g., "11:00 - 22:00 WITA"
+            const eventLocationText = document.getElementById('event-location').innerText; // e.g., "Jl. Warapsari No.2, Gelgel, Kec. Klungkung, Kabupaten Klungkung, Bali"
 
-            // Parse date and time for .ics format
-            const dateParts = eventDateText.split(', ')[1].split(' '); // e.g., ["25", "September", "2025"]
-            const day = dateParts[0];
-            const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-            const month = String(monthNames.indexOf(dateParts[1]) + 1).padStart(2, '0');
-            const year = dateParts[2];
+            const eventTitle = "Resepsi Pernikahan Hendra & Maylin";
+            const eventDescription = "Merupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kami. Atas kehadiran dan doa restunya kami ucapkan terima kasih.";
 
-            const timeParts = eventTimeText.split(' - '); // e.g., ["11:00", "22:00", "WITA"]
-            const startTime = timeParts[0].replace(':', '') + '00'; // e.g., "110000"
-            const endTime = timeParts[1].replace(':', '').split(' ')[0] + '00'; // e.g., "220000"
+            // Parse date from "Kamis, 25 September 2025"
+            const dateParts = eventDateText.match(/(\d{1,2})\s(\w+)\s(\d{4})/);
+            let day, monthName, year;
+            if (dateParts) {
+                day = parseInt(dateParts[1]);
+                monthName = dateParts[2];
+                year = parseInt(dateParts[3]);
+            } else {
+                console.error("Could not parse event date:", eventDateText);
+                alertMessage("Gagal menyimpan tanggal. Format tanggal tidak dikenali.");
+                return;
+            }
 
-            const startDateTime = `${year}${month}${day}T${startTime}`;
-            const endDateTime = `${year}${month}${day}T${endTime}`;
+            const monthMap = {
+                "Januari": 0, "Februari": 1, "Maret": 2, "April": 3, "Mei": 4, "Juni": 5,
+                "Juli": 6, "Agustus": 7, "September": 8, "Oktober": 9, "November": 10, "Desember": 11
+            };
+            const month = monthMap[monthName];
 
-            const icsContent = [
-                'BEGIN:VCALENDAR',
-                'VERSION:2.0',
-                'PRODID:-//Hendra & Maylin Wedding Invitation//NONSGML v1.0//EN',
-                'BEGIN:VEVENT',
-                'UID:' + new Date().toISOString(),
-                'DTSTAMP:' + new Date().toISOString().replace(/[-:]|\.\d{3}/g, ''),
-                'DTSTART:' + startDateTime,
-                'DTEND:' + endDateTime,
-                'SUMMARY:' + eventTitle,
-                'LOCATION:' + eventLocation,
-                'END:VEVENT',
-                'END:VCALENDAR'
-            ].join('\n');
+            // Parse start and end times from "11:00 - 22:00 WITA"
+            const timeRangeParts = eventTimeText.split(' - ');
+            if (timeRangeParts.length < 2) {
+                console.error("Could not parse event time range:", eventTimeText);
+                alertMessage("Gagal menyimpan tanggal. Format waktu tidak dikenali.");
+                return;
+            }
 
-            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'Resepsi_Hendra_Maylin.ics';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            alertMessage("Tanggal berhasil disimpan ke kalender!");
+            const startTimeStr = timeRangeParts[0].trim();
+            const endTimeStr = timeRangeParts[1].split(' ')[0].trim(); // Get "22:00" from "22:00 WITA"
+
+            const startTimeParts = startTimeStr.split(':');
+            const startHour = parseInt(startTimeParts[0]);
+            const startMinute = parseInt(startTimeParts[1]);
+
+            const endTimeParts = endTimeStr.split(':');
+            const endHour = parseInt(endTimeParts[0]);
+            const endMinute = parseInt(endTimeParts[1]);
+
+            const startDate = new Date(year, month, day, startHour, startMinute);
+            const endDate = new Date(year, month, day, endHour, endMinute);
+
+            // Function to format date for Google Calendar URL (YYYYMMDDTHHMMSS)
+            const formatDateTime = (date) => {
+                const pad = (num) => String(num).padStart(2, '0');
+                return `${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}T${pad(date.getHours())}${pad(date.getMinutes())}${pad(date.getSeconds())}`;
+            };
+
+            const formattedStartDate = formatDateTime(startDate);
+            const formattedEndDate = formatDateTime(endDate);
+
+            const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${formattedStartDate}/${formattedEndDate}&details=${encodeURIComponent(eventDescription)}&location=${encodeURIComponent(eventLocationText)}&sf=true&output=xml`;
+
+            // Open the URL in a new tab/window
+            window.open(googleCalendarUrl, '_blank');
         }
 
-
-        // Slideshow functionality
-        let slideIndex = 1;
-        let slideshowTimer; // Variable to hold the timer for auto-slide
-        let slides = document.getElementsByClassName("mySlides");
-        let dots = document.getElementsByClassName("dot");
-        let slideshowWrapper = document.querySelector(".slides-wrapper"); // Get the wrapper
-
-        // Next/previous controls
-        function plusSlides(n) {
-            clearTimeout(slideshowTimer); // Clear existing timer
-            showSlides(slideIndex += n, n); // Pass 'n' as direction
+        // Function to open map app or browser
+        function openMapsApp(locationQuery) {
+            const encodedLocation = encodeURIComponent(locationQuery);
+            // Using Google Maps URL directly for broader compatibility
+            const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodedLocation}`;
+            window.open(mapUrl, '_blank');
         }
 
-        // Thumbnail image controls
-        function currentSlide(n) {
-            clearTimeout(slideshowTimer); // Clear existing timer
-            showSlides(slideIndex = n, 0); // Pass 0 for no specific direction
+        // Function to send RSVP
+        function sendRsvp() {
+            const nameInput = document.getElementById('rsvp-name');
+            const guestsInput = document.getElementById('rsvp-guests');
+            const name = nameInput.value.trim();
+            const guests = guestsInput.value;
+
+            if (!name) {
+                alertMessage("Nama lengkap tidak boleh kosong!");
+                return;
+            }
+            if (guests < 1) {
+                alertMessage("Jumlah tamu minimal 1.");
+                return;
+            }
+
+            // --- PENTING: Ganti URL Google Form ini dengan URL formulir Anda sendiri ---
+            // 1. Buat Google Form baru (misalnya, dengan pertanyaan "Nama Lengkap" dan "Jumlah Tamu").
+            // 2. Klik ikon tiga titik (More) di kanan atas formulir Anda, lalu pilih "Dapatkan link yang sudah diisi sebelumnya".
+            // 3. Isi formulir dengan data contoh (misalnya, "Nama Contoh" dan "1").
+            // 4. Klik "Dapatkan link".
+            // 5. Salin URL yang dihasilkan. URL ini akan memiliki format seperti:
+            //    https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform?usp=pp_url&entry.YOUR_NAME_FIELD_ID=Nama+Contoh&entry.YOUR_GUEST_COUNT_FIELD_ID=1
+            // 6. Ganti 'YOUR_FORM_ID', 'YOUR_NAME_FIELD_ID', dan 'YOUR_GUEST_COUNT_ID' di bawah ini
+            //    dengan ID yang sesuai dari URL yang Anda salin.
+            //    Contoh:
+            //    const formId = '1FAIpQLScf_YOUR_FORM_ID_HERE';
+            //    const nameEntryId = '123456789'; // Contoh ID entry untuk Nama Lengkap
+            //    const guestsEntryId = '987654321'; // Contoh ID entry untuk Jumlah Tamu
+
+            const formId = '1FAIpQLSfGWLeHQVOsCbZpwHqPx3zLBe5tvP2fnihyZ3jk9oBB7rnOjQ'; // Ganti dengan ID formulir Google Anda
+            const nameEntryId = '1590223346'; // Ganti dengan ID entry untuk nama lengkap Anda
+            const guestsEntryId = '882125067'; // Ganti dengan ID entry untuk jumlah tamu Anda
+
+            if (formId === 'YOUR_GOOGLE_FORM_ID_HERE' || nameEntryId === 'YOUR_NAME_ENTRY_ID' || guestsEntryId === 'YOUR_GUESTS_ENTRY_ID') {
+                alertMessage("Harap konfigurasikan Google Form Anda terlebih dahulu di kode JavaScript.");
+                console.error("Google Form IDs not configured. Please read the comments in sendRsvp() function.");
+                return;
+            }
+
+            const googleFormUrl = `https://docs.google.com/forms/d/e/${formId}/viewform?usp=pp_url&entry.${nameEntryId}=${encodeURIComponent(name)}&entry.${guestsEntryId}=${encodeURIComponent(guests)}`;
+
+            window.open(googleFormUrl, '_blank');
         }
 
-        function showSlides(n, direction = 0) { // Add direction parameter, default to 0
-            // Handle wrap-around for slide index
-            if (n > slides.length) {
-                slideIndex = 1;
-            }
-            if (n < 1) {
-                slideIndex = slides.length;
-            }
+        // Our Gallery Slideshow Logic
+        const mainGalleryPreview = document.getElementById('main-gallery-preview');
+        const thumbnailCarouselContainer = document.getElementById('thumbnail-carousel-container');
+        const thumbnailCarouselWrapper = document.getElementById('thumbnail-carousel-wrapper');
+        let galleryThumbnailItems = [];
+        let isGalleryDragging = false;
+        let galleryStartX;
+        let galleryScrollLeft;
+        let galleryAutoSlideInterval;
+        let galleryScrollTimeout;
+        let currentGalleryIndex = 0; // Index for the *original* photos
+        const numClones = 2; // Number of items to clone from each end for seamless looping
 
-            // Remove active class from all dots
-            for (let i = 0; i < dots.length; i++) {
-                dots[i].className = dots[i].className.replace(" active", "");
-            }
+        // Define your gallery images here
+        const galleryImagesData = [
+            { thumb: "./assets/Photo2.jpg", full: "./assets/Photo2.jpg" },
+            { thumb: "./assets/Photo3.jpg", full: "./assets/Photo3.jpg" },
+            { thumb: "./assets/Photo4.jpg", full: "./assets/Photo4.jpg" },
+            { thumb: "./assets/Photo5.jpg", full: "./assets/Photo5.jpg" },
+            { thumb: "./assets/Photo6.jpg", full: "./assets/Photo6.jpg" },
+            { thumb: "./assets/Photo7.jpg", full: "./assets/Photo7.jpg" },
+        ];
 
-            // Set the height of the slideshow container based on viewport height
-            const viewportHeight = window.innerHeight;
-            const containerHeight = viewportHeight * 0.7; // 70% of viewport height
-            slideshowWrapper.parentElement.style.height = `${containerHeight}px`;
+        function initializeOurGallery() {
+            // Clear existing content in the thumbnail wrapper
+            thumbnailCarouselWrapper.innerHTML = ''; 
 
-            let allSlides = document.getElementsByClassName("mySlides");
-
-            // Define base dimensions for active slide
-            const activeSlideRatio = 0.6; // 60% of container width for active
-            const inactiveScaleFactor1 = 0.8; // Scale for adjacent
-            const inactiveScaleFactor2 = 0.6; // Scale for further
-            const overlapPixels = 30; // How many pixels inactive slides overlap the active one
-
-            for (let i = 0; i < allSlides.length; i++) {
-                const slide = allSlides[i];
-                const distance = Math.abs(i - (slideIndex - 1));
-
-                // Reset individual slide styles before applying new ones
-                slide.classList.remove('active-slide');
-                slide.style.filter = 'none';
-                slide.style.opacity = '1';
-                slide.style.zIndex = '1';
-                slide.style.transform = 'none'; // Reset individual transform
-
-                let currentZIndex;
-                let currentFilter;
-                let currentOpacity;
-                let currentScale = 1;
-                let currentTranslateX = 0; // This is for individual slide's translateX
-
-                if (i === slideIndex - 1) {
-                    // Active slide
-                    currentZIndex = 10;
-                    currentFilter = 'none';
-                    currentOpacity = 1;
-                    currentScale = 1; // Explicitly 1 for active
-                    slide.style.width = `${slideshowWrapper.parentElement.offsetWidth * activeSlideRatio}px`;
-                    slide.style.height = `${containerHeight}px`; // Full height
-                } else if (distance === 1) {
-                    // Adjacent slides
-                    currentZIndex = 5;
-                    currentFilter = 'blur(2px)';
-                    currentOpacity = 0.7;
-                    currentScale = inactiveScaleFactor1;
-                    slide.style.width = `${slideshowWrapper.parentElement.offsetWidth * activeSlideRatio * inactiveScaleFactor1}px`; // Scale width
-                    slide.style.height = `${containerHeight * inactiveScaleFactor1}px`; // Scale height
-                    currentTranslateX = (i < slideIndex - 1) ? overlapPixels : -overlapPixels; // Overlap
-                } else {
-                    // Further slides
-                    currentZIndex = 2;
-                    currentFilter = 'blur(4px)';
-                    currentOpacity = 0.5;
-                    currentScale = inactiveScaleFactor2;
-                    slide.style.width = `${slideshowWrapper.parentElement.offsetWidth * activeSlideRatio * inactiveScaleFactor2}px`; // Scale width
-                    slide.style.height = `${containerHeight * inactiveScaleFactor2}px`; // Scale height
-                    currentTranslateX = (i < slideIndex - 1) ? (overlapPixels * 1.5) : -(overlapPixels * 1.5); // More overlap
-                }
-
-                slide.style.zIndex = currentZIndex;
-                slide.style.filter = currentFilter;
-                slide.style.opacity = currentOpacity;
-                // Apply scale and individual translateX
-                slide.style.transform = `scale(${currentScale}) translateX(${currentTranslateX}px)`;
+            // Prepend clones of the last few images for seamless looping
+            for (let i = 0; i < numClones; i++) {
+                const imgData = galleryImagesData[galleryImagesData.length - numClones + i];
+                const clonedThumb = createThumbnailElement(imgData, true); // true indicates a clone
+                thumbnailCarouselWrapper.appendChild(clonedThumb);
             }
 
-            // Add active class to the current dot
-            dots[slideIndex - 1].className += " active";
+            // Append original images
+            galleryImagesData.forEach(imgData => {
+                const originalThumb = createThumbnailElement(imgData, false); // false indicates original
+                thumbnailCarouselWrapper.appendChild(originalThumb);
+            });
 
-            // Force reflow here to ensure all individual slide transforms are applied
-            slideshowWrapper.offsetHeight; // Read a layout-triggering property
+            // Append clones of the first few images for seamless looping
+            for (let i = 0; i < numClones; i++) {
+                const imgData = galleryImagesData[i];
+                const clonedThumb = createThumbnailElement(imgData, true); // true indicates a clone
+                thumbnailCarouselWrapper.appendChild(clonedThumb);
+            }
 
-            // Calculate the current position of the active slide's center relative to the slideshowWrapper's left edge
-            const activeSlideElement = allSlides[slideIndex - 1]; // Re-get reference for clarity
-            const activeSlideLeft = activeSlideElement.offsetLeft;
-            const activeSlideWidth = activeSlideElement.offsetWidth; // Get the computed width after scaling
-            const activeSlideCenterInWrapper = activeSlideLeft + (activeSlideWidth / 2);
+            // Re-fetch all thumbnail items including clones after they are in the DOM
+            galleryThumbnailItems = Array.from(document.querySelectorAll('#thumbnail-carousel-wrapper .gallery-thumbnail-item'));
 
-            // Calculate the target center of the container
-            const containerWidth = slideshowWrapper.parentElement.offsetWidth;
-            const targetContainerCenter = containerWidth / 2;
+            if (galleryThumbnailItems.length === 0) return;
 
-            // The amount to shift the wrapper to bring the active slide's center to the container's center
-            let newTranslateXValue = targetContainerCenter - activeSlideCenterInWrapper;
+            // Set initial index to the first *original* photo (after prepended clones)
+            currentGalleryIndex = numClones;
+            setActiveGalleryThumbnail(currentGalleryIndex);
+            
+            // Initial scroll to the first original photo without smooth behavior
+            // This ensures the carousel starts at the correct visual position
+            setTimeout(() => {
+                const initialScrollPosition = galleryThumbnailItems[currentGalleryIndex].offsetLeft - (thumbnailCarouselContainer.offsetWidth / 2) + (thumbnailCarouselContainer.offsetWidth / 2);
+                thumbnailCarouselContainer.scrollTo({
+                    left: initialScrollPosition,
+                    behavior: 'auto' // Important: 'auto' for initial jump
+                });
+            }, 50); // Small delay to ensure layout is ready
 
-            // Apply specific offset adjustments based on slide index and direction
-            if (direction === -1) { // Logic specific to 'previous' button
-                if (slideIndex === 1) {
-                    newTranslateXValue -= 40; // Foto 1: Shift left by 40px from its original centered position
-                } else if (slideIndex === 2) {
-                    newTranslateXValue -= (activeSlideWidth / 3) + 20; // Foto 2: Shift left by 1/3 width + 20px
-                } else if (slideIndex >= 3 && slideIndex <= 5) { // Foto 3, 4, 5: Shift left by 1/3 width, then add 20px (less left shift)
-                    newTranslateXValue -= (activeSlideWidth / 3) + 20; // Shift left by 1/3 width + 20px
-                } else if (slideIndex === 6) { // Foto 6: Unchanged from 'next' behavior
-                    newTranslateXValue += (activeSlideWidth / 3);
-                }
-            } else { // Logic for 'next' button, dot click, or initial load/resize (direction === 1 or 0)
-                if (slideIndex === 1) {
-                    if (direction === 0) { // Only for initial load/resize of slide 1
-                        newTranslateXValue -= (activeSlideWidth / 3);
-                        newTranslateXValue += 150; // Add 150px shift to the right for initial load
-                    } else { // For next slide navigation
-                        newTranslateXValue -= (activeSlideWidth / 3);
+            // Add click listeners to thumbnails
+            galleryThumbnailItems.forEach((thumb, index) => {
+                thumb.addEventListener('click', () => {
+                    // When a thumbnail is clicked, we need to map it to the original index
+                    let originalIndex = index;
+                    if (index < numClones) { // Clicked a prepended clone
+                        originalIndex = galleryImagesData.length - numClones + index;
+                    } else if (index >= galleryImagesData.length + numClones) { // Clicked an appended clone
+                        originalIndex = index - galleryImagesData.length; // Corrected calculation for appended clones
+                    } else { // Clicked an original
+                        originalIndex = index - numClones;
                     }
-                } else if (slideIndex === 2) {
-                    newTranslateXValue += 30;
-                } else if (slideIndex >= 3 && slideIndex <= 6) {
-                    newTranslateXValue += (activeSlideWidth / 3);
-                }
-            }
 
-            slideshowWrapper.style.transform = `translateX(${newTranslateXValue}px)`;
+                    setActiveGalleryThumbnail(index); // Set active class on the clicked thumbnail (can be a clone)
+                    centerThumbnailInView(galleryThumbnailItems[index]); // Center the clicked thumbnail
+                    resetGalleryAutoSlide(); // Reset auto-slide on manual click
+                    mainGalleryPreview.src = galleryImagesData[originalIndex].full; // Update main image with original source
+                    mainGalleryPreview.alt = `Main Gallery Photo ${originalIndex + 1}`;
+                });
+            });
 
-            // Clear and set a new timer for the next slide
-            clearTimeout(slideshowTimer);
-            slideshowTimer = setTimeout(function() {
-                plusSlides(1); // Auto-advance to the next slide
-            }, 5000); // Change image every 5 seconds
+            // Add drag functionality for the thumbnail carousel (mouse and touch)
+            thumbnailCarouselContainer.addEventListener('mousedown', handleGalleryStart);
+            thumbnailCarouselContainer.addEventListener('mouseleave', handleGalleryEnd);
+            thumbnailCarouselContainer.addEventListener('mouseup', handleGalleryEnd);
+            thumbnailCarouselContainer.addEventListener('mousemove', handleGalleryMove);
+
+            thumbnailCarouselContainer.addEventListener('touchstart', handleGalleryStart);
+            thumbnailCarouselContainer.addEventListener('touchend', handleGalleryEnd);
+            thumbnailCarouselContainer.addEventListener('touchmove', handleGalleryMove);
+
+            // Add scroll event listener for auto-selecting center thumbnail
+            thumbnailCarouselContainer.addEventListener('scroll', () => {
+                clearTimeout(galleryScrollTimeout);
+                galleryScrollTimeout = setTimeout(handleGalleryScrollEnd, 150); // Debounce scroll end
+                resetGalleryAutoSlide(); // Reset auto-slide on manual scroll
+            });
+
+            // Add wheel event listener for mouse scroll
+            thumbnailCarouselContainer.addEventListener('wheel', handleGalleryWheel, { passive: false });
+
+            startGalleryAutoSlide(); // Start automatic slideshow
         }
 
-        // Add a resize event listener to re-calculate and re-center the slideshow
-        window.addEventListener('resize', () => {
-            showSlides(slideIndex, 0); // Recalculate and re-center on resize, no specific direction
-        });
+        // Function to create a thumbnail image element
+        function createThumbnailElement(imgData, isClone) {
+            const img = document.createElement('img');
+            img.src = imgData.thumb;
+            img.alt = "Gallery Thumbnail";
+            img.classList.add('gallery-thumbnail-item', 'cursor-pointer', 'rounded-lg', 'object-cover', 'shadow-md', 'transition-transform', 'duration-200', 'ease-in-out', 'transform', 'hover:scale-105');
+            img.dataset.fullSrc = imgData.full;
+            if (isClone) {
+                img.dataset.isClone = 'true';
+            }
+            return img;
+        }
+
+        // Function to set the active thumbnail and update the main photo
+        function setActiveGalleryThumbnail(index) {
+            let originalIndex = 0; 
+            
+            // Remove active class from all thumbnails
+            galleryThumbnailItems.forEach(thumb => {
+                thumb.classList.remove('active-thumbnail');
+            });
+
+            // Add active class to the specified thumbnail
+            if (galleryThumbnailItems[index]) {
+                galleryThumbnailItems[index].classList.add('active-thumbnail');
+                // Determine the original index for the main preview based on clones
+                if (index < numClones) {
+                    originalIndex = galleryImagesData.length - numClones + index;
+                } else if (index >= galleryImagesData.length + numClones) {
+                    originalIndex = index - galleryImagesData.length;
+                } else { // Clicked an original
+                    originalIndex = index - numClones;
+                }
+                mainGalleryPreview.src = galleryImagesData[originalIndex].full;
+                mainGalleryPreview.alt = `Main Gallery Photo ${originalIndex + 1}`;
+            }
+            currentGalleryIndex = index; // Update the internal current index
+        }
+
+        // Function to center the active thumbnail in view
+        function centerThumbnailInView(thumbElement) {
+            const containerWidth = thumbnailCarouselContainer.offsetWidth;
+            const thumbOffsetLeft = thumbElement.offsetLeft;
+            const thumbWidth = thumbElement.offsetWidth;
+
+            const targetScroll = thumbOffsetLeft - (containerWidth / 2) + (thumbWidth / 2);
+            thumbnailCarouselContainer.scrollTo({
+                left: targetScroll,
+                behavior: 'smooth'
+            });
+        }
+
+        // Handle start of drag/swipe for thumbnails
+        function handleGalleryStart(e) {
+            isGalleryDragging = true;
+            thumbnailCarouselContainer.classList.add('dragging');
+            galleryStartX = (e.pageX || e.touches[0].pageX) - thumbnailCarouselContainer.offsetLeft;
+            galleryScrollLeft = thumbnailCarouselContainer.scrollLeft;
+            e.preventDefault(); // Prevent default scroll behavior
+            clearInterval(galleryAutoSlideInterval); // Pause auto-slide during drag
+        }
+
+        // Handle end of drag/swipe for thumbnails
+        function handleGalleryEnd() {
+            if (!isGalleryDragging) return; // Ensure drag actually started
+            isGalleryDragging = false;
+            thumbnailCarouselContainer.classList.remove('dragging');
+            handleGalleryScrollEnd(); // Snap to nearest center thumbnail
+            resetGalleryAutoSlide(); // Resume auto-slide
+        }
+
+        // Handle move during drag/swipe for thumbnails
+        function handleGalleryMove(e) {
+            if (!isGalleryDragging) return;
+            e.preventDefault(); // Prevent default scroll behavior
+            const x = (e.pageX || e.touches[0].pageX) - thumbnailCarouselContainer.offsetLeft;
+            const walk = (x - galleryStartX) * 1.5; // Adjust sensitivity
+            thumbnailCarouselContainer.scrollLeft = galleryScrollLeft - walk;
+        }
+
+        // Handle mouse wheel scroll for thumbnails
+        function handleGalleryWheel(e) {
+            e.preventDefault(); // Prevent default vertical scroll
+            const scrollAmount = e.deltaY || e.deltaX; // Use deltaY for vertical scroll, deltaX for horizontal
+            thumbnailCarouselContainer.scrollLeft += scrollAmount;
+
+            clearTimeout(galleryScrollTimeout);
+            galleryScrollTimeout = setTimeout(handleGalleryScrollEnd, 150); // Debounce scroll end
+            resetGalleryAutoSlide(); // Reset auto-slide on manual scroll
+        }
+
+        // Handle scroll end event for thumbnails (snapping and looping)
+        function handleGalleryScrollEnd() {
+            const containerCenter = thumbnailCarouselContainer.scrollLeft + (thumbnailCarouselContainer.offsetWidth / 2);
+            let closestThumbIndex = 0;
+            let minDistance = Infinity;
+
+            // Find the thumbnail closest to the center of the container
+            galleryThumbnailItems.forEach((thumb, index) => {
+                const thumbCenter = thumb.offsetLeft + (thumb.offsetWidth / 2);
+                const distance = Math.abs(thumbCenter - containerCenter);
+
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestThumbIndex = index;
+                }
+            });
+
+            setActiveGalleryThumbnail(closestThumbIndex); // Highlight the closest thumbnail
+            centerThumbnailInView(galleryThumbnailItems[closestThumbIndex]); // Center it in view
+
+            // Handle seamless looping jump after smooth scroll settles
+            // If we scrolled into prepended clones, jump to the corresponding original
+            if (currentGalleryIndex < numClones) { 
+                setTimeout(() => {
+                    thumbnailCarouselContainer.style.scrollBehavior = 'auto'; // Disable smooth scroll for instant jump
+                    const targetIndex = galleryImagesData.length + currentGalleryIndex;
+                    const targetScroll = galleryThumbnailItems[targetIndex].offsetLeft - (thumbnailCarouselContainer.offsetWidth / 2) + (thumbnailCarouselContainer.offsetWidth / 2);
+                    thumbnailCarouselContainer.scrollLeft = targetScroll;
+                    currentGalleryIndex = targetIndex; // Update current index to the corresponding original
+                    thumbnailCarouselContainer.style.scrollBehavior = 'smooth'; // Re-enable smooth scroll
+                }, 150); // Short delay after smooth scroll finishes
+            } 
+            // If we scrolled into appended clones, jump to the corresponding original
+            else if (currentGalleryIndex >= galleryImagesData.length + numClones) { 
+                setTimeout(() => {
+                    thumbnailCarouselContainer.style.scrollBehavior = 'auto'; // Disable smooth scroll for instant jump
+                    const targetIndex = currentGalleryIndex - galleryImagesData.length;
+                    const targetScroll = galleryThumbnailItems[targetIndex].offsetLeft - (thumbnailCarouselContainer.offsetWidth / 2) + (thumbnailCarouselContainer.offsetWidth / 2);
+                    thumbnailCarouselContainer.scrollLeft = targetScroll;
+                    currentGalleryIndex = targetIndex; // Update current index to the corresponding original
+                    thumbnailCarouselContainer.style.scrollBehavior = 'smooth'; // Re-enable smooth scroll
+                }, 150); // Short delay after smooth scroll finishes
+            }
+        }
+
+        // Start automatic slideshow for gallery
+        function startGalleryAutoSlide() {
+            clearInterval(galleryAutoSlideInterval); // Clear any existing interval
+            galleryAutoSlideInterval = setInterval(nextGallerySlide, 5000); // Slide every 5 seconds
+        }
+
+        // Reset automatic slideshow timer
+        function resetGalleryAutoSlide() {
+            clearInterval(galleryAutoSlideInterval);
+            startGalleryAutoSlide();
+        }
+
+        // Move to the next slide in the gallery
+        function nextGallerySlide() {
+            let nextIndex = currentGalleryIndex + 1;
+            // If we are about to go into the appended clones, let it scroll there first
+            if (nextIndex < galleryThumbnailItems.length) {
+                setActiveGalleryThumbnail(nextIndex);
+                centerThumbnailInView(galleryThumbnailItems[nextIndex]);
+            } else {
+                // If we are at the very end (last appended clone), jump back to the first original
+                // This jump should be instant, then resume auto-slide
+                thumbnailCarouselContainer.style.scrollBehavior = 'auto'; // Disable smooth scroll for instant jump
+                currentGalleryIndex = numClones; // Reset index to the first original photo
+                const targetScroll = galleryThumbnailItems[currentGalleryIndex].offsetLeft - (thumbnailCarouselContainer.offsetWidth / 2) + (thumbnailCarouselContainer.offsetWidth / 2);
+                thumbnailCarouselContainer.scrollLeft = targetScroll;
+                thumbnailCarouselContainer.style.scrollBehavior = 'smooth'; // Re-enable smooth scroll
+                setActiveGalleryThumbnail(currentGalleryIndex); // Set active for the new position
+            }
+        }
+
+        // Global Firebase variables for blessings
+        let app;
+        let db;
+        let auth;
+        let userId;
+        let blessingsCollection;
+
+        // Initialize Firebase and Auth
+        async function initializeFirebase() {
+            try {
+                const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+                app = firebase.initializeApp(firebaseConfig);
+                db = firebase.firestore();
+                auth = firebase.auth();
+
+                if (typeof __initial_auth_token !== 'undefined') {
+                    await auth.signInWithCustomToken(__initial_auth_token);
+                } else {
+                    await auth.signInAnonymously();
+                }
+
+                auth.onAuthStateChanged(user => {
+                    if (user) {
+                        userId = user.uid;
+                    } else {
+                        userId = crypto.randomUUID(); // Fallback for unauthenticated users
+                    }
+                    console.log("Firebase User ID:", userId);
+                    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                    blessingsCollection = db.collection(`artifacts/${appId}/public/data/blessings`);
+                    displayBlessings(); // Start listening for blessings after auth
+                    document.getElementById('user-id-display').innerText = `User ID: ${userId}`; // Display user ID
+                });
+            } catch (error) {
+                console.error("Error initializing Firebase:", error);
+            }
+        }
+
+        // Send Blessing Function
+        async function sendBlessing() {
+            const nameInput = document.getElementById('blessing-name');
+            const messageInput = document.getElementById('blessing-message');
+            const name = nameInput.value.trim();
+            const message = messageInput.value.trim();
+
+            if (!name || !message) {
+                alertMessage("Nama dan ucapan tidak boleh kosong!");
+                return;
+            }
+
+            try {
+                await blessingsCollection.add({
+                    name: name,
+                    message: message,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    userId: userId // Store the user ID with the blessing
+                });
+                nameInput.value = '';
+                messageInput.value = '';
+                alertMessage("Ucapan doa restu berhasil dikirim!");
+            } catch (error) {
+                console.error("Error adding blessing:", error);
+                alertMessage("Gagal mengirim ucapan doa restu. Coba lagi nanti.");
+            }
+        }
+
+        // Display Blessings Function
+        function displayBlessings() {
+            const blessingsListDiv = document.getElementById('blessings-list');
+            if (!blessingsCollection) {
+                console.warn("Blessings collection not initialized yet.");
+                return;
+            }
+
+            blessingsCollection.onSnapshot(snapshot => {
+                blessingsListDiv.innerHTML = ''; // Clear current list
+                const blessings = [];
+                snapshot.forEach(doc => {
+                    blessings.push({ id: doc.id, ...doc.data() });
+                });
+
+                // Sort in memory by timestamp (descending)
+                blessings.sort((a, b) => {
+                    const timeA = a.timestamp ? (a.timestamp.toDate ? a.timestamp.toDate().getTime() : a.timestamp.getTime()) : 0;
+                    const timeB = b.timestamp ? (b.timestamp.toDate ? b.timestamp.toDate().getTime() : b.timestamp.getTime()) : 0;
+                    return timeB - timeA;
+                });
+
+                blessings.forEach(blessing => {
+                    const blessingCard = document.createElement('div');
+                    blessingCard.className = 'bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200';
+                    
+                    const nameElement = document.createElement('p');
+                    nameElement.className = 'font-semibold text-lg text-gray-800';
+                    nameElement.innerText = blessing.name;
+
+                    const messageElement = document.createElement('p');
+                    messageElement.className = 'text-gray-700 mt-2';
+                    messageElement.innerText = blessing.message;
+
+                    const timestampElement = document.createElement('p');
+                    timestampElement.className = 'text-sm text-gray-500 mt-2 italic';
+                    if (blessing.timestamp && blessing.timestamp.toDate) { // Check if toDate() method exists
+                        const date = blessing.timestamp.toDate();
+                        timestampElement.innerText = date.toLocaleString('id-ID', {
+                            year: 'numeric', month: 'long', day: 'numeric',
+                            hour: '2-digit', minute: '2-digit'
+                        });
+                    } else {
+                        timestampElement.innerText = 'Waktu tidak tersedia';
+                    }
+
+                    blessingCard.appendChild(nameElement);
+                    blessingCard.appendChild(messageElement);
+                    blessingCard.appendChild(timestampElement);
+                    blessingsListDiv.appendChild(blessingCard);
+                });
+            }, error => {
+                console.error("Error listening to blessings:", error);
+                alertMessage("Gagal memuat ucapan doa restu.");
+            });
+        }
+
+        // Call initializeFirebase when the DOM is ready
+        document.addEventListener('DOMContentLoaded', initializeFirebase);
     </script>
 </body>
 </html>
