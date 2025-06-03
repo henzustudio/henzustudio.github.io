@@ -94,18 +94,18 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            width: 80px; /* Default width for boxes */
-            height: 80px; /* Default height for boxes */
+            width: 60px; /* Further adjusted for smaller screens */
+            height: 60px; /* Further adjusted for smaller screens */
             padding: 0.5rem; /* Padding inside the box */
             text-align: center;
         }
         .countdown-box .digit {
-            font-size: 2.25rem; /* Larger font for numbers */
+            font-size: 1.75rem; /* Further adjusted for smaller screens */
             line-height: 1; /* Remove extra line height */
             margin-bottom: 0.25rem; /* Small margin below number */
         }
         .countdown-box .label {
-            font-size: 0.875rem; /* Smaller font for labels */
+            font-size: 0.7rem; /* Further adjusted for smaller screens */
             line-height: 1; /* Remove extra line height */
             color: rgba(255, 255, 255, 0.8); /* Slightly less white for labels */
         }
@@ -261,6 +261,13 @@
             .circular-photo {
                 width: 80px; /* Even smaller for mobile phones */
                 height: 80px;
+            }
+        }
+        /* Added new media query for very narrow screens */
+        @media (max-width: 400px) {
+            .circular-photo {
+                width: 60px; /* Even smaller for very narrow mobile phones */
+                height: 60px;
             }
         }
 
@@ -420,6 +427,71 @@
             font-family: 'Cormorant Garamond', serif;
             font-weight: 700; /* Ensure it's bold */
         }
+
+        /* Responsive adjustments for Gift boxes */
+        .gift-box {
+            padding: 1.5rem; /* Default padding */
+            font-size: 0.9rem; /* Default font size for content */
+        }
+        .gift-box .font-semibold {
+            font-size: 1.125rem; /* Default for h3/strong */
+        }
+        .gift-box .text-lg {
+            font-size: 0.95rem; /* Default for p */
+        }
+        .gift-box .text-xl {
+            font-size: 1.05rem; /* Default for account numbers */
+        }
+        .gift-box .btn-primary {
+            padding: 0.6rem 1.2rem; /* Smaller button padding */
+            font-size: 0.85rem; /* Smaller button font size */
+        }
+
+        @media (min-width: 640px) { /* sm breakpoint */
+            .gift-box {
+                padding: 1.5rem;
+                font-size: 1rem;
+            }
+            .gift-box .font-semibold {
+                font-size: 1.25rem;
+            }
+            .gift-box .text-lg {
+                font-size: 1rem;
+            }
+            .gift-box .text-xl {
+                font-size: 1.125rem;
+            }
+            .gift-box .btn-primary {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (min-width: 768px) { /* md breakpoint */
+            .gift-box {
+                padding: 2rem;
+                font-size: 1rem;
+            }
+            .gift-box .font-semibold {
+                font-size: 1.25rem;
+            }
+            .gift-box .text-lg {
+                font-size: 1.125rem;
+            }
+            .gift-box .text-xl {
+                font-size: 1.25rem;
+            }
+            .gift-box .btn-primary {
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* Smaller alert message styles */
+        .alert-message {
+            font-size: 0.9rem; /* Smaller font size */
+            padding: 0.5rem 1rem; /* Smaller padding */
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -440,9 +512,9 @@
         <section id="hero-content-overlay" class="relative">
             <div class="relative z-20 p-6 max-w-4xl mx-auto flex flex-col items-center w-full h-full justify-end">
                 <p class="text-lg md:text-xl mb-0 tracking-wider text-white">Pawiwahan</p>
-                <h1 class="text-4xl md:text-6xl font-bold mb-2 leading-tight text-white">Hendra & Maylin</h1>
+                <h1 class="text-4xl md:text-6xl font-bold mb-2 leading-tight text-white text-center">Hendra & Maylin</h1>
                 
-                <div id="hero-countdown-container" class="flex justify-center space-x-4 mt-2">
+                <div id="hero-countdown-container" class="flex justify-center space-x-2 mt-2 mb-6 max-w-sm mx-auto">
                     <div class="countdown-box">
                         <span id="hero-days" class="digit">00</span>
                         <span class="label">Hari</span>
@@ -597,7 +669,13 @@
                     </div>
                     <div class="text-left">
                         <label for="rsvp-guests" class="block text-lg font-medium text-gray-700 mb-2">Jumlah Tamu (termasuk Anda):</label>
-                        <input type="number" id="rsvp-guests" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-lg" value="1" min="1" max="5" required>
+                        <select id="rsvp-guests" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-lg">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
                     </div>
                 </div>
                 <button onclick="sendRsvp()" class="px-8 py-4 rounded-full btn-primary text-xl font-semibold">Kirim</button>
@@ -631,20 +709,20 @@
                 </p>
                 <div class="space-y-6 mb-8">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="text-left p-6 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="text-left bg-gray-50 rounded-lg border border-gray-200 gift-box">
                             <p class="font-semibold text-xl text-gray-800">Bank Mandiri</p>
                             <p class="text-lg">No. Rekening: <span id="bank-account" class="font-mono text-gray-700 text-xl">1234567890</span></p>
                             <p class="text-lg">Atas Nama: Hendra</p>
                             <button onclick="copyToClipboard('bank-account')" class="mt-4 px-6 py-3 rounded-full btn-primary text-md font-medium">Salin No. Rekening</button>
                         </div>
-                        <div class="text-left p-6 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="text-left bg-gray-50 rounded-lg border border-gray-200 gift-box">
                             <p class="font-semibold text-xl text-gray-800">Bank BCA</p>
                             <p class="text-lg">No. Rekening: <span id="bank-account-2" class="font-mono text-gray-700 text-xl">081234567890</span></p>
                             <p class="text-lg">Atas Nama: Maylin</p>
                             <button onclick="copyToClipboard('bank-account-2')" class="mt-4 px-6 py-3 rounded-full btn-primary text-md font-medium">Salin No. Rekening</button>
                         </div>
                     </div>
-                    <div class="text-left p-6 bg-gray-50 rounded-lg border border-gray-200">
+                    <div class="text-left bg-gray-50 rounded-lg border border-gray-200 gift-box">
                         <p class="font-semibold text-xl text-gray-800">Pengiriman Hadiah Fisik</p>
                         <p class="text-lg">Maylin Franza</p>
                         <p class="text-lg"><span id="alamat-hadiah" class="font-mono text-gray-700 text-xl">Jl. Warapsari No.2, Gelgel, Kec. Klungkung, Kabupaten Klungkung, Bali</span></p>
@@ -762,18 +840,14 @@
             textArea.select();
             document.execCommand('copy');
             document.body.removeChild(textArea);
-            // Check the elementId to provide specific alert messages
-            if (elementId === 'alamat-hadiah') {
-                alertMessage("Alamat berhasil disalin!");
-            } else {
-                alertMessage("Nomor berhasil disalin!");
-            }
+            // Removed alertMessage call
         }
 
         // Custom Alert Message
         function alertMessage(message) {
             const alertBox = document.createElement('div');
-            alertBox.className = 'fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-7 py-4 rounded-full shadow-xl text-lg opacity-0 transition-opacity duration-300 z-50';
+            // Added 'alert-message' class for styling
+            alertBox.className = 'fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white rounded-full shadow-xl opacity-0 transition-opacity duration-300 z-50 alert-message';
             alertBox.innerText = message;
             document.body.appendChild(alertBox);
 
@@ -1171,9 +1245,9 @@
         // Function to send RSVP
         function sendRsvp() {
             const nameInput = document.getElementById('rsvp-name');
-            const guestsInput = document.getElementById('rsvp-guests');
+            const guestsSelect = document.getElementById('rsvp-guests'); // Changed to select
             const name = nameInput.value.trim();
-            const guests = guestsInput.value;
+            const guests = guestsSelect.value; // Get value from select
 
             if (!name) {
                 alertMessage("Nama lengkap tidak boleh kosong!");
