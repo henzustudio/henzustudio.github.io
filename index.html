@@ -15,33 +15,33 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #F8F4E3; /* Cream lembut */
-            color: #4A4A4A; /* Abu-abu gelap */
-            overflow-x: hidden; /* Prevent horizontal scroll */
+            /* Latar Belakang Website menjadi gradasi abu-abu gelap */
+            background: linear-gradient(to bottom, #4A4A4A, #333333);
+            color: #4A4A4A;
+            overflow-x: hidden;
         }
         h1, h2, h3 {
             font-family: 'Playfair Display', serif;
         }
-        /* Adjusted for cover screen to align content to bottom */
         .cover-header-bg {
             background-image: url('./assets/Photo1.jpg');
             background-size: cover;
-            background-position: 50% 50%; /* Center background vertically */
-            background-attachment: fixed; /* Parallax effect */
-            display: flex; /* Use flexbox for content alignment */
-            flex-direction: column; /* Stack content vertically */
-            justify-content: flex-end; /* Align content to the bottom */
-            align-items: center; /* Center content horizontally */
-            padding-bottom: 2.5rem; /* pb-10 in Tailwind is 2.5rem */
+            background-position: 50% 50%;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding-bottom: 2.5rem;
         }
         .header-bg {
             background-image: url('./assets/Photo2.jpg');
             background-size: cover;
             background-position: 50% 30%;
-            background-attachment: fixed; /* Parallax effect */
+            background-attachment: fixed;
         }
         .section-title {
-            color: #8B4513; /* Coklat Tua / Sepia */
+            color: white;
             font-weight: 700;
             position: relative;
             display: inline-block;
@@ -55,150 +55,191 @@
             transform: translateX(-50%);
             width: 80px;
             height: 2px;
-            background-color: #D4AF37; /* Gold */
+            background-color: white;
         }
         .btn-primary {
-            background-color: #D4AF37; /* Gold */
+            background-color: #D4AF37;
             color: white;
             transition: background-color 0.3s ease, transform 0.3s ease;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .btn-primary:hover {
-            background-color: #B8860B; /* Darker Gold */
+            background-color: #B8860B;
             transform: translateY(-2px);
         }
         .card {
-            background-color: white;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.08),
+                inset 3px 3px 6px rgba(255, 255, 255, 0.4),
+                inset -3px -3px 6px rgba(0, 0, 0, 0.2);
             border-radius: 1rem;
             overflow: hidden;
             transition: transform 0.3s ease;
+            color: #333333;
         }
         .card:hover {
             transform: translateY(-5px);
         }
         .text-accent {
-            color: #D4AF37; /* Gold */
+            color: rgba(255, 255, 255, 0.8);
         }
-        /* Styling for the countdown boxes including labels */
         .countdown-box {
-            /* Changed background to dark, transparent, and added blur */
-            background-color: rgba(26, 32, 44, 0.5); /* bg-gray-900 with 50% opacity */
-            backdrop-filter: blur(4px); /* backdrop-blur-sm */
-            -webkit-backdrop-filter: blur(4px); /* For Safari */
+            background-color: rgba(220, 220, 220, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow:
+                0 4px 6px rgba(0, 0, 0, 0.1),
+                inset 3px 3px 6px rgba(255, 255, 255, 0.4),
+                inset -3px -3px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease-in-out;
+            outline: none;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
             color: white;
-            font-weight: 700;
-            border-radius: 0.75rem; /* Rounded corners */
+            cursor: default;
+
+            border-radius: 2rem;
             display: flex;
-            flex-direction: column; /* Stack number and label vertically */
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            width: 60px; /* Further adjusted for smaller screens */
-            height: 60px; /* Further adjusted for smaller screens */
-            padding: 0.5rem; /* Padding inside the box */
+            /* Countdown box memiliki lebar yang sama dan tidak berubah */
+            width: 100px;
+            height: 100px;
+            padding: 0.5rem;
             text-align: center;
         }
         .countdown-box .digit {
-            font-size: 1.75rem; /* Further adjusted for smaller screens */
-            line-height: 1; /* Remove extra line height */
-            margin-bottom: 0.25rem; /* Small margin below number */
+            font-size: 2.75rem; /* Menyesuaikan ukuran font */
+            line-height: 1;
+            margin-bottom: 0.25rem;
+            color: white;
         }
         .countdown-box .label {
-            font-size: 0.7rem; /* Further adjusted for smaller screens */
-            line-height: 1; /* Remove extra line height */
-            color: rgba(255, 255, 255, 0.8); /* Slightly less white for labels */
+            font-size: 1rem; /* Menyesuaikan ukuran font */
+            line-height: 1;
+            color: rgba(255, 255, 255, 0.8);
         }
 
-        /* Responsive adjustments for countdown boxes */
-        @media (min-width: 640px) { /* sm breakpoint */
-            .countdown-box {
-                width: 90px;
-                height: 90px;
-            }
-            .countdown-box .digit {
-                font-size: 2.75rem;
-            }
-            .countdown-box .label {
-                font-size: 1rem;
-            }
-        }
-        @media (min-width: 768px) { /* md breakpoint */
-            .countdown-box {
-                width: 100px;
-                height: 100px;
-            }
-            .countdown-box .digit {
-                font-size: 3.25rem;
-            }
-            .countdown-box .label {
-                font-size: 1.125rem;
-            }
-        }
-        @media (min-width: 1024px) { /* lg breakpoint */
-            .countdown-box {
-                width: 110px;
-                height: 110px;
-            }
-            .countdown-box .digit {
-                font-size: 3.75rem;
-            }
-            .countdown-box .label {
-                font-size: 1.25rem;
-            }
-        }
-
+        /* Menghapus media queries untuk countdown-box agar lebarnya tetap */
+        /* @media (min-width: 640px) { ... } */
+        /* @media (min-width: 768px) { ... } */
+        /* @media (min-width: 1024px) { ... } */
 
         .event-card {
-            border: 1px solid #D4AF37; /* Gold border */
-            background-color: #FFFFFF;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             padding: 2rem;
             border-radius: 1rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            box-shadow:
+                0 5px 15px rgba(0, 0, 0, 0.05),
+                inset 3px 3px 6px rgba(255, 255, 255, 0.4),
+                inset -3px -3px 6px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease;
+            color: #333333;
         }
         .event-card:hover {
             transform: translateY(-5px);
         }
-        /* Style for Balinese script */
         .balinese-script {
-            font-family: 'Noto Sans Balinese', sans-serif; /* Fallback to sans-serif */
-            font-size: 2.5rem; /* Adjust as needed */
-            color: #8B4513; /* Match section title color */
+            font-family: 'Noto Sans Balinese', sans-serif;
+            font-size: 2.5rem;
+            color: white;
             margin-bottom: 1rem;
         }
-        /* Floating Play/Pause Button */
         .music-toggle-button {
             position: fixed;
             bottom: 1.5rem;
             right: 1.5rem;
-            background-color: #D4AF37; /* Gold */
-            color: white;
             border-radius: 50%;
             width: 60px;
             height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
             z-index: 1000;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            display: none; /* Hidden by default */
-        }
-        .music-toggle-button:hover {
-            background-color: #B8860B; /* Darker Gold */
-            transform: scale(1.05);
+            display: none;
         }
         .music-toggle-button svg {
             width: 24px;
             height: 24px;
             fill: currentColor;
         }
+
+        .glass-button-style {
+            background-color: rgba(220, 220, 220, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow:
+                0 4px 6px rgba(0, 0, 0, 0.1),
+                inset 3px 3px 6px rgba(255, 255, 255, 0.4),
+                inset -3px -3px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease-in-out;
+            outline: none;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            color: white; /* Mengubah warna teks menjadi putih */
+            cursor: pointer;
+        }
+        .glass-button-style:hover {
+            background-color: rgba(220, 220, 220, 0.4);
+            box-shadow:
+                0 6px 10px rgba(0, 0, 0, 0.15),
+                inset 2px 2px 5px rgba(255, 255, 255, 0.5),
+                inset -2px -2px 5px rgba(0, 0, 0, 0.25);
+            transform: translateY(-2px);
+        }
+        .glass-button-style:active {
+            background-color: rgba(220, 220, 220, 0.25);
+            box-shadow:
+                0 2px 4px rgba(0, 0, 0, 0.1),
+                inset 1px 1px 3px rgba(255, 255, 255, 0.3),
+                inset -1px -1px 3px rgba(0, 0, 0, 0.15);
+            transform: translateY(0);
+        }
+
+        .gold-accent-button {
+            background-color: rgba(212, 175, 55, 0.5);
+            color: white;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow:
+                0 4px 6px rgba(0, 0, 0, 0.1),
+                inset 3px 3px 6px rgba(255, 255, 255, 0.4),
+                inset -3px -3px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease-in-out;
+            outline: none;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+        .gold-accent-button:hover {
+            background-color: rgba(184, 134, 11, 0.6);
+            box-shadow:
+                0 6px 10px rgba(0, 0, 0, 0.15),
+                inset 2px 2px 5px rgba(255, 255, 255, 0.5),
+                inset -2px -2px 5px rgba(0, 0, 0, 0.25);
+            transform: translateY(-2px);
+        }
+        .gold-accent-button:active {
+            background-color: rgba(160, 120, 10, 0.7);
+            box-shadow:
+                0 2px 4px rgba(0, 0, 0, 0.1),
+                inset 1px 1px 3px rgba(255, 255, 255, 0.3),
+                inset -1px -1px 3px rgba(0, 0, 0, 0.15);
+            transform: translateY(0);
+        }
+
         .map-container {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+            padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
             border-radius: 0.5rem;
@@ -213,81 +254,73 @@
             border: 0;
         }
 
-        /* New styles for Photo Carousel (circular photos) */
         .circular-photo {
             border-radius: 50%;
             object-fit: cover;
-            width: 150px; /* Default size */
-            height: 150px; /* Default size */
-            /* Removed box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */ /* Shadow removed here */
+            width: 150px;
+            height: 150px;
+            /* Mengubah outline emas menjadi putih */
+            border: 4px solid white;
         }
 
         .photo-carousel-container {
             position: relative;
             width: 100%;
-            max-width: 1152px; /* Increased max-width to accommodate 4 photos better */
+            max-width: 1152px;
             margin: 0 auto;
-            overflow: hidden; /* Crucial for clipping photos outside view */
-            cursor: grab; /* Indicate draggable */
+            overflow: hidden;
+            cursor: grab;
         }
         .photo-carousel-container.dragging {
-            cursor: grabbing; /* Indicate dragging */
+            cursor: grabbing;
         }
 
         .photo-carousel-wrapper {
             display: flex;
-            gap: 1rem; /* Added gap between items */
-            /* Transition will be managed by JS for drag/snap */
-            transition: transform 0.8s ease-in-out; /* Default transition for auto-slide and snap */
+            gap: 1rem;
+            transition: transform 0.8s ease-in-out;
         }
 
         .photo-carousel-item {
-            flex-shrink: 0; /* Prevent items from shrinking */
-            /* Calculate width to fit 4 items with 3 gaps of 1rem (16px) across all screen sizes */
+            flex-shrink: 0;
             width: calc((100% - 3 * 1rem) / 4);
             display: flex;
             justify-content: center;
             align-items: center;
         }
-        /* Removed media queries for .photo-carousel-item to force 4 photos on all sizes */
-        /* Adjusted circular-photo size for smaller screens to ensure visibility */
         @media (max-width: 768px) {
             .circular-photo {
-                width: 100px; /* Smaller size for tablets */
+                width: 100px;
                 height: 100px;
             }
         }
         @media (max-width: 480px) {
             .circular-photo {
-                width: 80px; /* Even smaller for mobile phones */
+                width: 80px;
                 height: 80px;
             }
         }
-        /* Added new media query for very narrow screens */
         @media (max-width: 400px) {
             .circular-photo {
-                width: 60px; /* Even smaller for very narrow mobile phones */
+                width: 60px;
                 height: 60px;
             }
         }
 
-        /* Styles for Our Gallery slideshow */
         #thumbnail-carousel-container {
-            -ms-overflow-style: none; /* IE and Edge */
-            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
         #thumbnail-carousel-container::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
+            display: none;
         }
 
-        /* CSS untuk frame foto utama galeri */
-        #our-gallery .max-w-4xl.mx-auto { /* Menargetkan div spesifik */
+        #our-gallery .max-w-4xl.mx-auto {
             position: relative;
             width: 100%;
-            padding-bottom: 75%; /* Rasio aspek 4:3 (tinggi 75% dari lebar) */
-            height: 0; /* Penting agar padding-bottom berfungsi untuk rasio aspek */
+            padding-bottom: 75%;
+            height: 0;
             overflow: hidden;
-            /* border-radius dan shadow yang sudah ada akan diterapkan */
         }
 
         #main-gallery-preview {
@@ -296,19 +329,18 @@
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Memastikan gambar menutupi area, memotong jika perlu */
-            /* Kelas rounded-lg yang sudah ada akan diterapkan */
+            object-fit: cover;
         }
 
         .gallery-thumbnail-item {
-            position: relative; /* Diperlukan untuk penentuan posisi pseudo-elemen */
-            width: 150px; /* Lebar tetap untuk thumbnail */
-            height: 112.5px; /* Tinggi 4:3 yang dihitung berdasarkan lebar 150px */
-            object-fit: cover; /* Memastikan gambar menutupi area, memotong jika perlu */
-            border: 3px solid transparent; /* Border transparan secara default */
+            position: relative;
+            width: 150px;
+            height: 112.5px;
+            object-fit: cover;
+            border: 3px solid transparent;
             transition: border-color 0.3s ease, transform 0.3s ease;
-            border-radius: 0.5rem; /* Menambahkan sudut membulat ke thumbnail */
-            cursor: pointer; /* Menunjukkan dapat diklik */
+            border-radius: 0.5rem;
+            cursor: pointer;
         }
         .gallery-thumbnail-item::before {
             content: '';
@@ -317,137 +349,166 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.4); /* Overlay gelap, opasitas 40% */
-            border-radius: 0.5rem; /* Sesuai dengan border-radius thumbnail */
-            transition: opacity 0.3s ease; /* Transisi halus untuk overlay */
-            z-index: 1; /* Memastikan berada di atas gambar tetapi di bawah border */
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: 0.5rem;
+            transition: opacity 0.3s ease;
+            z-index: 1;
         }
         .gallery-thumbnail-item.active-thumbnail {
-            border-color: #D4AF37; /* Border emas untuk thumbnail aktif */
-            transform: scale(1.08); /* Sedikit memperbesar thumbnail aktif */
+            /* Mengubah outline emas menjadi putih */
+            border-color: white;
+            transform: scale(1.08);
         }
         .gallery-thumbnail-item.active-thumbnail::before {
-            opacity: 0; /* Sembunyikan overlay untuk thumbnail aktif */
+            opacity: 0;
         }
 
-        /* Style for guest name input with blur */
         #guest-name-input {
-            background-color: rgba(255, 255, 255, 0.2); /* Slightly transparent white */
-            backdrop-filter: blur(8px); /* Apply blur */
-            -webkit-backdrop-filter: blur(8px); /* For Safari */
-            border: 1px solid rgba(255, 255, 255, 0.3); /* Lighter border for blur effect */
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+        #guest-name-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
         }
 
-        /* Styles for hero-after-cover background slideshow */
+        /* Styles for hero section and fixed background */
+        #hero-content-overlay {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 3rem;
+            z-index: 1;
+            background: transparent;
+        }
+
+        /* Perubahan utama: hero-after-cover diatur ke fixed */
         #hero-after-cover {
-            position: fixed; /* Make it fixed to the viewport */
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh; /* Use vh for viewport height */
-            z-index: -1; /* Place it behind the main content */
-            overflow: hidden; /* Crucial to hide off-screen slides */
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            overflow: hidden;
         }
 
         #background-slideshow {
             position: absolute;
             inset: 0;
             z-index: 0;
-            /* No overflow hidden here, let the parent handle it */
         }
 
         .bg-slide {
             position: absolute;
             width: 100%;
-            height: 100%; /* Fill the container */
-            object-fit: cover; /* Maintain aspect ratio and cover */
-            object-position: 50% 50%; /* Center the image */
-            opacity: 0; /* Hidden by default */
-            left: 100%; /* Initial position off-screen right for all slides */
-            transition: opacity 1s ease-in-out, left 1s ease-in-out; /* Transition opacity and left */
-            transform: scale(1.2); /* Scale for parallax, translateY will be added here */
+            height: 100%;
+            object-fit: cover;
+            object-position: 50% 50%;
+            opacity: 0;
+            left: 100%;
+            transition: opacity 1s ease-in-out, left 1s ease-in-out;
+            transform: scale(1.2);
         }
 
-        /* New section for content that scrolls over the fixed hero */
-        #hero-content-overlay {
-            position: relative; /* To contain its z-indexed children */
-            height: 100vh; /* Occupy full viewport height */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-            padding-bottom: 3rem; /* Adjust as needed */
-            z-index: 1; /* Ensure it's above the fixed background */
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 50%, #8B4513 100%);
-        }
-
-        /* Parallax styles for RSVP and Gifts sections */
-        #rsvp, #gifts {
-            position: relative; /* Needed for absolute positioning of overlay */
+        /* Fixed background images for sections */
+        #rsvp, #gifts, #about, #wedding-quote {
+            position: relative;
             background-size: cover;
             background-position: center;
-            background-attachment: fixed; /* This creates the parallax effect */
-            color: white; /* Ensure text is white for readability */
+            background-attachment: fixed;
+            color: white; /* Ensure text color is white for these sections */
         }
 
         #rsvp {
-            background-image: url('./assets/Photo4.jpg'); /* Example image for RSVP */
+            background-image: url('./assets/Photo4.jpg');
         }
 
         #gifts {
-            background-image: url('./assets/Photo5.jpg'); /* Example image for Gifts */
+            background-image: url('./assets/Photo5.jpg');
         }
 
-        /* Overlay for RSVP and Gifts to ensure text readability */
+        #about {
+            background-image: url('./assets/Photo6.jpg');
+        }
+
+        #wedding-quote {
+            background-image: url('./assets/Photo4.jpg'); /* Background image for the quote section */
+        }
+
+        /* Default overlay style for fixed background sections */
         .section-overlay {
             position: absolute;
             inset: 0;
-            background-color: rgba(0, 0, 0, 0.4); /* Dark overlay */
-            z-index: 0; /* Below content */
+            background-color: rgba(0, 0, 0, 0.4); /* Default dark transparent overlay */
+            z-index: 0;
         }
 
-        /* Ensure content is above the overlay */
+        /* Specific overlay style for wedding-quote to apply blur and desired color */
+        #wedding-quote .section-overlay {
+            background-color: rgba(139, 69, 19, 0.7); /* Transparent dark brown color */
+            backdrop-filter: blur(5px); /* Blur effect */
+            -webkit-backdrop-filter: blur(5px); /* For Safari support */
+        }
+
+        /* Content positioning over overlay */
+        #about .max-w-5xl, #wedding-quote .max-w-3xl {
+            position: relative;
+            z-index: 1;
+        }
+
         #rsvp .card, #gifts .card {
             position: relative;
             z-index: 1;
-            background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent white card */
-            color: #4A4A4A; /* Original text color for card content */
-            backdrop-filter: blur(8px); /* Apply blur to the card background */
-            -webkit-backdrop-filter: blur(8px); /* For Safari */
-        }
-        #rsvp .section-title, #gifts .section-title {
-            color: white; /* Section title on parallax background should be white */
-        }
-        #rsvp .section-title::after, #gifts .section-title::after {
-            background-color: white; /* Line under title on parallax background should be white */
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #333333;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.08),
+                inset 3px 3px 6px rgba(255, 255, 255, 0.4),
+                inset -3px -3px 6px rgba(0, 0, 0, 0.2);
         }
 
-        /* Custom font for elegant names */
+        #rsvp .section-title, #gifts .section-title, #about .section-title, #wedding-quote .section-title {
+            color: white;
+        }
+        #rsvp .section-title::after, #gifts .section-title::after, #about .section-title::after, #wedding-quote .section-title::after {
+            background-color: white;
+        }
+
         .font-elegant {
             font-family: 'Cormorant Garamond', serif;
-            font-weight: 700; /* Ensure it's bold */
+            font-weight: 700;
         }
 
-        /* Responsive adjustments for Gift boxes */
         .gift-box {
-            padding: 1.5rem; /* Default padding */
-            font-size: 0.9rem; /* Default font size for content */
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 1.5rem;
+            font-size: 0.9rem;
+            color: white; /* Changed gift-box text to white */
         }
         .gift-box .font-semibold {
-            font-size: 1.125rem; /* Default for h3/strong */
+            font-size: 1.125rem;
         }
         .gift-box .text-lg {
-            font-size: 0.95rem; /* Default for p */
+            font-size: 0.95rem;
         }
         .gift-box .text-xl {
-            font-size: 1.05rem; /* Default for account numbers */
+            font-size: 1.05rem;
         }
         .gift-box .btn-primary {
-            padding: 0.6rem 1.2rem; /* Smaller button padding */
-            font-size: 0.85rem; /* Smaller button font size */
+            padding: 0.6rem 1.2rem;
+            font-size: 0.85rem;
         }
 
-        @media (min-width: 640px) { /* sm breakpoint */
+        @media (min-width: 640px) {
             .gift-box {
                 padding: 1.5rem;
                 font-size: 1rem;
@@ -467,7 +528,7 @@
             }
         }
 
-        @media (min-width: 768px) { /* md breakpoint */
+        @media (min-width: 768px) {
             .gift-box {
                 padding: 2rem;
                 font-size: 1rem;
@@ -487,10 +548,183 @@
             }
         }
 
-        /* Smaller alert message styles */
         .alert-message {
-            font-size: 0.9rem; /* Smaller font size */
-            padding: 0.5rem 1rem; /* Smaller padding */
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .glass-input {
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white; /* Changed glass-input text to white */
+        }
+        .glass-input::placeholder {
+            color: rgba(255, 255, 255, 0.7); /* Changed glass-input placeholder to white */
+        }
+        .glass-input:focus {
+            /* Mengubah outline emas menjadi putih */
+            border-color: white;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Styling for RSVP guests dropdown options */
+        #rsvp-guests {
+            /* Ensure the text displayed in the actual select box (when closed) is white */
+            color: white;
+            /* Reset default browser appearance to allow custom styling */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            /* Custom arrow icon (white color) */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1.25em; /* Adjust size as needed */
+            padding-right: 2.5rem; /* Make space for the arrow */
+        }
+
+        #rsvp-guests option {
+            background-color: white; /* Default background of options in the dropdown list */
+            color: black; /* Text color of options in the dropdown list (when not hovered/selected) */
+        }
+
+        #rsvp-guests option:hover {
+            background-color: #A0A0A0; /* Gray background on hover */
+            color: white; /* White text on hover */
+        }
+
+        /* Note: option:checked applies when the option is selected AND the dropdown is open */
+        #rsvp-guests option:checked {
+            background-color: white; /* Background of the actively selected option in the list */
+            color: black; /* Text color of the actively selected option in the list */
+        }
+
+
+        #blessings-list .bg-gray-50 {
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white; /* Changed blessing list background to white */
+        }
+        #blessings-list .text-gray-800 {
+            color: white; /* Changed blessing name to white */
+        }
+        #blessings-list .text-gray-700 {
+            color: white; /* Changed blessing message to white */
+        }
+        #blessings-list .text-gray-500 {
+            color: rgba(255, 255, 255, 0.8); /* Changed blessing timestamp to white */
+        }
+
+        /* Background colors for sections that should obscure the fixed slideshow */
+        #opening-message {
+            /* Warna latar belakang disesuaikan untuk menciptakan ilusi gradasi blur */
+            background: linear-gradient(to bottom, transparent 0%, rgba(139, 69, 19, 0.3) 50%, rgba(139, 69, 19, 0.7) 100%);
+            backdrop-filter: blur(3px); /* Menerapkan blur dasar yang halus */
+            -webkit-backdrop-filter: blur(3px);
+            height: 300px;
+        }
+        #about {
+            /* Latar belakang transparan dengan efek blur */
+            background-image: url('./assets/Photo6.jpg'); /* Menambahkan gambar background */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-color: rgba(255, 255, 255, 0.05); /* Sedikit transparan untuk efek glassmorphism */
+            backdrop-filter: blur(10px); /* Efek blur */
+            -webkit-backdrop-filter: blur(10px); /* Dukungan browser lama */
+            position: relative; /* Diperlukan untuk section-overlay */
+            color: white; /* Mengubah warna teks untuk kontras */
+        }
+        #about .text-gray-200 { /* Mengubah warna teks di dalam about */
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        #events {
+            /* Latar belakang dihapus untuk menampilkan peta */
+            background-color: transparent;
+            position: relative; /* Penting untuk penempatan iframe absolut */
+            overflow: hidden; /* Memastikan iframe tidak meluap */
+            /* Adjusted margin-top to align with carousel's midpoint */
+            margin-top: -9.6875rem; /* -155px */
+        }
+
+        .map-background-container {
+            position: absolute;
+            inset: 0;
+            z-index: 0; /* Pastikan di belakang konten */
+        }
+        .map-background-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            filter: grayscale(50%) brightness(80%); /* Efek grayscale dan sedikit gelap pada peta */
+        }
+        .map-background-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(139, 69, 19, 0); /* Mengubah warna menjadi transparan penuh */
+            backdrop-filter: none; /* Menghapus efek blur */
+            -webkit-backdrop-filter: none;
+            z-index: 1; /* Di atas peta, di bawah konten utama */
+        }
+
+
+        #blessings {
+            /* Latar belakang menjadi solid untuk menutupi slide foto */
+            background-color: #4A4A4A;
+        }
+        #photo-carousel-section {
+            /* Hapus background dan efek blur dari sini */
+            /* background-image: url('./assets/Photo4.jpg'); */
+            /* background-size: cover; */
+            /* background-position: center; */
+            /* background-repeat: no-repeat; */
+            /* background-attachment: fixed; */
+            
+            position: relative; /* Diperlukan untuk tumpang tindih */
+            z-index: 2; /* Pastikan di atas wedding-quote */
+            padding-top: 5rem; /* Menjaga padding internal */
+            padding-bottom: 5rem; /* Menjaga padding internal */
+            /* Adjusted margins to make it collapse its vertical space and center it */
+            margin-top: -9.6875rem; /* -155px (half of 310px total height) */
+            margin-bottom: -9.6875rem; /* -155px (half of 310px total height) */
+        }
+
+        /* Hapus pseudo-elemen ::before karena tidak lagi diperlukan untuk background dan blur */
+        /*
+        #photo-carousel-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, 
+                                        rgba(139, 69, 19, 0.7) 0%,
+                                        rgba(139, 69, 19, 0.7) 50%,
+                                        transparent 50%,
+                                        transparent 100%);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 0;
+        }
+        */
+
+        #photo-carousel-section .photo-carousel-container {
+            position: relative; /* Pertahankan posisi relatif untuk konten carousel */
+            z-index: 2; /* Pastikan konten carousel berada di atas overlay */
+            /* Kelas Tailwind default untuk pemusatan dan lebar sudah ada */
+        }
+
+        #closing-message .absolute.inset-0.z-10 {
+            /* Gradien penutup berakhir dengan warna coklat tua solid */
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 50%, #8B4513 100%);
+        }
+        footer {
+            /* Footer kembali menjadi warna coklat tua solid */
+            background-color: #8B4513;
         }
     </style>
 </head>
@@ -502,66 +736,66 @@
                 <p class="text-base md:text-lg mb-0 tracking-wider">Pawiwahan</p>
                 <h1 class="text-3xl md:text-5xl font-bold mb-1 leading-tight text-shadow-lg">Hendra & Maylin</h1>
                 <p class="text-sm md:text-base italic mb-1">Kepada Bapak/Ibu/Saudara/i</p>
-                <input type="text" id="guest-name-input" class="mt-0.5 px-3 py-2 rounded-lg text-center text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-D4AF37 w-full max-w-xs md:max-w-sm mx-auto text-base" placeholder="Nama Tamu Undangan">
-                <button id="open-invitation-button" class="mt-2 px-6 py-3 rounded-full btn-primary text-base font-semibold">Buka Undangan</button>
+                <input type="text" id="guest-name-input" class="mt-0.5 px-3 py-2 rounded-lg text-center w-full max-w-xs md:max-w-sm mx-auto text-base glass-input" placeholder="Nama Tamu Undangan">
+                <button id="open-invitation-button" class="mt-2 px-6 py-3 rounded-full gold-accent-button text-base font-semibold">Buka Undangan</button>
             </div>
         </header>
     </div>
 
     <div id="main-content">
-        <section id="hero-content-overlay" class="relative">
-            <div class="relative z-20 p-6 max-w-4xl mx-auto flex flex-col items-center w-full h-full justify-end">
-                <p class="text-lg md:text-xl mb-0 tracking-wider text-white">Pawiwahan</p>
-                <h1 class="text-4xl md:text-6xl font-bold mb-2 leading-tight text-white text-center">Hendra & Maylin</h1>
-                
-                <div id="hero-countdown-container" class="flex justify-center space-x-2 mt-2 mb-12 max-w-sm mx-auto">
-                    <div class="countdown-box">
-                        <span id="hero-days" class="digit">00</span>
-                        <span class="label">Hari</span>
-                    </div>
-                    <div class="countdown-box">
-                        <span id="hero-hours" class="digit">00</span>
-                        <span class="label">Jam</span>
-                    </div>
-                    <div class="countdown-box">
-                        <span id="hero-minutes" class="digit">00</span>
-                        <span class="label">Menit</span>
-                    </div>
-                    <div class="countdown-box">
-                        <span id="hero-seconds" class="digit">00</span>
-                        <span class="label">Detik</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="hero-after-cover">
+        <!-- hero-after-cover sekarang menjadi elemen fixed di belakang konten -->
+        <div id="hero-after-cover">
             <div id="background-slideshow">
                 <img class="bg-slide" src="./assets/Photo3.jpg" alt="Background 1">
                 <img class="bg-slide" src="./assets/Photo2.jpg" alt="Background 2">
                 <img class="bg-slide" src="./assets/Photo1.jpg" alt="Background 3">
             </div>
-            </section>
+        </div>
 
-        <section id="opening-message" class="py-10 px-4 md:px-8 text-center" style="background-color: #8B4513;">
-            <div class="max-w-3xl mx-auto">
-                <br>
-                <div class="balinese-script text-3xl md:text-4xl mb-4 text-white">ᬒᬁ ᬲ᭄ᬯᬲ᭄ᬢ᭄ᬬᬲ᭄ᬢᬸ</div>
-                <br>
-                <p class="text-base md:text-lg leading-relaxed text-gray-200">
-                    Atas Asung Kertha Wara Nugraha Ida Sang Hyang Widhi Wasa/Tuhan Yang Maha Esa, kami bermaksud mengundang Bapak/Ibu/Saudara pada acara Resepsi Pernikahan putra putri kami
-                </p>
+        <section id="hero-content-overlay" class="relative h-screen flex flex-col items-center justify-end p-6 max-w-4xl mx-auto w-full">
+            <p class="text-lg md:text-xl mb-0 tracking-wider text-white">Pawiwahan</p>
+            <h1 class="text-4xl md:text-6xl font-bold mb-2 leading-tight text-white text-center">Hendra & Maylin</h1>
+            
+            <div id="hero-countdown-container" class="flex justify-center space-x-2 mt-2 mb-12 max-w-sm mx-auto">
+                <div class="countdown-box">
+                    <span id="hero-days" class="digit">00</span>
+                    <span class="label">Hari</span>
+                </div>
+                <div class="countdown-box">
+                    <span id="hero-hours" class="digit">00</span>
+                    <span class="label">Jam</span>
+                </div>
+                <div class="countdown-box">
+                    <span id="hero-minutes" class="digit">00</span>
+                    <span class="label">Menit</span>
+                </div>
+                <div class="countdown-box">
+                    <span id="hero-seconds" class="digit">00</span>
+                    <span class="label">Detik</span>
+                </div>
             </div>
         </section>
 
-        <section id="about" class="py-20 px-4 md:px-8 text-center bg-white">
-            <div class="max-w-5xl mx-auto">
+        <section id="opening-message" class="py-10 px-4 md:px-8 text-center">
+            <div class="max-w-3xl mx-auto">
+                <br>
+                <div class="balinese-script text-3xl md:text-4xl mb-4">ᬒᬁ ᬲ᭄ᬯᬲ᭄ᬢ᭄ᬬᬲ᭄ᬢᬸ</div>
+                <br>
+                <p class="text-base md:text-lg leading-relaxed text-gray-200">
+                    Atas Asung Kertha Wara Nugraha Ida Sang Hyang Widhi Wasa/Tuhan Yang Maha Esa, kami bermaksud mengundang Bapak/Ibu/Saudara/i pada acara Resepsi Pernikahan putra-putri kami
+                </p>
+            </div>
+        </section>
+        
+        <section id="about" class="py-20 px-4 md:px-8 text-center">
+            <div class="section-overlay"></div>
+            <div class="max-w-5xl mx-auto relative z-10">
                 <div class="flex flex-col md:flex-row items-center justify-center space-y-12 md:space-y-0 md:space-x-20">
                     <div class="flex flex-col items-center">
                         <img src="./assets/About Me.jpg" alt="Hendra" class="w-48 h-48 rounded-full object-cover shadow-xl border-4 border-D4AF37 mb-6">
                         <h3 class="text-2xl md:text-3xl font-semibold text-accent mb-2">Hendra</h3>
-                        <p class="text-sm md:text-base text-gray-600">Putra dari Bapak [Nama Ayah Hendra] & Ibu [Nama Ibu Hendra]</p>
-                        <a href="https://www.instagram.com/hendrasupradnyana/" target="_blank" class="mt-4 inline-flex items-center px-4 py-2 btn-primary rounded-full text-sm md:text-base font-medium">
+                        <p class="text-sm md:text-base text-gray-200">Putra dari Bapak [Nama Ayah Hendra] & Ibu [Nama Ibu Hendra]</p>
+                        <a href="https://www.instagram.com/hendrasupradnyana/" target="_blank" class="mt-4 inline-flex items-center px-4 py-2 glass-button-style rounded-full text-sm md:text-base font-medium">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                                 <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
@@ -574,8 +808,8 @@
                     <div class="flex flex-col items-center">
                         <img src="./assets/About Girl.jpg" alt="Maylin" class="w-48 h-48 rounded-full object-cover shadow-xl border-4 border-D4AF37 mb-6">
                         <h3 class="text-2xl md:text-3xl font-semibold text-accent mb-2">Maylin</h3>
-                        <p class="text-sm md:text-base text-gray-600">Putri dari Bapak [Nama Aylin] & Ibu [Nama Ibu Maylin]</p>
-                        <a href="https://www.instagram.com/maylinfranz/" target="_blank" class="mt-4 inline-flex items-center px-4 py-2 btn-primary rounded-full text-sm md:text-base font-medium">
+                        <p class="text-sm md:text-base text-gray-200">Putri dari Bapak [Nama Aylin] & Ibu [Nama Ibu Maylin]</p>
+                        <a href="https://www.instagram.com/maylinfranz/" target="_blank" class="mt-4 inline-flex items-center px-4 py-2 glass-button-style rounded-full text-sm md:text-base font-medium">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                                 <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
@@ -588,8 +822,9 @@
             </div>
         </section>
 
-        <section id="wedding-quote" class="py-20 px-4 md:px-8 text-center" style="background-color: #8B4513;">
-            <div class="max-w-3xl mx-auto">
+        <section id="wedding-quote" class="py-20 px-4 md:px-8 text-center">
+            <div class="section-overlay"></div>
+            <div class="max-w-3xl mx-auto relative z-10">
                 <p class="text-base md:text-lg italic leading-relaxed text-white mb-6">
                     "Ya Tuhan Yang Maha Pengasih, anugrahkan kepada pasangan ini tanpa terpisahkan, panjang umur, semoga pernikahan ini dianugrahkan putra-putri dan cucu yang memberi penghiburan, tinggal di rumah yang penuh kebahagiaan."
                 </p>
@@ -597,9 +832,10 @@
             </div>
         </section>
 
-        <section id="photo-carousel-section" class="py-0 px-4 md:px-8 text-center" style="background: linear-gradient(to bottom, #8B4513 50%, #FFFFFF 50%);">
+        <section id="photo-carousel-section" class="py-20 px-4 md:px-8 text-center">
             <div class="photo-carousel-container">
                 <div class="photo-carousel-wrapper">
+                    <!-- Initial photo items for carousel -->
                     <div class="photo-carousel-item">
                         <img src="./assets/Photo1.jpg" alt="Momen 1" class="circular-photo">
                     </div>
@@ -622,28 +858,37 @@
             </div>
         </section>
 
-        <section id="events" class="py-20 px-4 md:px-8 text-center bg-white">
-            <h2 class="text-4xl md:text-5xl section-title mb-4">Detail Acara</h2>
-            <div class="flex flex-col md:flex-row justify-center items-stretch space-y-12 md:space-y-0 md:space-x-12 max-w-6xl mx-auto">
+        <section id="events" class="py-20 px-4 md:px-8 text-center">
+            <div class="map-background-container">
+                <iframe
+                    src="https://www.openstreetmap.org/export/embed.html?bbox=115.404129,-8.557778,115.405129,-8.556778&amp;layer=mapnik&amp;marker=-8.557278,115.404629"
+                    title="OpenStreetMap Location"
+                    allowfullscreen="" aria-hidden="false" tabindex="0">
+                </iframe>
+                <div class="map-background-overlay"></div>
+            </div>
+            <h2 class="text-4xl md:text-5xl section-title mb-4 relative z-20">Detail Acara</h2>
+            <div class="flex flex-col md:flex-row justify-center items-stretch space-y-12 md:space-y-0 md:space-x-12 max-w-6xl mx-auto relative z-20">
                 <div class="event-card flex-1 flex flex-col items-center justify-between">
-                    <h3 class="text-3xl md:text-4xl font-semibold text-accent mb-6">Resepsi</h3>
+                    <!-- Changed text color to white -->
+                    <h3 class="text-3xl md:text-4xl font-semibold text-white mb-6">Resepsi</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
                         <div class="flex flex-col items-center justify-center text-center">
-                            <p class="text-lg md:text-xl font-bold text-gray-800 mb-3" id="event-date">Kamis, 25 September 2025</p>
-                            <p class="text-base md:text-lg mb-3"><span class="font-medium text-gray-800" id="event-time">11:00 - 22:00 WITA</span></p>
-                            <p class="text-base md:text-lg mb-6">
+                            <p class="text-lg md:text-xl font-bold text-white mb-3" id="event-date">Kamis, 25 September 2025</p>
+                            <p class="text-base md:text-lg mb-3"><span class="font-medium text-white" id="event-time">11:00 - 22:00 WITA</span></p>
+                            <p class="text-base md:text-lg mb-6 text-white">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto text-accent mb-1" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                                 </svg>
                                 <strong>Lokasi:</strong><br>
-                                <span class="font-bold text-base md:text-lg text-gray-800 mt-1">Kediaman Mempelai Pria</span><br>
+                                <span class="font-bold text-base md:text-lg text-white mt-1">Kediaman Mempelai Pria</span><br>
                                 <span class="font-medium text-base md:text-lg" id="event-location">Jl. Warapsari No.2, Gelgel, Kec. Klungkung, Kabupaten Klungkung, Bali</span>
                             </p>
                         </div>
                         <div class="flex flex-col items-center justify-center">
-                            <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mt-6">
-                                <button onclick="saveDateToCalendar()" class="px-7 py-3 rounded-full btn-primary text-base md:text-lg font-medium">Simpan Tanggal</button>
-                                <a id="open-map-button" href="#" target="_blank" class="px-7 py-3 rounded-full btn-primary text-base md:text-lg font-medium">Buka Map</a>
+                            <div class="flex flex-col space-y-4 mt-6 w-full">
+                                <button onclick="saveDateToCalendar()" class="px-7 py-3 rounded-full glass-button-style text-base md:text-lg font-medium w-full">Simpan Tanggal</button>
+                                <a id="open-map-button" href="#" target="_blank" class="px-7 py-3 rounded-full glass-button-style text-base md:text-lg font-medium text-center w-full">Buka Map</a>
                             </div>
                         </div>
                     </div>
@@ -656,17 +901,17 @@
             <div class="section-overlay"></div>
             <h2 class="text-4xl md:text-5xl section-title mb-12">Konfirmasi Kehadiran (RSVP)</h2>
             <div class="max-w-3xl mx-auto card p-10 rounded-lg shadow-xl">
-                <p class="text-base leading-relaxed mb-8 text-gray-700">
+                <p class="text-base leading-relaxed mb-8 text-white">
                     Mohon mengirimkan konfirmasi kehadiran melalui form berikut:
                 </p>
                 <div class="space-y-6 mb-8">
                     <div class="text-left">
-                        <label for="rsvp-name" class="block text-base font-medium text-gray-700 mb-2">Nama Lengkap:</label>
-                        <input type="text" id="rsvp-name" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-base" placeholder="Masukkan nama lengkap Anda" required>
+                        <label for="rsvp-name" class="block text-base font-medium text-white mb-2">Nama Lengkap:</label>
+                        <input type="text" id="rsvp-name" class="mt-1 block w-full px-4 py-3 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-base glass-input" placeholder="Masukkan nama lengkap Anda" required>
                     </div>
                     <div class="text-left">
-                        <label for="rsvp-guests" class="block text-base font-medium text-gray-700 mb-2">Jumlah Tamu (termasuk Anda):</label>
-                        <select id="rsvp-guests" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-base">
+                        <label for="rsvp-guests" class="block text-base font-medium text-white mb-2">Jumlah Tamu (termasuk Anda):</label>
+                        <select id="rsvp-guests" class="mt-1 block w-full px-4 py-3 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-base glass-input">
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -675,18 +920,18 @@
                         </select>
                     </div>
                 </div>
-                <button onclick="sendRsvp()" class="px-8 py-4 rounded-full btn-primary text-lg font-semibold">Kirim</button>
-                <p class="text-sm text-gray-500 mt-6 italic">
+                <button onclick="sendRsvp()" class="px-8 py-4 rounded-full glass-button-style text-lg font-semibold">Kirim</button>
+                <p class="text-sm text-gray-500 mt-6 italic text-white">
                     Setelah menekan tombol, Anda akan diarahkan ke formulir konfirmasi.
                 </p>
             </div>
         </section>
 
-        <section id="our-gallery" class="py-20 px-4 md:px-8 text-center bg-white">
+        <section id="our-gallery" class="py-20 px-4 md:px-8 text-center">
             <h2 class="text-4xl md:text-5xl section-title mb-12">Our Gallery</h2>
 
             <div id="gallery-slideshow-wrapper">
-                <div class="max-w-4xl mx-auto mb-8 rounded-lg shadow-xl overflow-hidden">
+                <div class="max-w-4xl mx-auto mb-8 rounded-lg shadow-xl overflow-hidden card">
                     <img id="main-gallery-preview" src="./assets/Photo7.jpg" alt="Main Gallery Photo" class="w-full h-auto object-cover rounded-lg">
                 </div>
 
@@ -701,49 +946,49 @@
             <div class="section-overlay"></div>
             <h2 class="text-4xl md:text-5xl section-title mb-12">Kirim Tanda Kasih</h2>
             <div class="max-w-3xl mx-auto card p-10 rounded-lg shadow-xl">
-                <p class="text-base leading-relaxed mb-8 text-gray-700">
+                <p class="text-base leading-relaxed mb-8 text-white">
                     Tanpa mengurangi rasa hormat kami, bagi tamu yang ingin mengirim hadiah kepada kedua mempelai dapat mengirimnya melalui:
                 </p>
                 <div class="space-y-6 mb-8">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="text-left bg-gray-50 rounded-lg border border-gray-200 gift-box">
-                            <p class="font-semibold text-lg md:text-xl text-gray-800">Bank Mandiri</p>
-                            <p class="text-base md:text-lg">No. Rekening: <span id="bank-account" class="font-mono text-lg md:text-xl text-gray-700">1234567890</span></p>
-                            <p class="text-base md:text-lg">Atas Nama: Hendra</p>
-                            <button onclick="copyToClipboard('bank-account')" class="mt-4 px-6 py-3 rounded-full btn-primary text-sm md:text-base font-medium">Salin No. Rekening</button>
+                        <div class="text-left rounded-lg border gift-box">
+                            <p class="font-semibold text-lg md:text-xl text-white">Bank Mandiri</p>
+                            <p class="text-base md:text-lg text-white">No. Rekening: <span id="bank-account" class="font-mono text-lg md:text-xl text-white">1234567890</span></p>
+                            <p class="text-base md:text-lg text-white">Atas Nama: Hendra</p>
+                            <button onclick="copyToClipboard('bank-account')" class="mt-4 px-6 py-3 rounded-full glass-button-style text-sm md:text-base font-medium">Salin No. Rekening</button>
                         </div>
-                        <div class="text-left bg-gray-50 rounded-lg border border-gray-200 gift-box">
-                            <p class="font-semibold text-lg md:text-xl text-gray-800">Bank BCA</p>
-                            <p class="text-base md:text-lg">No. Rekening: <span id="bank-account-2" class="font-mono text-lg md:text-xl text-gray-700">081234567890</span></p>
-                            <p class="text-base md:text-lg">Atas Nama: Maylin</p>
-                            <button onclick="copyToClipboard('bank-account-2')" class="mt-4 px-6 py-3 rounded-full btn-primary text-sm md:text-base font-medium">Salin No. Rekening</button>
+                        <div class="text-left rounded-lg border gift-box">
+                            <p class="font-semibold text-lg md:text-xl text-white">Bank BCA</p>
+                            <p class="text-base md:text-lg text-white">No. Rekening: <span id="bank-account-2" class="font-mono text-lg md:text-xl text-white">081234567890</span></p>
+                            <p class="text-base md:text-lg text-white">Atas Nama: Maylin</p>
+                            <button onclick="copyToClipboard('bank-account-2')" class="mt-4 px-6 py-3 rounded-full glass-button-style text-sm md:text-base font-medium">Salin No. Rekening</button>
                         </div>
                     </div>
-                    <div class="text-left bg-gray-50 rounded-lg border border-gray-200 gift-box">
-                        <p class="font-semibold text-lg md:text-xl text-gray-800">Pengiriman Hadiah Fisik</p>
-                        <p class="text-base md:text-lg">Maylin Franza</p>
-                        <p class="text-base md:text-lg"><span id="alamat-hadiah" class="font-mono text-lg md:text-xl text-gray-700">Jl. Warapsari No.2, Gelgel, Kec. Klungkung, Kabupaten Klungkung, Bali</span></p>
-                        <button onclick="copyToClipboard('alamat-hadiah')" class="mt-4 px-6 py-3 rounded-full btn-primary text-sm md:text-base font-medium">Salin</button>
+                    <div class="text-left rounded-lg border gift-box">
+                        <p class="font-semibold text-lg md:text-xl text-white">Pengiriman Hadiah Fisik</p>
+                        <p class="text-base md:text-lg text-white">Maylin Franza</p>
+                        <p class="text-base md:text-lg"><span id="alamat-hadiah" class="font-mono text-lg md:text-xl text-white">Jl. Warapsari No.2, Gelgel, Kec. Klungkung, Kabupaten Klungkung, Bali</span></p>
+                        <button onclick="copyToClipboard('alamat-hadiah')" class="mt-4 px-6 py-3 rounded-full glass-button-style text-sm font-medium">Salin</button>
                     </div>
                 </div>
-                <p class="text-base text-gray-600 italic">
+                <p class="text-base text-white italic">
                     Terima kasih atas perhatian dan kebaikan hati Anda.
                 </p>
             </div>
         </section>
 
-        <section id="blessings" class="py-20 px-4 md:px-8 text-center bg-white">
+        <section id="blessings" class="py-20 px-4 md:px-8 text-center">
             <div class="max-w-3xl mx-auto card p-10 rounded-lg shadow-xl">
                 <h2 class="text-4xl md:text-5xl section-title mb-12">Ucapan Doa Restu</h2>
                 <div class="flex flex-col md:flex-row gap-8">
                     <div class="w-full md:w-2/5 space-y-6">
                         <div class="text-left">
-                            <input type="text" id="blessing-name" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-base" placeholder="Nama Anda" required>
+                            <input type="text" id="blessing-name" class="mt-1 block w-full px-4 py-3 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-base glass-input" placeholder="Nama Anda" required>
                         </div>
                         <div class="text-left">
-                            <textarea id="blessing-message" rows="4" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-base" placeholder="Tulis ucapan doa restu Anda di sini..." required></textarea>
+                            <textarea id="blessing-message" rows="4" class="mt-1 block w-full px-4 py-3 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-base glass-input" placeholder="Tulis ucapan doa restu Anda di sini..." required></textarea>
                         </div>
-                        <button onclick="sendBlessing()" class="px-8 py-4 rounded-full btn-primary text-lg font-semibold w-full">Kirim Ucapan</button>
+                        <button onclick="sendBlessing()" class="px-8 py-4 rounded-full glass-button-style text-lg font-semibold w-full">Kirim Ucapan</button>
                     </div>
                     <div class="w-full md:w-3/5 text-left">
                         <h3 class="text-2xl md:text-3xl font-semibold text-accent mb-6">Daftar Ucapan</h3>
@@ -759,20 +1004,24 @@
             
             <div class="relative z-20 p-6 max-w-4xl mx-auto flex flex-col items-center w-full text-top">
                 <p class="text-base leading-relaxed text-gray-200 mb-6">
-                    Merupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kedua mempelai. Atas kehadiran dan doa restunya kami ucapkan terima kasih.
+                    Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu kepada kedua mempelai. Atas kehadiran dan doa restunya kami ucapkan terima kasih.
                 </p>
                 <div class="balinese-script text-3xl md:text-4xl text-white">ᬒᬁ ᬰᬦ᭄ᬢᬶᬄ ᬰᬦ᭄ᬢᬶᬄ ᬰᬦ᭄ᬢᬶᬄ ᬒᬁ</div>
             </div>
 
             <div class="relative z-20 p-6 max-w-4xl mx-auto flex flex-col items-center w-full text-bottom">
                 <p class="text-lg mb-3">Kami yang berbahagia,</p>
-                <p class="text-4xl md:text-5xl font-semibold text-accent font-elegant">Hendra & Maylin</p>
+                <div class="flex justify-center w-full max-w-sm mx-auto mb-2">
+                    <p class="text-base md:text-lg text-white text-center mr-8">I Nyoman Adiputra<br>sekeluarga</p>
+                    <p class="text-base md:text-lg text-white text-center ml-8">I Nyoman Sutiarsa<br>sekeluarga</p>
+                </div>
+                <p class="text-4xl md:text-5xl font-semibold text-accent font-elegant mt-4">Hendra & Maylin</p>
             </div>
         </section>
 
-        <footer class="py-10 px-4 md:px-8 text-center text-white" style="background-color: #8B4513;">
+        <footer class="py-10 px-4 md:px-8 text-center text-white">
             <p class="text-base mb-0">Designed with love by:</p>
-            <a href="https://www.instagram.com/henzustudio/" target="_blank" class="mt-1 inline-flex items-center px-4 py-2 bg-D4AF37 text-white rounded-full text-sm font-medium hover:bg-B8860B transition-colors duration-300">
+            <a href="https://www.instagram.com/henzustudio/" target="_blank" class="mt-1 inline-flex items-center px-4 py-2 glass-button-style rounded-full text-sm font-medium">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                     <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
@@ -789,7 +1038,7 @@
         Browser Anda tidak mendukung elemen audio.
     </audio>
 
-    <button id="music-toggle-button" class="music-toggle-button">
+    <button id="music-toggle-button" class="music-toggle-button glass-button-style">
         <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="display: block;">
             <path d="M8 5v14l11-7z"/>
         </svg>
@@ -799,10 +1048,8 @@
     </button>
 
     <script>
-        // Mencegah browser mengembalikan posisi scroll sebelumnya
         window.history.scrollRestoration = 'manual';
 
-        // Countdown Timer
         const weddingDate = new Date("September 25, 2025 11:00:00").getTime();
         const heroCountdownContainer = document.getElementById("hero-countdown-container");
 
@@ -812,7 +1059,7 @@
 
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const minutes = Math.floor((distance % (1000 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
             document.getElementById("hero-days").innerHTML = String(days).padStart(2, '0');
@@ -824,11 +1071,10 @@
                 clearInterval(x);
                 heroCountdownContainer.style.display = 'none';
             } else {
-                heroCountdownContainer.style.display = 'flex'; // Mengembalikan ke flex jika ada waktu
+                heroCountdownContainer.style.display = 'flex';
             }
         }, 1000);
 
-        // Copy to Clipboard Function
         function copyToClipboard(elementId) {
             const copyText = document.getElementById(elementId).innerText;
             const textArea = document.createElement("textarea");
@@ -837,13 +1083,10 @@
             textArea.select();
             document.execCommand('copy');
             document.body.removeChild(textArea);
-            // Removed alertMessage call
         }
 
-        // Custom Alert Message
         function alertMessage(message) {
             const alertBox = document.createElement('div');
-            // Added 'alert-message' class for styling
             alertBox.className = 'fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white rounded-full shadow-xl opacity-0 transition-opacity duration-300 z-50 alert-message';
             alertBox.innerText = message;
             document.body.appendChild(alertBox);
@@ -858,7 +1101,6 @@
             }, 3000);
         }
 
-        // Music functionality for local file
         const backgroundMusic = document.getElementById('background-music');
         const musicToggleButton = document.getElementById('music-toggle-button');
         const playIcon = document.getElementById('play-icon');
@@ -868,7 +1110,7 @@
             if (backgroundMusic.paused) {
                 backgroundMusic.play().catch(error => {
                     console.log("Autoplay was prevented:", error);
-                    alertMessage("Klik tombol play di pojok kanan bawah untuk memutar musik!");
+                    alertMessage("Musik tidak dapat diputar otomatis. Silakan klik tombol play di pojok kanan bawah.");
                 });
                 playIcon.style.display = 'none';
                 pauseIcon.style.display = 'block';
@@ -881,28 +1123,25 @@
 
         musicToggleButton.addEventListener('click', toggleMusic);
 
-        // Background Slideshow for Hero After Cover
         let currentBgSlide = 0;
         let bgSlides = [];
-        let bgSlideshowInterval; // Variable to hold the interval ID
+        let bgSlideshowInterval;
 
         function startHeroBackgroundSlideshow() {
             bgSlides = document.querySelectorAll('#background-slideshow .bg-slide');
             if (bgSlides.length === 0) return;
 
-            // Initialize all slides
+            // Reset all slides to hidden and off-screen to the right
             bgSlides.forEach((slide, index) => {
                 slide.style.opacity = '0';
-                slide.style.left = '100%'; // All non-active slides start off-screen right
-                // Parallax translateY will be handled by handleParallaxScroll, no need to set here
+                slide.style.left = '100%';
             });
 
-            // Set the first slide as active
+            // Make the first slide visible and in place
             bgSlides[0].style.opacity = '1';
-            bgSlides[0].style.left = '0%'; // First slide starts on screen
+            bgSlides[0].style.left = '0%';
 
-            // Apply initial parallax for all slides immediately
-            handleParallaxScroll();
+            handleParallaxScroll(); // Apply initial parallax
 
             clearInterval(bgSlideshowInterval); // Clear any existing interval
             bgSlideshowInterval = setInterval(() => {
@@ -911,271 +1150,304 @@
                 currentBgSlide = (currentBgSlide + 1) % bgSlides.length;
                 const nextBgSlide = bgSlides[currentBgSlide];
 
-                // Animate previous slide out (fade and slide left)
+                // Fade out and move previous slide left
                 prevBgSlide.style.opacity = '0';
                 prevBgSlide.style.left = '-100%';
 
-                // Animate next slide in (fade and slide from right)
-                // First, ensure it's positioned off-screen right for the transition to start
-                nextBgSlide.style.transition = 'none'; // Temporarily disable transition for instant positioning
+                // Prepare next slide (no transition for this preparation step)
+                nextBgSlide.style.transition = 'none';
                 nextBgSlide.style.left = '100%';
-                // Force reflow to apply the instant change before re-enabling transition
-                void nextBgSlide.offsetWidth; 
+                void nextBgSlide.offsetWidth; // Force reflow to apply 'none' immediately
                 nextBgSlide.style.transition = 'opacity 1s ease-in-out, left 1s ease-in-out'; // Re-enable transition
 
+                // Fade in and move next slide to center
                 nextBgSlide.style.opacity = '1';
                 nextBgSlide.style.left = '0%';
 
-                // After the previous slide's transitions are complete, reset its horizontal position
-                // so it's ready to slide in from the right again in a future cycle.
+                // After a short delay, reset the previous slide's position without transition
+                // This prepares it for the next cycle
                 setTimeout(() => {
-                    prevBgSlide.style.transition = 'none'; // Disable transition for instant reset
-                    prevBgSlide.style.left = '100%'; // Reset horizontal position
-                    // Re-enable transition after a very short delay
+                    prevBgSlide.style.transition = 'none';
+                    prevBgSlide.style.left = '100%';
                     void prevBgSlide.offsetWidth; // Force reflow
-                    prevBgSlide.style.transition = 'opacity 1s ease-in-out, left 1s ease-in-out';
-                }, 1000); // Match opacity and left transition duration
-            }, 5000); // Change image every 5 seconds
+                    prevBgSlide.style.transition = 'opacity 1s ease-in-out, left 1s ease-in-out'; // Re-enable transition
+                }, 1000); // Match this with the transition duration
+            }, 5000); // Change slide every 5 seconds
 
-            // Add scroll listener for parallax after slideshow starts
-            window.removeEventListener('scroll', handleParallaxScroll); // Prevent multiple listeners
+            // Attach scroll listener to window
+            window.removeEventListener('scroll', handleParallaxScroll); // Remove any old listener
             window.addEventListener('scroll', handleParallaxScroll);
             handleParallaxScroll(); // Call once to set initial parallax position
         }
 
-        // Function to handle parallax effect on scroll
         function handleParallaxScroll() {
-            const scrollY = window.scrollY;
-            const parallaxFactor = 0.2; // Adjust this value. Smaller value = slower movement.
+            const scrollY = window.scrollY; // Current scroll position from the top of the document
+            // This factor controls how fast the background slides move relative to the page scroll.
+            // A value of 0.2 means the slide moves 20% of the scroll distance, making it appear slower.
+            const parallaxFactor = 0.2; 
 
+            // Calculate translateY for parallax effect
+            // A negative value for translateY moves the element upwards when scrolling down.
+            // This creates the illusion that the background is moving slower than the foreground.
+            const translateY = -scrollY * parallaxFactor;
+            
             bgSlides.forEach(slide => {
-                const translateY = -scrollY * parallaxFactor;
-                // Only apply scale and translateY to the transform property
+                // Apply the transform. scale(1.2) is kept for the zoom effect.
                 slide.style.transform = `scale(1.2) translateY(${translateY}px)`;
             });
+            // The 'overflow: hidden' on #hero-after-cover will handle clipping
+            // when the background slides move outside its boundaries, so there's no
+            // need for complex checks or resets that could cause an "elastic" effect.
         }
 
-        // Photo Carousel Logic (circular photos)
+
         let currentPhotoSlideIndex = 0;
-        const photosPerView = 4; // Number of photos visible at once
-        const photoCarouselContainer = document.querySelector('.photo-carousel-container');
-        const photoCarouselWrapper = document.querySelector('.photo-carousel-wrapper');
-        let photoItems = []; // Will be populated after cloning
-        let totalUniquePhotos = 0; // Total number of unique photos
-        let carouselAutoSlideInterval; // Variable to hold the auto-slide interval
-        let isDragging = false;
-        let startX;
-        let currentTranslateX; // The translateX value when dragging starts
-        let itemWidth = 0; // Width of a single photo carousel item
+        let photoCarouselContainer = document.querySelector('.photo-carousel-container');
+        let photoCarouselWrapper = document.querySelector('.photo-carousel-wrapper');
+        let photoItems = []; // This will hold all div.photo-carousel-item elements
+        let originalPhotosData = []; // This will hold paths to original images
+        let totalOriginalPhotos = 0; // Number of unique original photos
+        let carouselAutoSlideInterval;
+
+        // Variables for drag/swipe functionality for photo carousel
+        let isPhotoDragging = false;
+        let photoDragStartX = 0; // Initial X position when drag starts
+        let photoCurrentDragTranslateX = 0; // Current transformX when drag starts
+        let photoItemWidth = 0; // Width of a single photo item including gap
 
         function initializePhotoCarousel() {
-            const originalItems = Array.from(document.querySelectorAll('#photo-carousel-section .photo-carousel-item'));
-            totalUniquePhotos = originalItems.length;
+            // Get original image sources from the initial HTML structure
+            const initialImageElements = Array.from(document.querySelectorAll('#photo-carousel-section .photo-carousel-wrapper .photo-carousel-item img'));
+            originalPhotosData = initialImageElements.map(img => img.src);
+            totalOriginalPhotos = originalPhotosData.length;
 
-            // Clear existing photoItems array if re-initializing
-            photoItems = [];
-            photoCarouselWrapper.innerHTML = ''; // Clear wrapper before appending
+            // Clear the wrapper before re-populating with clones and originals
+            photoCarouselWrapper.innerHTML = '';
+            photoItems = []; // Clear photoItems array
 
-            // Append original items
-            originalItems.forEach(item => {
-                photoCarouselWrapper.appendChild(item);
-                photoItems.push(item);
+            // Add clones of the last set of original items to the beginning for seamless backward looping
+            // We append them first, then the original set, then the clones of the first set.
+            // This creates a structure like: [CLONES_END_SET] [ORIGINAL_SET] [CLONES_START_SET]
+            // And we start display at the beginning of the ORIGINAL_SET (middle block).
+            for (let i = 0; i < totalOriginalPhotos; i++) {
+                const originalIndex = (totalOriginalPhotos - 1 - i); // Clone in reverse order for visual continuity when going left
+                const clonedDiv = document.createElement('div');
+                clonedDiv.className = 'photo-carousel-item';
+                const clonedImg = document.createElement('img');
+                clonedImg.src = originalPhotosData[originalIndex];
+                clonedImg.alt = `Momen Klon Akhir ${originalIndex + 1}`;
+                clonedImg.className = 'circular-photo';
+                clonedDiv.appendChild(clonedImg);
+                photoCarouselWrapper.appendChild(clonedDiv);
+                photoItems.push(clonedDiv);
+            }
+
+            // Add the original items
+            originalPhotosData.forEach((imgSrc, index) => {
+                const originalDiv = document.createElement('div');
+                originalDiv.className = 'photo-carousel-item';
+                const originalImg = document.createElement('img');
+                originalImg.src = imgSrc;
+                originalImg.alt = `Momen ${index + 1}`;
+                originalImg.className = 'circular-photo';
+                originalDiv.appendChild(originalImg);
+                photoCarouselWrapper.appendChild(originalDiv);
+                photoItems.push(originalDiv);
             });
 
-            // Clone the entire set of original photos and append them for seamless looping
-            // This creates a structure like [P1, P2, P3, P4, P5, P6, P1, P2, P3, P4, P5, P6]
-            originalItems.forEach(item => {
-                const clonedItem = item.cloneNode(true);
-                photoCarouselWrapper.appendChild(clonedItem);
-                photoItems.push(clonedItem);
-            });
+            // Add clones of the first set of original items to the end for seamless forward looping
+            for (let i = 0; i < totalOriginalPhotos; i++) {
+                const clonedDiv = document.createElement('div');
+                clonedDiv.className = 'photo-carousel-item';
+                const clonedImg = document.createElement('img');
+                clonedImg.src = originalPhotosData[i];
+                clonedImg.alt = `Momen Klon Awal ${i + 1}`;
+                clonedImg.className = 'circular-photo';
+                clonedDiv.appendChild(clonedImg);
+                photoCarouselWrapper.appendChild(clonedDiv);
+                photoItems.push(clonedDiv);
+            }
 
-            // Calculate itemWidth after all items (including clones) are in the DOM
-            // Use a small timeout to ensure layout is rendered and offsetWidth is accurate
+            // Calculate photoItemWidth after all items are in the DOM
             setTimeout(() => {
                 if (photoItems.length > 0) {
-                    // itemWidth should be the width of one item including its allocated space in the flex container
-                    // This is usually the offsetWidth of the item itself when using flex-shrink: 0 and calculated width
-                    itemWidth = photoItems[0].offsetWidth + 16; // Add 16px for the 1rem gap
-                    // Set the total width of the wrapper to accommodate all items and their gaps.
-                    // We just need to ensure the transform moves by the correct item width.
+                    const style = window.getComputedStyle(photoCarouselWrapper);
+                    const gapValue = parseFloat(style.gap) || 0; // Get gap from wrapper
+                    photoItemWidth = photoItems[0].offsetWidth + gapValue;
                 }
-                // Start auto-sliding
-                startPhotoAutoSlide();
-            }, 100); // Small delay to allow layout calculation
+                // Initial position should be the start of the original (middle) set
+                currentPhotoSlideIndex = totalOriginalPhotos;
+                smoothPhotoSlide(0); // Set initial position instantly without animation
+                startPhotoAutoSlide(); // Start auto-sliding
+            }, 100); // Small delay to ensure rendering
 
-            // Add event listeners for mouse and touch
-            photoCarouselContainer.addEventListener('mousedown', handlePhotoStart);
-            photoCarouselContainer.addEventListener('mousemove', handlePhotoMove);
-            photoCarouselContainer.addEventListener('mouseup', handlePhotoEnd);
-            photoCarouselContainer.addEventListener('mouseleave', handlePhotoEnd); // End drag if mouse leaves container
+            // Add mouse/touch event listeners for dragging
+            photoCarouselContainer.addEventListener('mousedown', handlePhotoDragStart);
+            photoCarouselContainer.addEventListener('mousemove', handlePhotoDragMove);
+            photoCarouselContainer.addEventListener('mouseup', handlePhotoDragEnd);
+            photoCarouselContainer.addEventListener('mouseleave', handlePhotoDragEnd); // End drag if mouse leaves container
 
-            photoCarouselContainer.addEventListener('touchstart', handlePhotoStart);
-            photoCarouselContainer.addEventListener('touchmove', handlePhotoMove);
-            photoCarouselContainer.addEventListener('touchend', handlePhotoEnd);
+            photoCarouselContainer.addEventListener('touchstart', handlePhotoDragStart);
+            photoCarouselContainer.addEventListener('touchmove', handlePhotoDragMove);
+            photoCarouselContainer.addEventListener('touchend', handlePhotoDragEnd);
         }
 
         function startPhotoAutoSlide() {
-            clearInterval(carouselAutoSlideInterval); // Clear any existing interval
-            carouselAutoSlideInterval = setInterval(nextPhotoSlide, 5000); // Slide every 5 seconds
+            clearInterval(carouselAutoSlideInterval); // Clear any previous interval
+            carouselAutoSlideInterval = setInterval(nextPhotoSlide, 5000); // Auto-slide every 5 seconds
         }
 
         function nextPhotoSlide() {
             currentPhotoSlideIndex++;
-            smoothPhotoSlide();
+            smoothPhotoSlide(0.8); // Default transition for auto-slide
         }
 
-        function smoothPhotoSlide() {
-            // Recalculate itemWidth to ensure it's current, especially after window resize
-            const currentItemWidth = photoItems[0].offsetWidth + 16; // 16px for 1rem gap
-            
-            photoCarouselWrapper.style.transition = 'transform 0.8s ease-in-out';
-            photoCarouselWrapper.style.transform = `translateX(-${currentPhotoSlideIndex * currentItemWidth}px)`;
+        function smoothPhotoSlide(transitionDuration = 0.8) {
+            photoCarouselWrapper.style.transition = `transform ${transitionDuration}s ease-in-out`;
+            photoCarouselWrapper.style.transform = `translateX(-${currentPhotoSlideIndex * photoItemWidth}px)`;
 
-            // If we've moved past the original set of photos, instantly jump back to the start of the cloned set
-            if (currentPhotoSlideIndex >= totalUniquePhotos) {
+            // Seamless looping logic
+            // If we've moved past the second original set into the trailing clones
+            if (currentPhotoSlideIndex >= 2 * totalOriginalPhotos) {
                 setTimeout(() => {
                     photoCarouselWrapper.style.transition = 'none'; // Disable transition for instant jump
-                    currentPhotoSlideIndex = 0; // Reset index to the first original photo
-                    photoCarouselWrapper.style.transform = `translateX(-${currentPhotoSlideIndex * currentItemWidth}px)`;
-                    // Re-enable transition after a very short delay
+                    currentPhotoSlideIndex = currentPhotoSlideIndex - totalOriginalPhotos; // Jump back to equivalent in first original set
+                    photoCarouselWrapper.style.transform = `translateX(-${currentPhotoSlideIndex * photoItemWidth}px)`;
+                    // Re-enable transition after a very small delay to avoid flicker
                     setTimeout(() => {
-                        photoCarouselWrapper.style.transition = 'transform 0.8s ease-in-out';
+                        photoCarouselWrapper.style.transition = `transform ${transitionDuration}s ease-in-out`;
                     }, 50);
-                }, 800); // Wait for the current slide transition to finish before jumping
+                }, transitionDuration * 1000); // Wait for current animation to finish
+            } 
+            // If we've moved before the first original set into the leading clones
+            else if (currentPhotoSlideIndex < totalOriginalPhotos) {
+                setTimeout(() => {
+                    photoCarouselWrapper.style.transition = 'none'; // Disable transition for instant jump
+                    currentPhotoSlideIndex = currentPhotoSlideIndex + totalOriginalPhotos; // Jump forward to equivalent in second original set
+                    photoCarouselWrapper.style.transform = `translateX(-${currentPhotoSlideIndex * photoItemWidth}px)`;
+                    // Re-enable transition after a very small delay to avoid flicker
+                    setTimeout(() => {
+                        photoCarouselWrapper.style.transition = `transform ${transitionDuration}s ease-in-out`;
+                    }, 50);
+                }, transitionDuration * 1000); // Wait for current animation to finish
             }
         }
 
-        function handlePhotoStart(e) {
-            isDragging = true;
-            photoCarouselContainer.classList.add('dragging');
-            startX = (e.clientX || e.touches[0].clientX);
-            // Get the current translateX value
-            const transformMatrix = window.getComputedStyle(photoCarouselWrapper).getPropertyValue('transform');
-            currentTranslateX = transformMatrix === 'none' ? 0 : parseFloat(transformMatrix.split(',')[4]);
-
-            clearInterval(carouselAutoSlideInterval); // Pause auto-slide
-            photoCarouselWrapper.style.transition = 'none'; // Disable transition during drag
-        }
-
-        function handlePhotoMove(e) {
-            if (!isDragging) return;
-            e.preventDefault(); // Prevent scrolling while dragging
-            const clientX = (e.clientX || e.touches[0].clientX);
-            const diffX = clientX - startX;
-            photoCarouselWrapper.style.transform = `translateX(${currentTranslateX + diffX}px)`;
-        }
-
-        function handlePhotoEnd(e) {
-            if (!isDragging) return;
-            isDragging = false;
-            photoCarouselContainer.classList.remove('dragging');
-
-            const endX = (e.clientX || (e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientX : startX));
-            const draggedDistance = endX - startX;
+        function handlePhotoDragStart(e) {
+            isPhotoDragging = true;
+            photoCarouselContainer.classList.add('dragging'); // Add dragging cursor style
+            photoDragStartX = (e.clientX || e.touches[0].clientX); // Get initial X position
             
-            // Recalculate itemWidth to ensure it's current before snapping
-            const currentItemWidth = photoItems[0].offsetWidth + 16; // 16px for 1rem gap
-            const dragThreshold = currentItemWidth / 4; // Minimum drag to trigger a slide
+            // Get current translateX to start dragging from current position
+            const transformMatrix = window.getComputedStyle(photoCarouselWrapper).getPropertyValue('transform');
+            photoCurrentDragTranslateX = transformMatrix === 'none' ? 0 : parseFloat(transformMatrix.split(',')[4]);
 
-            // Determine the target index based on drag direction and threshold
-            if (draggedDistance > dragThreshold) { // Dragged right, go to previous slide
-                currentPhotoSlideIndex = Math.max(0, currentPhotoSlideIndex - 1);
-            } else if (draggedDistance < -dragThreshold) { // Dragged left, go to next slide
-                currentPhotoSlideIndex = Math.min(totalUniquePhotos, currentPhotoSlideIndex + 1);
-            } else {
-                // If not enough drag, snap back to the current index (no change to currentPhotoSlideIndex)
-                // This is implicitly handled by smoothPhotoSlide applying the current index's transform
-            }
-
-            smoothPhotoSlide(); // Snap to the calculated index with transition
-            startPhotoAutoSlide(); // Resume auto-slide
+            clearInterval(carouselAutoSlideInterval); // Stop auto-slide during manual drag
+            photoCarouselWrapper.style.transition = 'none'; // Disable transition for immediate movement
         }
 
+        function handlePhotoDragMove(e) {
+            if (!isPhotoDragging) return;
+            e.preventDefault(); // Prevent default touch/mouse behavior (e.g., scrolling)
+            const x = (e.clientX || e.touches[0].clientX);
+            const diffX = x - photoDragStartX;
+            // Apply the drag movement
+            photoCarouselWrapper.style.transform = `translateX(${photoCurrentDragTranslateX + diffX}px)`;
+        }
 
-        // Initial state: hide main content and ensure cover is visible
+        function handlePhotoDragEnd(e) {
+            if (!isPhotoDragging) return;
+            isPhotoDragging = false;
+            photoCarouselContainer.classList.remove('dragging'); // Remove dragging cursor style
+
+            // Calculate the final position after drag
+            const endX = (e.clientX || (e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientX : photoDragStartX));
+            const draggedDistance = endX - photoDragStartX;
+            const finalTranslateX = photoCurrentDragTranslateX + draggedDistance;
+
+            // Determine the closest slide index based on the final position
+            // We divide by photoItemWidth and round to find the nearest full item index.
+            let targetSlideIndex = Math.round(Math.abs(finalTranslateX) / photoItemWidth);
+            
+            // Ensure targetSlideIndex stays within the bounds of the concatenated list
+            // This is primarily for safety, but the looping logic will handle most cases
+            targetSlideIndex = Math.max(0, Math.min(photoItems.length - 1, targetSlideIndex));
+
+            currentPhotoSlideIndex = targetSlideIndex; // Update the main index
+            smoothPhotoSlide(); // Snap to the closest slide with smooth transition
+            startPhotoAutoSlide(); // Restart auto-slide
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             const mainContent = document.getElementById('main-content');
-            // Ensure body overflow is hidden on load if the event is in the future
             const weddingDateForLock = new Date("September 25, 2025 11:00:00").getTime();
             const nowForLock = new Date().getTime();
             const distanceForLock = weddingDateForLock - nowForLock;
 
-            if (distanceForLock >= 0) { // Only hide if event is in future or now
+            // If the wedding date is in the future, prevent scrolling on body initially
+            if (distanceForLock >= 0) {
                 document.body.style.overflow = 'hidden';
             }
-            // mainContent starts with transform: translateY(100%) via CSS
 
-            // New logic to read 'to' parameter from URL and pre-fill input
             const urlParams = new URLSearchParams(window.location.search);
             const guestNameFromUrl = urlParams.get('to');
             const guestNameInput = document.getElementById('guest-name-input');
 
+            // Populate guest name input if present in URL
             if (guestNameFromUrl) {
                 guestNameInput.value = decodeURIComponent(guestNameFromUrl);
             }
         });
 
-        // Function to scroll to the next section and show/play music
         document.getElementById('open-invitation-button').addEventListener('click', function() {
             const coverScreen = document.getElementById('cover-screen');
-            // Apply slide-up animation to the cover screen
-            coverScreen.style.transform = 'translateY(-100%)';
-            // Allow scrolling immediately
-            document.body.style.overflow = 'auto'; 
+            coverScreen.style.transform = 'translateY(-100%)'; // Slide cover screen up
+            document.body.style.overflow = 'auto'; // Re-enable body scrolling
                 
-            // Scroll to the new hero content overlay section
             const heroContentOverlaySection = document.getElementById('hero-content-overlay');
             if (heroContentOverlaySection) {
-                heroContentOverlaySection.scrollIntoView({ behavior: 'smooth' });
+                heroContentOverlaySection.scrollIntoView({ behavior: 'smooth' }); // Smooth scroll to hero section
             }
 
-            // Show music toggle button and attempt to play music
-            musicToggleButton.style.display = 'flex'; // Show the button
+            musicToggleButton.style.display = 'flex'; // Show music toggle button
             backgroundMusic.play().then(() => {
-                // Music started playing successfully
                 playIcon.style.display = 'none';
                 pauseIcon.style.display = 'block';
             }).catch(error => {
-                // Autoplay was prevented or other error occurred
-                console.log("Autoplay was prevented or failed on initial click:", error);
+                console.log("Autoplay was prevented:", error);
                 alertMessage("Musik tidak dapat diputar otomatis. Silakan klik tombol play di pojok kanan bawah.");
-                // Ensure icons reflect paused state if autoplay failed
                 playIcon.style.display = 'block';
                 pauseIcon.style.display = 'none';
             });
             
-            startHeroBackgroundSlideshow(); // Start the new background slideshow
-            initializePhotoCarousel(); // Initialize the new photo carousel
-            initializeOurGallery(); // Initialize the new Our Gallery slideshow
+            startHeroBackgroundSlideshow(); // Start background slideshow
+            initializePhotoCarousel(); // Initialize photo carousel
+            initializeOurGallery(); // Initialize gallery
 
-            // Set the map button href after content is visible
             const eventLocationText = document.getElementById('event-location').innerText;
             const openMapButton = document.getElementById('open-map-button');
             if (openMapButton && eventLocationText) {
-                // This will attempt to open the native map app first, then fallback to browser
                 openMapButton.onclick = function(e) {
-                    e.preventDefault(); // Prevent default link behavior
+                    e.preventDefault();
                     openMapsApp(eventLocationText);
                 };
             }
 
-            // After the cover screen animation, hide it completely
+            // Hide cover screen completely after transition
             setTimeout(() => {
                 coverScreen.style.display = 'none';
-            }, 1000); // Match this duration with the CSS transition duration
+            }, 1000);
         });
 
-        // Function to save event to calendar
         function saveDateToCalendar() {
-            const eventDateText = document.getElementById('event-date').innerText; // e.g., "Kamis, 25 September 2025"
-            const eventTimeText = document.getElementById('event-time').innerText; // e.g., "11:00 - 22:00 WITA"
-            const eventLocationText = document.getElementById('event-location').innerText; // e.g., "Jl. Warapsari No.2, Gelgel, Kec. Klungkung, Kabupaten Klungkung, Bali"
+            const eventDateText = document.getElementById('event-date').innerText;
+            const eventTimeText = document.getElementById('event-time').innerText;
+            const eventLocationText = document.getElementById('event-location').innerText;
 
             const eventTitle = "Resepsi Pernikahan Hendra & Maylin";
             const eventDescription = "Merupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kami. Atas kehadiran dan doa restunya kami ucapkan terima kasih.";
 
-            // Parse date from "Kamis, 25 September 2025"
+            // Parse date
             const dateParts = eventDateText.match(/(\d{1,2})\s(\w+)\s(\d{4})/);
             let day, monthName, year;
             if (dateParts) {
@@ -1188,13 +1460,14 @@
                 return;
             }
 
+            // Month mapping for Date object
             const monthMap = {
                 "Januari": 0, "Februari": 1, "Maret": 2, "April": 3, "Mei": 4, "Juni": 5,
                 "Juli": 6, "Agustus": 7, "September": 8, "Oktober": 9, "November": 10, "Desember": 11
             };
             const month = monthMap[monthName];
 
-            // Parse start and end times from "11:00 - 22:00 WITA"
+            // Parse time range
             const timeRangeParts = eventTimeText.split(' - ');
             if (timeRangeParts.length < 2) {
                 console.error("Could not parse event time range:", eventTimeText);
@@ -1203,7 +1476,7 @@
             }
 
             const startTimeStr = timeRangeParts[0].trim();
-            const endTimeStr = timeRangeParts[1].split(' ')[0].trim(); // Get "22:00" from "22:00 WITA"
+            const endTimeStr = timeRangeParts[1].split(' ')[0].trim(); // Get only time, not WITA
 
             const startTimeParts = startTimeStr.split(':');
             const startHour = parseInt(startTimeParts[0]);
@@ -1213,10 +1486,11 @@
             const endHour = parseInt(endTimeParts[0]);
             const endMinute = parseInt(endTimeParts[1]);
 
+            // Create Date objects
             const startDate = new Date(year, month, day, startHour, startMinute);
             const endDate = new Date(year, month, day, endHour, endMinute);
 
-            // Function to format date for Google Calendar URL (YYYYMMDDTHHMMSS)
+            // Helper to format date for Google Calendar URL
             const formatDateTime = (date) => {
                 const pad = (num) => String(num).padStart(2, '0');
                 return `${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}T${pad(date.getHours())}${pad(date.getMinutes())}${pad(date.getSeconds())}`;
@@ -1225,26 +1499,23 @@
             const formattedStartDate = formatDateTime(startDate);
             const formattedEndDate = formatDateTime(endDate);
 
+            // Construct Google Calendar URL
             const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${formattedStartDate}/${formattedEndDate}&details=${encodeURIComponent(eventDescription)}&location=${encodeURIComponent(eventLocationText)}&sf=true&output=xml`;
 
-            // Open the URL in a new tab/window
-            window.open(googleCalendarUrl, '_blank');
+            window.open(googleCalendarUrl, '_blank'); // Open in new tab
         }
 
-        // Function to open map app or browser
         function openMapsApp(locationQuery) {
             const encodedLocation = encodeURIComponent(locationQuery);
-            // Using Google Maps URL directly for broader compatibility
             const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodedLocation}`;
-            window.open(mapUrl, '_blank');
+            window.open(mapUrl, '_blank'); // Open in new tab
         }
 
-        // Function to send RSVP
         function sendRsvp() {
             const nameInput = document.getElementById('rsvp-name');
-            const guestsSelect = document.getElementById('rsvp-guests'); // Changed to select
+            const guestsSelect = document.getElementById('rsvp-guests');
             const name = nameInput.value.trim();
-            const guests = guestsSelect.value; // Get value from select
+            const guests = guestsSelect.value;
 
             if (!name) {
                 alertMessage("Nama lengkap tidak boleh kosong!");
@@ -1255,23 +1526,10 @@
                 return;
             }
 
-            // --- PENTING: Ganti URL Google Form ini dengan URL formulir Anda sendiri ---
-            // 1. Buat Google Form baru (misalnya, dengan pertanyaan "Nama Lengkap" dan "Jumlah Tamu").
-            // 2. Klik ikon tiga titik (More) di kanan atas formulir Anda, lalu pilih "Dapatkan link yang sudah diisi sebelumnya".
-            // 3. Isi formulir dengan data contoh (misalnya, "Nama Contoh" dan "1").
-            // 4. Klik "Dapatkan link".
-            // 5. Salin URL yang dihasilkan. URL ini akan memiliki format seperti:
-            //    https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform?usp=pp_url&entry.YOUR_NAME_FIELD_ID=Nama+Contoh&entry.YOUR_GUEST_COUNT_FIELD_ID=1
-            // 6. Ganti 'YOUR_FORM_ID', 'YOUR_NAME_FIELD_ID', dan 'YOUR_GUEST_COUNT_ID' di bawah ini
-            //    dengan ID yang sesuai dari URL yang Anda salin.
-            //    Contoh:
-            //    const formId = '1FAIpQLScf_YOUR_FORM_ID_HERE';
-            //    const nameEntryId = '123456789'; // Contoh ID entry untuk Nama Lengkap
-            //    const guestsEntryId = '987654321'; // Contoh ID entry untuk Jumlah Tamu
-
-            const formId = '1FAIpQLSfGWLeHQVOsCbZpwHqPx3zLBe5tvP2fnihyZ3jk9oBB7rnOjQ'; // Ganti dengan ID formulir Google Anda
-            const nameEntryId = '1590223346'; // Ganti dengan ID entry untuk nama lengkap Anda
-            const guestsEntryId = '882125067'; // Ganti dengan ID entry untuk jumlah tamu Anda
+            // REPLACE WITH YOUR GOOGLE FORM DETAILS
+            const formId = '1FAIpQLSfGWLeHQVOsCbZpwHqPx3zLBe5tvP2fnihyZ3jk9oBB7rnOjQ'; // Replace with your actual Google Form ID
+            const nameEntryId = '1590223346'; // Replace with the entry ID for Name field
+            const guestsEntryId = '882125067'; // Replace with the entry ID for Guests field
 
             if (formId === 'YOUR_GOOGLE_FORM_ID_HERE' || nameEntryId === 'YOUR_NAME_ENTRY_ID' || guestsEntryId === 'YOUR_GUESTS_ENTRY_ID') {
                 alertMessage("Harap konfigurasikan Google Form Anda terlebih dahulu di kode JavaScript.");
@@ -1281,10 +1539,9 @@
 
             const googleFormUrl = `https://docs.google.com/forms/d/e/${formId}/viewform?usp=pp_url&entry.${nameEntryId}=${encodeURIComponent(name)}&entry.${guestsEntryId}=${encodeURIComponent(guests)}`;
 
-            window.open(googleFormUrl, '_blank');
+            window.open(googleFormUrl, '_blank'); // Open Google Form in a new tab
         }
 
-        // Our Gallery Slideshow Logic
         const mainGalleryPreview = document.getElementById('main-gallery-preview');
         const thumbnailCarouselContainer = document.getElementById('thumbnail-carousel-container');
         const thumbnailCarouselWrapper = document.getElementById('thumbnail-carousel-wrapper');
@@ -1294,10 +1551,9 @@
         let galleryScrollLeft;
         let galleryAutoSlideInterval;
         let galleryScrollTimeout;
-        let currentGalleryIndex = 0; // Index for the *original* photos
-        const numClones = 2; // Number of items to clone from each end for seamless looping
+        let currentGalleryIndex = 0;
+        const numClones = 2; // Number of clones at each end for seamless looping
 
-        // Define your gallery images here
         const galleryImagesData = [
             { thumb: "./assets/Photo2.jpg", full: "./assets/Photo2.jpg" },
             { thumb: "./assets/Photo3.jpg", full: "./assets/Photo3.jpg" },
@@ -1308,70 +1564,68 @@
         ];
 
         function initializeOurGallery() {
-            // Clear existing content in the thumbnail wrapper
-            thumbnailCarouselWrapper.innerHTML = ''; 
+            thumbnailCarouselWrapper.innerHTML = ''; // Clear previous thumbnails
 
-            // Prepend clones of the last few images for seamless looping
+            // Add clones of the end items to the beginning
             for (let i = 0; i < numClones; i++) {
                 const imgData = galleryImagesData[galleryImagesData.length - numClones + i];
-                const clonedThumb = createThumbnailElement(imgData, true); // true indicates a clone
+                const clonedThumb = createThumbnailElement(imgData, true);
                 thumbnailCarouselWrapper.appendChild(clonedThumb);
             }
 
-            // Append original images
+            // Add original images
             galleryImagesData.forEach(imgData => {
-                const originalThumb = createThumbnailElement(imgData, false); // false indicates original
+                const originalThumb = createThumbnailElement(imgData, false);
                 thumbnailCarouselWrapper.appendChild(originalThumb);
             });
 
-            // Append clones of the first few images for seamless looping
+            // Add clones of the start items to the end
             for (let i = 0; i < numClones; i++) {
                 const imgData = galleryImagesData[i];
-                const clonedThumb = createThumbnailElement(imgData, true); // true indicates a clone
+                const clonedThumb = createThumbnailElement(imgData, true);
                 thumbnailCarouselWrapper.appendChild(clonedThumb);
             }
 
-            // Re-fetch all thumbnail items including clones after they are in the DOM
+            // Get all thumbnail elements including clones
             galleryThumbnailItems = Array.from(document.querySelectorAll('#thumbnail-carousel-wrapper .gallery-thumbnail-item'));
 
             if (galleryThumbnailItems.length === 0) return;
 
-            // Set initial index to the first *original* photo (after prepended clones)
+            // Set initial index to the first original image (after the leading clones)
             currentGalleryIndex = numClones;
             setActiveGalleryThumbnail(currentGalleryIndex);
             
-            // Initial scroll to the first original photo without smooth behavior
-            // This ensures the carousel starts at the correct visual position
+            // Scroll to the initial position without smooth behavior first
             setTimeout(() => {
                 const initialScrollPosition = galleryThumbnailItems[currentGalleryIndex].offsetLeft - (thumbnailCarouselContainer.offsetWidth / 2) + (thumbnailCarouselContainer.offsetWidth / 2);
                 thumbnailCarouselContainer.scrollTo({
                     left: initialScrollPosition,
-                    behavior: 'auto' // Important: 'auto' for initial jump
+                    behavior: 'auto'
                 });
-            }, 50); // Small delay to ensure layout is ready
+            }, 50);
 
             // Add click listeners to thumbnails
             galleryThumbnailItems.forEach((thumb, index) => {
                 thumb.addEventListener('click', () => {
-                    // When a thumbnail is clicked, we need to map it to the original index
                     let originalIndex = index;
-                    if (index < numClones) { // Clicked a prepended clone
+                    // Adjust index if clicking on a clone
+                    if (index < numClones) {
                         originalIndex = galleryImagesData.length - numClones + index;
-                    } else if (index >= galleryImagesData.length + numClones) { // Clicked an appended clone
-                        originalIndex = index - galleryImagesData.length; // Corrected calculation for appended clones
-                    } else { // Clicked an original
+                    } else if (index >= galleryImagesData.length + numClones) {
+                        originalIndex = index - galleryImagesData.length;
+                    } else {
                         originalIndex = index - numClones;
                     }
 
-                    setActiveGalleryThumbnail(index); // Set active class on the clicked thumbnail (can be a clone)
+                    setActiveGalleryThumbnail(index); // Set active class for the clicked thumbnail
                     centerThumbnailInView(galleryThumbnailItems[index]); // Center the clicked thumbnail
-                    resetGalleryAutoSlide(); // Reset auto-slide on manual click
-                    mainGalleryPreview.src = galleryImagesData[originalIndex].full; // Update main image with original source
+                    resetGalleryAutoSlide(); // Reset auto-slide timer
+                    mainGalleryPreview.src = galleryImagesData[originalIndex].full; // Update main preview image
                     mainGalleryPreview.alt = `Main Gallery Photo ${originalIndex + 1}`;
                 });
             });
 
-            // Add drag functionality for the thumbnail carousel (mouse and touch)
+            // Add drag event listeners for carousel
             thumbnailCarouselContainer.addEventListener('mousedown', handleGalleryStart);
             thumbnailCarouselContainer.addEventListener('mouseleave', handleGalleryEnd);
             thumbnailCarouselContainer.addEventListener('mouseup', handleGalleryEnd);
@@ -1381,20 +1635,19 @@
             thumbnailCarouselContainer.addEventListener('touchend', handleGalleryEnd);
             thumbnailCarouselContainer.addEventListener('touchmove', handleGalleryMove);
 
-            // Add scroll event listener for auto-selecting center thumbnail
+            // Handle scroll events for snapping and infinite loop
             thumbnailCarouselContainer.addEventListener('scroll', () => {
-                clearTimeout(galleryScrollTimeout);
-                galleryScrollTimeout = setTimeout(handleGalleryScrollEnd, 150); // Debounce scroll end
+                clearTimeout(galleryScrollTimeout); // Clear previous timeout
+                galleryScrollTimeout = setTimeout(handleGalleryScrollEnd, 150); // Set timeout to run after scroll stops
                 resetGalleryAutoSlide(); // Reset auto-slide on manual scroll
             });
 
-            // Add wheel event listener for mouse scroll
+            // Handle wheel scroll for horizontal scrolling and snapping
             thumbnailCarouselContainer.addEventListener('wheel', handleGalleryWheel, { passive: false });
 
-            startGalleryAutoSlide(); // Start automatic slideshow
+            startGalleryAutoSlide(); // Start auto-slide
         }
 
-        // Function to create a thumbnail image element
         function createThumbnailElement(imgData, isClone) {
             const img = document.createElement('img');
             img.src = imgData.thumb;
@@ -1407,33 +1660,29 @@
             return img;
         }
 
-        // Function to set the active thumbnail and update the main photo
         function setActiveGalleryThumbnail(index) {
-            let originalIndex = 0; 
+            let originalIndex = 0; // Initialize originalIndex
             
-            // Remove active class from all thumbnails
             galleryThumbnailItems.forEach(thumb => {
                 thumb.classList.remove('active-thumbnail');
             });
 
-            // Add active class to the specified thumbnail
             if (galleryThumbnailItems[index]) {
                 galleryThumbnailItems[index].classList.add('active-thumbnail');
-                // Determine the original index for the main preview based on clones
+                // Determine the correct original image index based on clones
                 if (index < numClones) {
                     originalIndex = galleryImagesData.length - numClones + index;
                 } else if (index >= galleryImagesData.length + numClones) {
                     originalIndex = index - galleryImagesData.length;
-                } else { // Clicked an original
+                } else {
                     originalIndex = index - numClones;
                 }
                 mainGalleryPreview.src = galleryImagesData[originalIndex].full;
                 mainGalleryPreview.alt = `Main Gallery Photo ${originalIndex + 1}`;
             }
-            currentGalleryIndex = index; // Update the internal current index
+            currentGalleryIndex = index; // Update current index
         }
 
-        // Function to center the active thumbnail in view
         function centerThumbnailInView(thumbElement) {
             const containerWidth = thumbnailCarouselContainer.offsetWidth;
             const thumbOffsetLeft = thumbElement.offsetLeft;
@@ -1446,46 +1695,41 @@
             });
         }
 
-        // Handle start of drag/swipe for thumbnails
         function handleGalleryStart(e) {
             isGalleryDragging = true;
             thumbnailCarouselContainer.classList.add('dragging');
             galleryStartX = (e.pageX || e.touches[0].pageX) - thumbnailCarouselContainer.offsetLeft;
             galleryScrollLeft = thumbnailCarouselContainer.scrollLeft;
-            e.preventDefault(); // Prevent default scroll behavior
-            clearInterval(galleryAutoSlideInterval); // Pause auto-slide during drag
+            e.preventDefault(); // Prevent default browser drag behavior
+            clearInterval(galleryAutoSlideInterval); // Stop auto-slide when dragging starts
         }
 
-        // Handle end of drag/swipe for thumbnails
         function handleGalleryEnd() {
-            if (!isGalleryDragging) return; // Ensure drag actually started
+            if (!isGalleryDragging) return;
             isGalleryDragging = false;
             thumbnailCarouselContainer.classList.remove('dragging');
-            handleGalleryScrollEnd(); // Snap to nearest center thumbnail
-            resetGalleryAutoSlide(); // Resume auto-slide
+            handleGalleryScrollEnd(); // Snap to closest item
+            resetGalleryAutoSlide(); // Restart auto-slide
         }
 
-        // Handle move during drag/swipe for thumbnails
         function handleGalleryMove(e) {
             if (!isGalleryDragging) return;
-            e.preventDefault(); // Prevent default scroll behavior
+            e.preventDefault(); // Prevent default touch/mouse behavior
             const x = (e.pageX || e.touches[0].pageX) - thumbnailCarouselContainer.offsetLeft;
-            const walk = (x - galleryStartX) * 1.5; // Adjust sensitivity
+            const walk = (x - galleryStartX) * 1.5; // Adjust scroll speed
             thumbnailCarouselContainer.scrollLeft = galleryScrollLeft - walk;
         }
 
-        // Handle mouse wheel scroll for thumbnails
         function handleGalleryWheel(e) {
-            e.preventDefault(); // Prevent default vertical scroll
-            const scrollAmount = e.deltaY || e.deltaX; // Use deltaY for vertical scroll, deltaX for horizontal
-            thumbnailCarouselContainer.scrollLeft += scrollAmount;
+            e.preventDefault(); // Prevent vertical scrolling
+            const scrollAmount = e.deltaY || e.deltaX; // Get scroll amount
+            thumbnailCarouselContainer.scrollLeft += scrollAmount; // Apply horizontal scroll
 
-            clearTimeout(galleryScrollTimeout);
-            galleryScrollTimeout = setTimeout(handleGalleryScrollEnd, 150); // Debounce scroll end
-            resetGalleryAutoSlide(); // Reset auto-slide on manual scroll
+            clearTimeout(galleryScrollTimeout); // Clear previous timeout
+            galleryScrollTimeout = setTimeout(handleGalleryScrollEnd, 150); // Set new timeout for snapping
+            resetGalleryAutoSlide(); // Reset auto-slide
         }
 
-        // Handle scroll end event for thumbnails (snapping and looping)
         function handleGalleryScrollEnd() {
             const containerCenter = thumbnailCarouselContainer.scrollLeft + (thumbnailCarouselContainer.offsetWidth / 2);
             let closestThumbIndex = 0;
@@ -1502,104 +1746,100 @@
                 }
             });
 
-            setActiveGalleryThumbnail(closestThumbIndex); // Highlight the closest thumbnail
+            setActiveGalleryThumbnail(closestThumbIndex); // Set the closest thumbnail as active
             centerThumbnailInView(galleryThumbnailItems[closestThumbIndex]); // Center it in view
 
-            // Handle seamless looping jump after smooth scroll settles
-            // If we scrolled into prepended clones, jump to the corresponding original
-            if (currentGalleryIndex < numClones) { 
+            // Handle seamless looping when scrolling into cloned sections
+            if (currentGalleryIndex < numClones) { // If scrolled into leading clones
                 setTimeout(() => {
                     thumbnailCarouselContainer.style.scrollBehavior = 'auto'; // Disable smooth scroll for instant jump
                     const targetIndex = galleryImagesData.length + currentGalleryIndex;
                     const targetScroll = galleryThumbnailItems[targetIndex].offsetLeft - (thumbnailCarouselContainer.offsetWidth / 2) + (thumbnailCarouselContainer.offsetWidth / 2);
                     thumbnailCarouselContainer.scrollLeft = targetScroll;
-                    currentGalleryIndex = targetIndex; // Update current index to the corresponding original
+                    currentGalleryIndex = targetIndex;
                     thumbnailCarouselContainer.style.scrollBehavior = 'smooth'; // Re-enable smooth scroll
-                }, 150); // Short delay after smooth scroll finishes
+                }, 150); // Short delay to allow visual scroll to finish
             } 
-            // If we scrolled into appended clones, jump to the corresponding original
-            else if (currentGalleryIndex >= galleryImagesData.length + numClones) { 
+            else if (currentGalleryIndex >= galleryImagesData.length + numClones) { // If scrolled into trailing clones
                 setTimeout(() => {
-                    thumbnailCarouselContainer.style.scrollBehavior = 'auto'; // Disable smooth scroll for instant jump
+                    thumbnailCarouselContainer.style.scrollBehavior = 'auto'; // Disable smooth scroll
                     const targetIndex = currentGalleryIndex - galleryImagesData.length;
                     const targetScroll = galleryThumbnailItems[targetIndex].offsetLeft - (thumbnailCarouselContainer.offsetWidth / 2) + (thumbnailCarouselContainer.offsetWidth / 2);
                     thumbnailCarouselContainer.scrollLeft = targetScroll;
-                    currentGalleryIndex = targetIndex; // Update current index to the corresponding original
+                    currentGalleryIndex = targetIndex;
                     thumbnailCarouselContainer.style.scrollBehavior = 'smooth'; // Re-enable smooth scroll
-                }, 150); // Short delay after smooth scroll finishes
+                }, 150); // Short delay
             }
         }
 
-        // Start automatic slideshow for gallery
         function startGalleryAutoSlide() {
             clearInterval(galleryAutoSlideInterval); // Clear any existing interval
-            galleryAutoSlideInterval = setInterval(nextGallerySlide, 5000); // Slide every 5 seconds
+            galleryAutoSlideInterval = setInterval(nextGallerySlide, 5000); // Start auto-slide every 5 seconds
         }
 
-        // Reset automatic slideshow timer
         function resetGalleryAutoSlide() {
-            clearInterval(galleryAutoSlideInterval);
-            startGalleryAutoSlide();
+            clearInterval(galleryAutoSlideInterval); // Clear current interval
+            startGalleryAutoSlide(); // Start a new interval
         }
 
-        // Move to the next slide in the gallery
         function nextGallerySlide() {
             let nextIndex = currentGalleryIndex + 1;
-            // If we are about to go into the appended clones, let it scroll there first
             if (nextIndex < galleryThumbnailItems.length) {
                 setActiveGalleryThumbnail(nextIndex);
                 centerThumbnailInView(galleryThumbnailItems[nextIndex]);
             } else {
-                // If we are at the very end (last appended clone), jump back to the first original
-                // This jump should be instant, then resume auto-slide
-                thumbnailCarouselContainer.style.scrollBehavior = 'auto'; // Disable smooth scroll for instant jump
-                currentGalleryIndex = numClones; // Reset index to the first original photo
+                // If at the end of all items (including clones), jump back to the start of original items
+                thumbnailCarouselContainer.style.scrollBehavior = 'auto';
+                currentGalleryIndex = numClones; // Set to the first original item's index
                 const targetScroll = galleryThumbnailItems[currentGalleryIndex].offsetLeft - (thumbnailCarouselContainer.offsetWidth / 2) + (thumbnailCarouselContainer.offsetWidth / 2);
                 thumbnailCarouselContainer.scrollLeft = targetScroll;
-                thumbnailCarouselContainer.style.scrollBehavior = 'smooth'; // Re-enable smooth scroll
-                setActiveGalleryThumbnail(currentGalleryIndex); // Set active for the new position
+                thumbnailCarouselContainer.style.scrollBehavior = 'smooth';
+                setActiveGalleryThumbnail(currentGalleryIndex);
             }
         }
 
-        // Global Firebase variables for blessings
         let app;
         let db;
         let auth;
         let userId;
         let blessingsCollection;
 
-        // Initialize Firebase and Auth
         async function initializeFirebase() {
             try {
+                // Parse Firebase config from global variable
                 const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
                 app = firebase.initializeApp(firebaseConfig);
                 db = firebase.firestore();
                 auth = firebase.auth();
 
+                // Sign in using custom token if available, otherwise anonymously
                 if (typeof __initial_auth_token !== 'undefined') {
                     await auth.signInWithCustomToken(__initial_auth_token);
                 } else {
                     await auth.signInAnonymously();
                 }
 
+                // Listen for auth state changes to set userId and initialize Firestore collection
                 auth.onAuthStateChanged(user => {
                     if (user) {
-                        userId = user.uid;
+                        userId = user.uid; // Use Firebase UID if authenticated
                     } else {
-                        userId = crypto.randomUUID(); // Fallback for unauthenticated users
+                        userId = crypto.randomUUID(); // Generate random ID if anonymous
                     }
                     console.log("Firebase User ID:", userId);
+                    // Get app ID from global variable or use default
                     const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                    // Construct Firestore collection path for public data
                     blessingsCollection = db.collection(`artifacts/${appId}/public/data/blessings`);
-                    displayBlessings(); // Start listening for blessings after auth
-                    document.getElementById('user-id-display').innerText = `User ID: ${userId}`; // Display user ID
+                    displayBlessings(); // Display existing blessings
+                    document.getElementById('user-id-display').innerText = `User ID: ${userId}`;
                 });
             } catch (error) {
                 console.error("Error initializing Firebase:", error);
+                // Optionally show an alert or message to the user
             }
         }
 
-        // Send Blessing Function
         async function sendBlessing() {
             const nameInput = document.getElementById('blessing-name');
             const messageInput = document.getElementById('blessing-message');
@@ -1612,22 +1852,23 @@
             }
 
             try {
+                // Add blessing document to Firestore
                 await blessingsCollection.add({
                     name: name,
                     message: message,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    userId: userId // Store the user ID with the blessing
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Server timestamp for consistency
+                    userId: userId // Store user ID with the blessing
                 });
-                nameInput.value = '';
+                nameInput.value = ''; // Clear input fields
                 messageInput.value = '';
                 alertMessage("Ucapan doa restu berhasil dikirim!");
-            } catch (error) {
+            }
+            catch (error) {
                 console.error("Error adding blessing:", error);
                 alertMessage("Gagal mengirim ucapan doa restu. Coba lagi nanti.");
             }
         }
 
-        // Display Blessings Function
         function displayBlessings() {
             const blessingsListDiv = document.getElementById('blessings-list');
             if (!blessingsCollection) {
@@ -1635,35 +1876,37 @@
                 return;
             }
 
+            // Listen for real-time updates to the blessings collection
             blessingsCollection.onSnapshot(snapshot => {
-                blessingsListDiv.innerHTML = ''; // Clear current list
+                blessingsListDiv.innerHTML = ''; // Clear existing list
                 const blessings = [];
                 snapshot.forEach(doc => {
                     blessings.push({ id: doc.id, ...doc.data() });
                 });
 
-                // Sort in memory by timestamp (descending)
+                // Sort blessings by timestamp in descending order (newest first)
                 blessings.sort((a, b) => {
                     const timeA = a.timestamp ? (a.timestamp.toDate ? a.timestamp.toDate().getTime() : a.timestamp.getTime()) : 0;
                     const timeB = b.timestamp ? (b.timestamp.toDate ? b.timestamp.toDate().getTime() : b.timestamp.getTime()) : 0;
                     return timeB - timeA;
                 });
 
+                // Display each blessing
                 blessings.forEach(blessing => {
                     const blessingCard = document.createElement('div');
-                    blessingCard.className = 'bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200';
+                    blessingCard.classList.add('p-4', 'rounded-lg', 'shadow-sm', 'border', 'glass-input');
                     
                     const nameElement = document.createElement('p');
-                    nameElement.className = 'font-semibold text-base text-gray-800';
+                    nameElement.className = 'font-semibold text-base text-white'; /* Changed to text-white */
                     nameElement.innerText = blessing.name;
 
                     const messageElement = document.createElement('p');
-                    messageElement.className = 'text-sm text-gray-700 mt-2';
+                    messageElement.className = 'text-sm text-white mt-2'; /* Changed to text-white */
                     messageElement.innerText = blessing.message;
 
                     const timestampElement = document.createElement('p');
-                    timestampElement.className = 'text-sm text-gray-500 mt-2 italic';
-                    if (blessing.timestamp && blessing.timestamp.toDate) { // Check if toDate() method exists
+                    timestampElement.className = 'text-sm text-white mt-2 italic'; /* Changed to text-white */
+                    if (blessing.timestamp && blessing.timestamp.toDate) {
                         const date = blessing.timestamp.toDate();
                         timestampElement.innerText = date.toLocaleString('id-ID', {
                             year: 'numeric', month: 'long', day: 'numeric',
@@ -1675,7 +1918,6 @@
 
                     blessingCard.appendChild(nameElement);
                     blessingCard.appendChild(messageElement);
-                    blessingCard.appendChild(timestampElement);
                     blessingsListDiv.appendChild(blessingCard);
                 });
             }, error => {
@@ -1684,7 +1926,7 @@
             });
         }
 
-        // Call initializeFirebase when the DOM is ready
+        // Initialize Firebase when the DOM is fully loaded
         document.addEventListener('DOMContentLoaded', initializeFirebase);
     </script>
 </body>
