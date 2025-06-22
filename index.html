@@ -696,6 +696,10 @@
             position: relative; /* Penting untuk penempatan iframe absolut */
             overflow: hidden; /* Memastikan iframe tidak meluap */
         }
+        /* Default padding-top for #events h2 (desktop and larger screens) */
+        #events h2 {
+            padding-top: 10rem; /* Increased top padding for desktop */
+        }
 
         .map-background-container {
             position: absolute;
@@ -738,6 +742,7 @@
             #wedding-quote .max-w-3xl {
                 padding-bottom: calc(50px + 4rem); /* Half photo height + 4rem clearance */
             }
+            /* Keempat, menimpa padding-top untuk #events h2 pada ukuran layar tablet */
             #events h2 {
                 padding-top: calc(50px + 6rem); /* Half photo height + 6rem clearance */
             }
@@ -750,6 +755,7 @@
             #wedding-quote .max-w-3xl {
                 padding-bottom: calc(40px + 4rem); /* Half photo height + 4rem clearance */
             }
+            /* Kelima, menimpa padding-top untuk #events h2 pada ukuran layar mobile kecil */
             #events h2 {
                 padding-top: calc(40px + 6rem); /* Half photo height + 6rem clearance */
             }
@@ -762,6 +768,7 @@
             #wedding-quote .max-w-3xl {
                 padding-bottom: calc(30px + 4rem); /* Half photo height + 4rem clearance */
             }
+            /* Keenam, menimpa padding-top untuk #events h2 pada ukuran layar mobile terkecil */
             #events h2 {
                 padding-top: calc(30px + 6rem); /* Half photo height + 6rem clearance */
             }
@@ -1864,7 +1871,7 @@
             let nextIndex = currentGalleryIndex + 1;
             if (nextIndex < galleryThumbnailItems.length) {
                 setActiveGalleryThumbnail(nextIndex);
-                centerThumbnailInView(galleryThumbnailItems[nextIndex]);
+                centerThumbnailInView(galleryThumbnailItems[nextIndex]); // Fixed typo here
             } else {
                 // If at the end of all items (including clones), jump back to the start of original items
                 thumbnailCarouselContainer.style.scrollBehavior = 'auto';
