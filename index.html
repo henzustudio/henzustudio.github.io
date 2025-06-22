@@ -686,8 +686,8 @@
             background-color: transparent;
             position: relative; /* Penting untuk penempatan iframe absolut */
             overflow: hidden; /* Memastikan iframe tidak meluap */
-            /* Adjusted margin-top to align with carousel's midpoint */
-            margin-top: -9.6875rem; /* -155px */
+            /* Margin negatif dihapus untuk menghindari tumpang tindih yang tidak diinginkan dan memperbaiki posisi */
+            margin-top: 0; /* Mengatur ulang margin-top */
         }
 
         .map-background-container {
@@ -727,9 +727,9 @@
             z-index: 2; /* Pastikan di atas wedding-quote */
             padding-top: 5rem; /* Menjaga padding internal */
             padding-bottom: 5rem; /* Menjaga padding internal */
-            /* Adjusted margins to make it collapse its vertical space and center it */
-            /* margin-top: -9.6875rem; */ /* Hapus ini */
-            /* margin-bottom: -9.6875rem; */ /* Hapus ini */
+            /* Mengatur margin negatif untuk menempatkan carousel di tengah transisi visual */
+            margin-top: -5rem;
+            margin-bottom: -5rem;
         }
 
         /* Hapus pseudo-elemen ::before karena tidak lagi diperlukan untuk background dan blur */
