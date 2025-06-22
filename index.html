@@ -469,8 +469,10 @@
             background-image: url('./assets/Photo6.jpg');
         }
         #about {
+            background-color: rgba(255, 255, 255, 0.05); /* Sedikit transparan untuk efek glassmorphism */
+            backdrop-filter: blur(10px); /* Efek blur */
+            -webkit-backdrop-filter: blur(10px); /* Dukungan browser lama */
             position: relative; /* Diperlukan untuk section-overlay */
-            /* Hapus background-color dan backdrop-filter dari sini */
         }
 
         #wedding-quote .dynamic-background-image {
@@ -491,16 +493,6 @@
             backdrop-filter: blur(5px); /* Blur effect */
             -webkit-backdrop-filter: blur(5px); /* For Safari support */
         }
-
-        /* START MODIFICATION */
-        /* Hapus gaya khusus untuk #about .section-overlay */
-        /* Ini akan membuatnya menggunakan gaya .section-overlay default */
-        #about .section-overlay {
-            /* background-color: rgba(255, 255, 255, 0.05); */
-            /* backdrop-filter: blur(10px); */
-            /* -webkit-backdrop-filter: blur(10px); */
-        }
-        /* END MODIFICATION */
 
         /* Content positioning over overlay */
         #about .max-w-5xl, #wedding-quote .max-w-3xl {
@@ -831,9 +823,7 @@
             <!-- Background Image Div -->
             <div class="dynamic-background-image" style="background-image: url('./assets/Photo6.jpg');"></div>
             <div class="section-overlay"></div>
-            <!-- START MODIFICATION -->
-            <div class="max-w-5xl mx-auto relative z-10 card p-10 rounded-lg shadow-xl">
-            <!-- END MODIFICATION -->
+            <div class="max-w-5xl mx-auto relative z-10">
                 <div class="flex flex-col md:flex-row items-center justify-center space-y-12 md:space-y-0 md:space-x-20">
                     <div class="flex flex-col items-center">
                         <img src="./assets/About Me.jpg" alt="Hendra" class="w-48 h-48 rounded-full object-cover shadow-xl border-4 border-D4AF37 mb-6">
@@ -1100,53 +1090,64 @@
     </button>
 
     <script>
+        // Disable scroll restoration to prevent browser from jumping to previous scroll position on page load.
         window.history.scrollRestoration = 'manual';
 
+        // Set the wedding date for the countdown timer.
         const weddingDate = new Date("September 25, 2025 11:00:00").getTime();
         const heroCountdownContainer = document.getElementById("hero-countdown-container");
 
+        // Update the countdown timer every second.
         const x = setInterval(function() {
             const now = new Date().getTime();
             const distance = weddingDate - now;
 
+            // Calculate days, hours, minutes, and seconds remaining.
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
+            // Update the HTML elements with the calculated values, padding with '0' for single digits.
             document.getElementById("hero-days").innerHTML = String(days).padStart(2, '0');
             document.getElementById("hero-hours").innerHTML = String(hours).padStart(2, '0');
             document.getElementById("hero-minutes").innerHTML = String(minutes).padStart(2, '0');
             document.getElementById("hero-seconds").innerHTML = String(seconds).padStart(2, '0');
 
+            // If the countdown is finished (distance < 0), clear the interval and hide the countdown container.
             if (distance < 0) {
                 clearInterval(x);
                 heroCountdownContainer.style.display = 'none';
             } else {
+                // Otherwise, ensure the countdown container is visible.
                 heroCountdownContainer.style.display = 'flex';
             }
-        }, 1000);
+        }, 1000); // Update every 1 second.
 
+        // Function to copy text from a specified element to the clipboard.
         function copyToClipboard(elementId) {
             const copyText = document.getElementById(elementId).innerText;
             const textArea = document.createElement("textarea");
             textArea.value = copyText;
             document.body.appendChild(textArea);
             textArea.select();
-            document.execCommand('copy');
+            document.execCommand('copy'); // Use document.execCommand for better compatibility in iframes.
             document.body.removeChild(textArea);
         }
 
+        // Function to display a temporary alert message.
         function alertMessage(message) {
             const alertBox = document.createElement('div');
             alertBox.className = 'fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white rounded-full shadow-xl opacity-0 transition-opacity duration-300 z-50 alert-message';
             alertBox.innerText = message;
             document.body.appendChild(alertBox);
 
+            // Animate fade-in.
             setTimeout(() => {
                 alertBox.style.opacity = '1';
             }, 10);
 
+            // Animate fade-out and remove after a delay.
             setTimeout(() => {
                 alertBox.style.opacity = '0';
                 alertBox.addEventListener('transitionend', () => alertBox.remove());
@@ -1158,8 +1159,10 @@
         const playIcon = document.getElementById('play-icon');
         const pauseIcon = document.getElementById('pause-icon');
         
+        // Function to toggle background music playback.
         function toggleMusic() {
             if (backgroundMusic.paused) {
+                // Attempt to play music and handle autoplay prevention.
                 backgroundMusic.play().catch(error => {
                     console.log("Autoplay was prevented:", error);
                     alertMessage("Musik tidak dapat diputar otomatis. Silakan klik tombol play di pojok kanan bawah.");
@@ -1173,6 +1176,7 @@
             }
         }
 
+        // Attach click listener to the music toggle button.
         musicToggleButton.addEventListener('click', toggleMusic);
 
         let bgSlides = [];
@@ -1182,6 +1186,55 @@
         let initialViewportHeight = window.innerHeight;
         let ticking = false; // Flag untuk requestAnimationFrame
 
+        // Fungsi untuk memulai slideshow latar belakang hero
+        function startHeroBackgroundSlideshow() {
+            bgSlides = document.querySelectorAll('#background-slideshow .bg-slide');
+            if (bgSlides.length === 0) return;
+
+            // Reset semua slide ke posisi awal dan sembunyikan
+            bgSlides.forEach((slide, index) => {
+                slide.style.opacity = '0';
+                slide.style.left = '100%';
+            });
+
+            // Tampilkan slide pertama
+            bgSlides[0].style.opacity = '1';
+            bgSlides[0].style.left = '0%';
+
+            onScrollOrResize(); // Terapkan paralaks awal
+
+            clearInterval(bgSlideshowInterval); // Hapus interval yang ada
+            bgSlideshowInterval = setInterval(() => {
+                const prevBgSlide = bgSlides[currentBgSlide];
+                
+                currentBgSlide = (currentBgSlide + 1) % bgSlides.length;
+                const nextBgSlide = bgSlides[currentBgSlide];
+
+                prevBgSlide.style.opacity = '0';
+                prevBgSlide.style.left = '-100%';
+
+                nextBgSlide.style.transition = 'none';
+                nextBgSlide.style.left = '100%';
+                void nextBgSlide.offsetWidth; 
+                nextBgSlide.style.transition = 'opacity 1s ease-in-out, left 1s ease-in-out'; 
+
+                nextBgSlide.style.opacity = '1';
+                nextBgSlide.style.left = '0%';
+
+                setTimeout(() => {
+                    prevBgSlide.style.transition = 'none';
+                    prevBgSlide.style.left = '100%';
+                    void prevBgSlide.offsetWidth; 
+                    prevBgSlide.style.transition = 'opacity 1s ease-in-out, left 1s ease-in-out'; 
+                }, 1000); 
+            }, 5000); 
+
+            window.removeEventListener('scroll', onScrollOrResize); 
+            window.addEventListener('scroll', onScrollOrResize);
+            onScrollOrResize(); 
+        }
+
+        // Fungsi untuk memperbarui posisi dan skala gambar latar belakang saat scroll atau resize
         function updateBackgrounds() {
             const scrollY = window.scrollY;
             const currentViewportHeight = window.innerHeight;
@@ -1202,28 +1255,30 @@
             const dynamicBgImages = document.querySelectorAll('.dynamic-background-image');
             dynamicBgImages.forEach(bgImage => {
                 const parentSection = bgImage.parentElement;
-                if (!parentSection) return; // Pastikan elemen induk ada
+                if (!parentSection) return; 
 
-                const sectionTop = parentSection.offsetTop;
+                // Dapatkan posisi relatif bagian induk terhadap dokumen
+                const sectionRect = parentSection.getBoundingClientRect();
+                const sectionTop = sectionRect.top + scrollY; // Posisi absolut bagian atas
                 const sectionHeight = parentSection.offsetHeight;
                 
                 // Sesuaikan faktor paralaks per bagian jika perlu, atau gunakan yang umum
-                const sectionParallaxFactor = 0.3; // Sesuaikan untuk bagian lain
+                const sectionParallaxFactor = 0.3; 
 
-                // Terapkan paralaks hanya jika bagian berada di atau dekat viewport
-                // Perhitungan yang lebih akurat untuk scroll relatif
-                let translateY = 0;
                 // Hitung posisi elemen latar belakang relatif terhadap scroll dari bagian atas dokumen
                 // dan juga offset elemen induknya.
                 // Parallax effect: moves the background slightly in the opposite direction of scroll
                 // based on its position relative to the viewport.
-                const offsetFromViewportTop = sectionTop - scrollY;
-                translateY = offsetFromViewportTop * -sectionParallaxFactor;
+                // Ketika scrollY meningkat (pengguna scroll ke bawah), offsetFromViewportTop akan menjadi lebih negatif.
+                // translateY akan menjadi positif, menggerakkan gambar ke bawah relatif terhadap elemen induk.
+                // Ini menciptakan efek latar belakang bergerak lebih lambat daripada konten.
+                let translateY = (scrollY - sectionTop) * -sectionParallaxFactor;
 
                 // Batasi pergerakan Y agar tidak terlalu jauh di luar elemen induknya
                 // Agar tidak terlihat aneh saat elemen induk baru muncul di layar
-                const maxTranslateY = sectionHeight * (sectionParallaxFactor + (globalScaleFactor - 1)); // Perkiraan batas atas
-                const minTranslateY = -sectionHeight * (sectionParallaxFactor + (globalScaleFactor - 1)); // Perkiraan batas bawah
+                // Perhitungan batas ini disesuaikan agar gambar tetap terlihat di dalam parent saat skala
+                const maxTranslateY = sectionHeight * (globalScaleFactor - 1) / 2 + sectionHeight * sectionParallaxFactor;
+                const minTranslateY = -sectionHeight * (globalScaleFactor - 1) / 2 - sectionHeight * sectionParallaxFactor;
 
                 translateY = Math.max(minTranslateY, Math.min(maxTranslateY, translateY));
 
@@ -1260,7 +1315,7 @@
             // Get original image sources from the initial HTML structure
             const initialImageElements = Array.from(document.querySelectorAll('#photo-carousel-section .photo-carousel-wrapper .photo-carousel-item img'));
             originalPhotosData = initialImageElements.map(img => img.src);
-            totalOriginalPhotos = originalImageElements.length;
+            totalOriginalPhotos = originalPhotosData.length;
 
             // Clear the wrapper before re-populating with clones and originals
             photoCarouselWrapper.innerHTML = '';
@@ -1481,7 +1536,7 @@
 
             // Re-evaluate background positions and scales immediately after opening
             initialViewportHeight = window.innerHeight; // Recalculate initial height for scaling
-            onScrollOrResize();
+            onScrollOrResize(); // Call once to set initial parallax position for all dynamic backgrounds
         });
 
         function saveDateToCalendar() {
@@ -1932,7 +1987,7 @@
                 // Sort blessings by timestamp in descending order (newest first)
                 blessings.sort((a, b) => {
                     const timeA = a.timestamp ? (a.timestamp.toDate ? a.timestamp.toDate().getTime() : a.timestamp.getTime()) : 0;
-                    const timeB = b.timestamp ? (b.timestamp.toDate ? b.timestamp.toDate().getTime() : b.timestamp.getTime()) : 0;
+                    const timeB = b.timestamp ? (b.timestamp.toDate ? b.timestamp.toDate().getTime() : b.timestamp.toDate().getTime()) : 0;
                     return timeB - timeA;
                 });
 
@@ -1963,6 +2018,7 @@
 
                     blessingCard.appendChild(nameElement);
                     blessingCard.appendChild(messageElement);
+                    blessingCard.appendChild(timestampElement);
                     blessingsListDiv.appendChild(blessingCard);
                 });
             }, error => {
@@ -1984,7 +2040,6 @@
             initialViewportHeight = window.innerHeight; // Perbarui tinggi viewport awal saat resize
             onScrollOrResize();
         });
-
     </script>
 </body>
 </html>
