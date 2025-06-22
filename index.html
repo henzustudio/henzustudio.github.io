@@ -37,7 +37,7 @@
             inset: 0; /* Mengisi seluruh area induk relatif */
             z-index: -1; /* Tempatkan di belakang konten */
             background-size: cover;
-            background-position: center center; /* Default, bisa di-override */
+            background-position: center center;
             will-change: transform; /* Petunjuk optimisasi browser */
             transition: transform 0.05s linear; /* Transisi sangat cepat untuk kelancaran JS */
         }
@@ -467,14 +467,15 @@
 
         #about .dynamic-background-image {
             background-image: url('./assets/Photo6.jpg');
-            background-position: center top; /* Perubahan di sini: fokus pada bagian atas gambar */
         }
+        /* START MODIFICATION: Remove background-color and backdrop-filter from #about */
         #about {
-            background-color: rgba(255, 255, 255, 0.05); /* Sedikit transparan untuk efek glassmorphism */
-            backdrop-filter: blur(10px); /* Efek blur */
-            -webkit-backdrop-filter: blur(10px); /* Dukungan browser lama */
+            /* background-color: rgba(255, 255, 255, 0.05); */ /* Sedikit transparan untuk efek glassmorphism */
+            /* backdrop-filter: blur(10px); */ /* Efek blur */
+            /* -webkit-backdrop-filter: blur(10px); */ /* Dukungan browser lama */
             position: relative; /* Diperlukan untuk section-overlay */
         }
+        /* END MODIFICATION */
 
         #wedding-quote .dynamic-background-image {
             background-image: url('./assets/Photo4.jpg'); /* Background image for the quote section */
@@ -698,7 +699,7 @@
         .map-background-overlay {
             position: absolute;
             inset: 0;
-            background-color: rgba(139, 69, 19, 0); /* Mengubah warna menjadi transparan penuh */
+            background-color: rgba(0, 0, 0, 0.4); /* Changed to match default section-overlay */
             backdrop-filter: none; /* Menghapus efek blur */
             -webkit-backdrop-filter: none;
             z-index: 1; /* Di atas peta, di bawah konten utama */
@@ -1199,18 +1200,25 @@
                 const sectionHeight = parentSection.offsetHeight;
                 
                 // Sesuaikan faktor paralaks per bagian jika perlu, atau gunakan yang umum
-                const sectionParallaxFactor = 0.15; // Perubahan di sini: Mengurangi intensitas paralaks
-                
+                const sectionParallaxFactor = 0.3; // Sesuaikan untuk bagian lain
+
+                // Terapkan paralaks hanya jika bagian berada di atau dekat viewport
+                // Perhitungan yang lebih akurat untuk scroll relatif
                 let translateY = 0;
                 // Hitung posisi elemen latar belakang relatif terhadap scroll dari bagian atas dokumen
+                // dan juga offset elemen induknya.
+                // Parallax effect: moves the background slightly in the opposite direction of scroll
+                // based on its position relative to the viewport.
                 const offsetFromViewportTop = sectionTop - scrollY;
                 translateY = offsetFromViewportTop * -sectionParallaxFactor;
 
                 // Batasi pergerakan Y agar tidak terlalu jauh di luar elemen induknya
-                const maxTranslateY = sectionHeight * (sectionParallaxFactor + (globalScaleFactor - 1));
-                const minTranslateY = -sectionHeight * (sectionParallaxFactor + (globalScaleFactor - 1));
+                // Agar tidak terlihat aneh saat elemen induk baru muncul di layar
+                const maxTranslateY = sectionHeight * (sectionParallaxFactor + (globalScaleFactor - 1)); // Perkiraan batas atas
+                const minTranslateY = -sectionHeight * (sectionParallaxFactor + (globalScaleFactor - 1)); // Perkiraan batas bawah
 
                 translateY = Math.max(minTranslateY, Math.min(maxTranslateY, translateY));
+
 
                 bgImage.style.transform = `scale(${globalScaleFactor}) translateY(${translateY}px)`;
             });
@@ -1753,7 +1761,6 @@
             e.preventDefault(); // Prevent vertical scrolling
             const scrollAmount = e.deltaY || e.deltaX; // Get scroll amount
             thumbnailCarouselContainer.scrollLeft += scrollAmount; // Apply horizontal scroll
-
             clearTimeout(galleryScrollTimeout); // Clear previous timeout
             galleryScrollTimeout = setTimeout(handleGalleryScrollEnd, 150); // Set new timeout for snapping
             resetGalleryAutoSlide(); // Reset auto-slide
