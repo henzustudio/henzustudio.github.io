@@ -23,36 +23,26 @@
         h1, h2, h3 {
             font-family: 'Playfair Display', serif;
         }
-        
-        /* Container untuk latar belakang dinamis */
-        .cover-header-bg, .header-bg, #rsvp, #gifts, #about, #wedding-quote {
-            position: relative;
-            overflow: hidden; /* Penting untuk clipping gambar latar belakang yang diskalakan */
-            color: white; /* Pastikan warna teks putih untuk bagian-bagian ini */
-        }
-
-        /* Kelas untuk gambar latar belakang yang akan diskalakan dan diparalaks oleh JS */
-        .dynamic-background-image {
-            position: absolute;
-            inset: 0; /* Mengisi seluruh area induk relatif */
-            z-index: -1; /* Tempatkan di belakang konten */
-            background-size: cover;
-            background-position: center center;
-            will-change: transform; /* Petunjuk optimisasi browser */
-            transition: transform 0.05s linear; /* Transisi sangat cepat untuk kelancaran JS */
-        }
-
         .cover-header-bg {
-            /* background-image: url('./assets/Photo1.jpg'); */ /* Dipindahkan ke .dynamic-background-image */
+            background-image: url('./assets/Photo1.jpg');
+            background-size: cover;
+            background-position: 50% 50%;
+            background-attachment: fixed;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
             padding-bottom: 2.5rem;
+            /* Tambahkan transisi untuk background-size dan background-position */
+            transition: background-size 0.5s ease-out, background-position 0.5s ease-out;
         }
         .header-bg {
-            /* background-image: url('./assets/Photo2.jpg'); */ /* Dipindahkan ke .dynamic-background-image */
-            /* background-position: 50% 30%; */ /* Ini akan diterapkan pada .dynamic-background-image jika perlu */
+            background-image: url('./assets/Photo2.jpg');
+            background-size: cover;
+            background-position: 50% 30%;
+            background-attachment: fixed;
+            /* Tambahkan transisi untuk background-size dan background-position */
+            transition: background-size 0.5s ease-out, background-position 0.5s ease-out;
         }
         .section-title {
             color: white;
@@ -451,31 +441,35 @@
             object-position: 50% 50%;
             opacity: 0;
             left: 100%;
-            will-change: transform; /* Petunjuk optimisasi browser */
-            /* Transisi untuk opacity dan left, transform akan dikontrol JS */
-            transition: opacity 1s ease-in-out, left 1s ease-in-out; 
-            /* transform: scale(1.2); */ /* Dihapus, akan dikontrol oleh JS */
+            /* Tambahkan transisi untuk transform */
+            transition: opacity 1s ease-in-out, left 1s ease-in-out, transform 0.1s linear; /* Transisi linear untuk scale */
+            transform: scale(1.2);
         }
 
-        #rsvp .dynamic-background-image {
+        /* Fixed background images for sections */
+        #rsvp, #gifts, #about, #wedding-quote {
+            position: relative;
+            background-size: cover;
+            background-position: center center; /* Pastikan selalu di tengah */
+            background-attachment: fixed;
+            color: white; /* Ensure text color is white for these sections */
+            /* Tambahkan transisi untuk background-size dan background-position */
+            transition: background-size 0.5s ease-out, background-position 0.5s ease-out;
+        }
+
+        #rsvp {
             background-image: url('./assets/Photo4.jpg');
         }
 
-        #gifts .dynamic-background-image {
+        #gifts {
             background-image: url('./assets/Photo5.jpg');
         }
 
-        #about .dynamic-background-image {
+        #about {
             background-image: url('./assets/Photo6.jpg');
         }
-        #about {
-            background-color: rgba(255, 255, 255, 0.05); /* Sedikit transparan untuk efek glassmorphism */
-            backdrop-filter: blur(10px); /* Efek blur */
-            -webkit-backdrop-filter: blur(10px); /* Dukungan browser lama */
-            position: relative; /* Diperlukan untuk section-overlay */
-        }
 
-        #wedding-quote .dynamic-background-image {
+        #wedding-quote {
             background-image: url('./assets/Photo4.jpg'); /* Background image for the quote section */
         }
 
@@ -669,7 +663,20 @@
             -webkit-backdrop-filter: blur(3px);
             height: 300px;
         }
-        
+        #about {
+            /* Latar belakang transparan dengan efek blur */
+            background-image: url('./assets/Photo6.jpg'); /* Menambahkan gambar background */
+            background-size: cover;
+            background-position: center center; /* Pastikan selalu di tengah */
+            background-attachment: fixed;
+            background-color: rgba(255, 255, 255, 0.05); /* Sedikit transparan untuk efek glassmorphism */
+            backdrop-filter: blur(10px); /* Efek blur */
+            -webkit-backdrop-filter: blur(10px); /* Dukungan browser lama */
+            position: relative; /* Diperlukan untuk section-overlay */
+            color: white; /* Mengubah warna teks untuk kontras */
+            /* Tambahkan transisi untuk background-size dan background-position */
+            transition: background-size 0.5s ease-out, background-position 0.5s ease-out;
+        }
         #about .text-gray-200 { /* Mengubah warna teks di dalam about */
             color: rgba(255, 255, 255, 0.9);
         }
@@ -761,8 +768,6 @@
 <body class="antialiased">
     <div id="cover-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-F8F4E3 transition-transform duration-1000 ease-in-out">
         <header class="cover-header-bg relative h-full w-full text-center text-white">
-            <!-- Background Image Div -->
-            <div class="dynamic-background-image" style="background-image: url('./assets/Photo1.jpg');"></div>
             <div class="absolute inset-0 bg-black opacity-40"></div>
             <div class="relative z-10 p-6 max-w-4xl mx-auto flex flex-col items-center">
                 <p class="text-base md:text-lg mb-0 tracking-wider">Pawiwahan</p>
@@ -820,8 +825,6 @@
         </section>
         
         <section id="about" class="py-20 px-4 md:px-8 text-center">
-            <!-- Background Image Div -->
-            <div class="dynamic-background-image" style="background-image: url('./assets/Photo6.jpg');"></div>
             <div class="section-overlay"></div>
             <div class="max-w-5xl mx-auto relative z-10">
                 <div class="flex flex-col md:flex-row items-center justify-center space-y-12 md:space-y-0 md:space-x-20">
@@ -857,8 +860,6 @@
         </section>
 
         <section id="wedding-quote" class="py-20 px-4 md:px-8 text-center">
-            <!-- Background Image Div -->
-            <div class="dynamic-background-image" style="background-image: url('./assets/Photo4.jpg');"></div>
             <div class="section-overlay"></div>
             <div class="max-w-3xl mx-auto relative z-10">
                 <p class="text-base md:text-lg italic leading-relaxed text-white mb-6">
@@ -934,8 +935,6 @@
         </section>
 
         <section id="rsvp" class="py-20 px-4 md:px-8 text-center">
-            <!-- Background Image Div -->
-            <div class="dynamic-background-image" style="background-image: url('./assets/Photo4.jpg');"></div>
             <div class="section-overlay"></div>
             <h2 class="text-4xl md:text-5xl section-title mb-12">Konfirmasi Kehadiran (RSVP)</h2>
             <div class="max-w-3xl mx-auto card p-10 rounded-lg shadow-xl">
@@ -981,8 +980,6 @@
         </section>
 
         <section id="gifts" class="py-20 px-4 md:px-8 text-center">
-            <!-- Background Image Div -->
-            <div class="dynamic-background-image" style="background-image: url('./assets/Photo5.jpg');"></div>
             <div class="section-overlay"></div>
             <h2 class="text-4xl md:text-5xl section-title mb-12">Kirim Tanda Kasih</h2>
             <div class="max-w-3xl mx-auto card p-10 rounded-lg shadow-xl">
@@ -1040,9 +1037,7 @@
         </section>
 
         <section id="closing-message" class="relative h-screen flex flex-col items-center justify-between text-center text-white overflow-hidden py-12">
-            <!-- Background Image Div -->
-            <div class="dynamic-background-image" style="background-image: url('./assets/Photo2.jpg'); background-position: 50% 30%;"></div>
-            <div class="absolute inset-0 z-10" style="background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 50%, #8B4513 100%);"></div>
+            <div class="header-bg absolute inset-0 z-0"></div> <div class="absolute inset-0 z-10" style="background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 50%, #8B4513 100%);"></div>
             
             <div class="relative z-20 p-6 max-w-4xl mx-auto flex flex-col items-center w-full text-top">
                 <p class="text-base leading-relaxed text-gray-200 mb-6">
@@ -1090,64 +1085,53 @@
     </button>
 
     <script>
-        // Disable scroll restoration to prevent browser from jumping to previous scroll position on page load.
         window.history.scrollRestoration = 'manual';
 
-        // Set the wedding date for the countdown timer.
         const weddingDate = new Date("September 25, 2025 11:00:00").getTime();
         const heroCountdownContainer = document.getElementById("hero-countdown-container");
 
-        // Update the countdown timer every second.
         const x = setInterval(function() {
             const now = new Date().getTime();
             const distance = weddingDate - now;
 
-            // Calculate days, hours, minutes, and seconds remaining.
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            // Update the HTML elements with the calculated values, padding with '0' for single digits.
             document.getElementById("hero-days").innerHTML = String(days).padStart(2, '0');
             document.getElementById("hero-hours").innerHTML = String(hours).padStart(2, '0');
             document.getElementById("hero-minutes").innerHTML = String(minutes).padStart(2, '0');
             document.getElementById("hero-seconds").innerHTML = String(seconds).padStart(2, '0');
 
-            // If the countdown is finished (distance < 0), clear the interval and hide the countdown container.
             if (distance < 0) {
                 clearInterval(x);
                 heroCountdownContainer.style.display = 'none';
             } else {
-                // Otherwise, ensure the countdown container is visible.
                 heroCountdownContainer.style.display = 'flex';
             }
-        }, 1000); // Update every 1 second.
+        }, 1000);
 
-        // Function to copy text from a specified element to the clipboard.
         function copyToClipboard(elementId) {
             const copyText = document.getElementById(elementId).innerText;
             const textArea = document.createElement("textarea");
             textArea.value = copyText;
             document.body.appendChild(textArea);
             textArea.select();
-            document.execCommand('copy'); // Use document.execCommand for better compatibility in iframes.
+            document.execCommand('copy');
             document.body.removeChild(textArea);
         }
 
-        // Function to display a temporary alert message.
         function alertMessage(message) {
             const alertBox = document.createElement('div');
             alertBox.className = 'fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white rounded-full shadow-xl opacity-0 transition-opacity duration-300 z-50 alert-message';
             alertBox.innerText = message;
             document.body.appendChild(alertBox);
 
-            // Animate fade-in.
             setTimeout(() => {
                 alertBox.style.opacity = '1';
             }, 10);
 
-            // Animate fade-out and remove after a delay.
             setTimeout(() => {
                 alertBox.style.opacity = '0';
                 alertBox.addEventListener('transitionend', () => alertBox.remove());
@@ -1159,13 +1143,11 @@
         const playIcon = document.getElementById('play-icon');
         const pauseIcon = document.getElementById('pause-icon');
         
-        // Function to toggle background music playback.
         function toggleMusic() {
             if (backgroundMusic.paused) {
-                // Attempt to play music and handle autoplay prevention.
                 backgroundMusic.play().catch(error => {
                     console.log("Autoplay was prevented:", error);
-                    alertMessage("Musik tidak dapat diputar otomatis. Silakan klik tombol play di pojok kanan bawah.");
+                    alertMessage("Musik tidak dapat diputar otomatis. Silakan klik tombol play di pojok kanan kanan.");
                 });
                 playIcon.style.display = 'none';
                 pauseIcon.style.display = 'block';
@@ -1176,126 +1158,85 @@
             }
         }
 
-        // Attach click listener to the music toggle button.
         musicToggleButton.addEventListener('click', toggleMusic);
 
+        let currentBgSlide = 0;
         let bgSlides = [];
         let bgSlideshowInterval;
 
-        // Variabel untuk menyimpan tinggi viewport awal
-        let initialViewportHeight = window.innerHeight;
-        let ticking = false; // Flag untuk requestAnimationFrame
-
-        // Fungsi untuk memulai slideshow latar belakang hero
         function startHeroBackgroundSlideshow() {
             bgSlides = document.querySelectorAll('#background-slideshow .bg-slide');
             if (bgSlides.length === 0) return;
 
-            // Reset semua slide ke posisi awal dan sembunyikan
+            // Reset all slides to hidden and off-screen to the right
             bgSlides.forEach((slide, index) => {
                 slide.style.opacity = '0';
                 slide.style.left = '100%';
             });
 
-            // Tampilkan slide pertama
+            // Make the first slide visible and in place
             bgSlides[0].style.opacity = '1';
             bgSlides[0].style.left = '0%';
 
-            onScrollOrResize(); // Terapkan paralaks awal
+            handleParallaxScroll(); // Apply initial parallax
 
-            clearInterval(bgSlideshowInterval); // Hapus interval yang ada
+            clearInterval(bgSlideshowInterval); // Clear any existing interval
             bgSlideshowInterval = setInterval(() => {
                 const prevBgSlide = bgSlides[currentBgSlide];
                 
                 currentBgSlide = (currentBgSlide + 1) % bgSlides.length;
                 const nextBgSlide = bgSlides[currentBgSlide];
 
+                // Fade out and move previous slide left
                 prevBgSlide.style.opacity = '0';
                 prevBgSlide.style.left = '-100%';
 
+                // Prepare next slide (no transition for this preparation step)
                 nextBgSlide.style.transition = 'none';
                 nextBgSlide.style.left = '100%';
-                void nextBgSlide.offsetWidth; 
-                nextBgSlide.style.transition = 'opacity 1s ease-in-out, left 1s ease-in-out'; 
+                void nextBgSlide.offsetWidth; // Force reflow to apply 'none' immediately
+                nextBgSlide.style.transition = 'opacity 1s ease-in-out, left 1s ease-in-out, transform 0.1s linear'; // Re-enable transition, linear for transform
 
+                // Fade in and move next slide to center
                 nextBgSlide.style.opacity = '1';
                 nextBgSlide.style.left = '0%';
 
+                // After a short delay, reset the previous slide's position without transition
+                // This prepares it for the next cycle
                 setTimeout(() => {
                     prevBgSlide.style.transition = 'none';
                     prevBgSlide.style.left = '100%';
-                    void prevBgSlide.offsetWidth; 
-                    prevBgSlide.style.transition = 'opacity 1s ease-in-out, left 1s ease-in-out'; 
-                }, 1000); 
-            }, 5000); 
+                    void prevBgSlide.offsetWidth; // Force reflow
+                    prevBgSlide.style.transition = 'opacity 1s ease-in-out, left 1s ease-in-out, transform 0.1s linear'; // Re-enable transition, linear for transform
+                }, 1000); // Match this with the transition duration
+            }, 5000); // Change slide every 5 seconds
 
-            window.removeEventListener('scroll', onScrollOrResize); 
-            window.addEventListener('scroll', onScrollOrResize);
-            onScrollOrResize(); 
+            // Attach scroll listener to window
+            window.removeEventListener('scroll', handleParallaxScroll); // Remove any old listener
+            window.addEventListener('scroll', handleParallaxScroll);
+            handleParallaxScroll(); // Call once to set initial parallax position
         }
 
-        // Fungsi untuk memperbarui posisi dan skala gambar latar belakang saat scroll atau resize
-        function updateBackgrounds() {
-            const scrollY = window.scrollY;
-            const currentViewportHeight = window.innerHeight;
+        function handleParallaxScroll() {
+            const scrollY = window.scrollY; // Current scroll position from the top of the document
+            // This factor controls how fast the background slides move relative to the page scroll.
+            // A value of 0.2 means the slide moves 20% of the scroll distance, making it appear slower.
+            const parallaxFactor = 0.2; 
 
-            // Hitung faktor skala global berdasarkan perubahan tinggi viewport
-            // Sesuaikan multiplier (e.g., 0.03) untuk mengontrol intensitas efek skala
-            const globalScaleFactor = 1 + (1 - (currentViewportHeight / initialViewportHeight)) * 0.03;
-
-            // Tangani slide latar belakang slideshow hero
+            // Calculate translateY for parallax effect
+            // A negative value for translateY moves the element upwards when scrolling down.
+            // This creates the illusion that the background is moving slower than the foreground.
+            const translateY = -scrollY * parallaxFactor;
+            
             bgSlides.forEach(slide => {
-                const parallaxFactor = 0.2; // Sesuaikan untuk intensitas paralaks bagian hero
-                const translateY = -scrollY * parallaxFactor;
-                // Gabungkan translateY paralaks dengan skala global
-                slide.style.transform = `scale(${globalScaleFactor * 1.2}) translateY(${translateY}px)`; // 1.2 adalah zoom asli
+                // Apply the transform. scale(1.2) is kept for the zoom effect.
+                slide.style.transform = `scale(1.2) translateY(${translateY}px)`;
             });
-
-            // Tangani gambar latar belakang dinamis lainnya
-            const dynamicBgImages = document.querySelectorAll('.dynamic-background-image');
-            dynamicBgImages.forEach(bgImage => {
-                const parentSection = bgImage.parentElement;
-                if (!parentSection) return; 
-
-                // Dapatkan posisi relatif bagian induk terhadap dokumen
-                const sectionRect = parentSection.getBoundingClientRect();
-                const sectionTop = sectionRect.top + scrollY; // Posisi absolut bagian atas
-                const sectionHeight = parentSection.offsetHeight;
-                
-                // Sesuaikan faktor paralaks per bagian jika perlu, atau gunakan yang umum
-                const sectionParallaxFactor = 0.3; 
-
-                // Hitung posisi elemen latar belakang relatif terhadap scroll dari bagian atas dokumen
-                // dan juga offset elemen induknya.
-                // Parallax effect: moves the background slightly in the opposite direction of scroll
-                // based on its position relative to the viewport.
-                // Ketika scrollY meningkat (pengguna scroll ke bawah), offsetFromViewportTop akan menjadi lebih negatif.
-                // translateY akan menjadi positif, menggerakkan gambar ke bawah relatif terhadap elemen induk.
-                // Ini menciptakan efek latar belakang bergerak lebih lambat daripada konten.
-                let translateY = (scrollY - sectionTop) * -sectionParallaxFactor;
-
-                // Batasi pergerakan Y agar tidak terlalu jauh di luar elemen induknya
-                // Agar tidak terlihat aneh saat elemen induk baru muncul di layar
-                // Perhitungan batas ini disesuaikan agar gambar tetap terlihat di dalam parent saat skala
-                const maxTranslateY = sectionHeight * (globalScaleFactor - 1) / 2 + sectionHeight * sectionParallaxFactor;
-                const minTranslateY = -sectionHeight * (globalScaleFactor - 1) / 2 - sectionHeight * sectionParallaxFactor;
-
-                translateY = Math.max(minTranslateY, Math.min(maxTranslateY, translateY));
-
-
-                bgImage.style.transform = `scale(${globalScaleFactor}) translateY(${translateY}px)`;
-            });
-
-            ticking = false; // Atur ulang flag
+            // The 'overflow: hidden' on #hero-after-cover will handle clipping
+            // when the background slides move outside its boundaries, so there's no
+            // need for complex checks or resets that could cause an "elastic" effect.
         }
 
-        // Handler untuk scroll/resize yang dioptimalkan dengan requestAnimationFrame
-        function onScrollOrResize() {
-            if (!ticking) {
-                window.requestAnimationFrame(updateBackgrounds);
-                ticking = true;
-            }
-        }
 
         let currentPhotoSlideIndex = 0;
         let photoCarouselContainer = document.querySelector('.photo-carousel-container');
@@ -1533,10 +1474,6 @@
             setTimeout(() => {
                 coverScreen.style.display = 'none';
             }, 1000);
-
-            // Re-evaluate background positions and scales immediately after opening
-            initialViewportHeight = window.innerHeight; // Recalculate initial height for scaling
-            onScrollOrResize(); // Call once to set initial parallax position for all dynamic backgrounds
         });
 
         function saveDateToCalendar() {
@@ -1987,7 +1924,7 @@
                 // Sort blessings by timestamp in descending order (newest first)
                 blessings.sort((a, b) => {
                     const timeA = a.timestamp ? (a.timestamp.toDate ? a.timestamp.toDate().getTime() : a.timestamp.getTime()) : 0;
-                    const timeB = b.timestamp ? (b.timestamp.toDate ? b.timestamp.toDate().getTime() : b.timestamp.toDate().getTime()) : 0;
+                    const timeB = b.timestamp ? (b.timestamp.toDate ? b.timestamp.toDate().getTime() : b.timestamp.getTime()) : 0;
                     return timeB - timeA;
                 });
 
@@ -2018,7 +1955,6 @@
 
                     blessingCard.appendChild(nameElement);
                     blessingCard.appendChild(messageElement);
-                    blessingCard.appendChild(timestampElement);
                     blessingsListDiv.appendChild(blessingCard);
                 });
             }, error => {
@@ -2028,18 +1964,7 @@
         }
 
         // Initialize Firebase when the DOM is fully loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeFirebase();
-            initialViewportHeight = window.innerHeight; // Set initial height on DOM load
-            onScrollOrResize(); // Initial call to position backgrounds
-        });
-
-        // Tambahkan event listener untuk memanggil fungsi updateBackgrounds saat ukuran jendela berubah dan saat scroll
-        window.addEventListener('scroll', onScrollOrResize);
-        window.addEventListener('resize', () => {
-            initialViewportHeight = window.innerHeight; // Perbarui tinggi viewport awal saat resize
-            onScrollOrResize();
-        });
+        document.addEventListener('DOMContentLoaded', initializeFirebase);
     </script>
 </body>
 </html>
