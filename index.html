@@ -489,10 +489,18 @@
         }
 
         /* Content positioning over overlay */
-        #about .max-w-5xl, #wedding-quote .max-w-3xl {
+        #about .max-w-5xl {
             position: relative;
             z-index: 1;
         }
+        /* Style for content in wedding-quote section for overlap */
+        #wedding-quote .max-w-3xl {
+            position: relative;
+            z-index: 1;
+            padding-top: 2.5rem; /* Revert to original py-10 top padding */
+            padding-bottom: 5rem; /* Extra padding to push content up from overlap area (e.g., 80px) */
+        }
+
 
         #rsvp .card, #gifts .card {
             position: relative;
@@ -687,7 +695,7 @@
             position: relative; /* Penting untuk penempatan iframe absolut */
             overflow: hidden; /* Memastikan iframe tidak meluap */
             /* Margin negatif dihapus untuk menghindari tumpang tindih yang tidak diinginkan dan memperbaiki posisi */
-            margin-top: 0; /* Mengatur ulang margin-top */
+            /* Reverted margin-top to its original state or adjusted as needed */
         }
 
         .map-background-container {
@@ -724,12 +732,8 @@
             /* background-attachment: fixed; */
             
             position: relative; /* Diperlukan untuk tumpang tindih */
-            z-index: 2; /* Pastikan di atas wedding-quote */
             /* Padding disesuaikan dengan py-10 di HTML */
-            /* Mengatur margin negatif untuk menempatkan carousel di tengah transisi visual */
             /* Removed negative margins */
-            margin-top: 0;
-            margin-bottom: 0;
         }
 
         /* Hapus pseudo-elemen ::before karena tidak lagi diperlukan untuk background dan blur */
@@ -751,7 +755,6 @@
 
         #photo-carousel-section .photo-carousel-container {
             position: relative; /* Pertahankan posisi relatif untuk konten carousel */
-            z-index: 2; /* Pastikan konten carousel berada di atas overlay */
             /* Kelas Tailwind default untuk pemusatan dan lebar sudah ada */
         }
 
@@ -859,10 +862,10 @@
             </div>
         </section>
 
-        <section id="wedding-quote" class="pt-10 px-4 md:px-8 text-center pb-0">
+        <section id="wedding-quote" class="px-4 md:px-8 text-center relative z-0">
             <div class="section-overlay"></div>
-            <div class="max-w-3xl mx-auto relative z-10">
-                <!-- Changed mb-12 to mb-0 to remove gap after quote paragraph -->
+            <!-- Added pt-10 and pb-20 to push content and provide space for carousel overlap -->
+            <div class="max-w-3xl mx-auto relative z-10 pt-10 pb-20">
                 <p class="text-base md:text-lg italic leading-relaxed text-white mb-0">
                     "Ya Tuhan Yang Maha Pengasih, anugrahkan kepada pasangan ini tanpa terpisahkan, panjang umur, semoga pernikahan ini dianugrahkan putra-putri dan cucu yang memberi penghiburan, tinggal di rumah yang penuh kebahagiaan."
                 </p>
@@ -870,7 +873,7 @@
             </div>
         </section>
 
-        <section id="photo-carousel-section" class="py-0 px-4 md:px-8 text-center">
+        <section id="photo-carousel-section" class="py-0 px-4 md:px-8 text-center -mt-20 -mb-20 relative z-10">
             <div class="photo-carousel-container">
                 <div class="photo-carousel-wrapper">
                     <!-- Initial photo items for carousel -->
@@ -896,7 +899,7 @@
             </div>
         </section>
 
-        <section id="events" class="pb-10 px-4 md:px-8 text-center pt-0">
+        <section id="events" class="px-4 md:px-8 text-center relative z-0">
             <div class="map-background-container">
                 <iframe
                     src="https://www.openstreetmap.org/export/embed.html?bbox=115.404129,-8.557778,115.405129,-8.556778&amp;layer=mapnik&amp;marker=-8.557278,115.404629"
@@ -905,8 +908,8 @@
                 </iframe>
                 <div class="map-background-overlay"></div>
             </div>
-            <!-- Added mt-0 to remove any default top margin -->
-            <h2 class="text-4xl md:text-5xl section-title mb-4 relative z-20 mt-0">Detail Acara</h2>
+            <!-- Added pt-20 to push content down from overlap area -->
+            <h2 class="text-4xl md:text-5xl section-title mb-4 relative z-20 pt-20">Detail Acara</h2>
             <div class="flex flex-col md:flex-row justify-center items-stretch space-y-12 md:space-y-0 md:space-x-12 max-w-6xl mx-auto relative z-20">
                 <div class="event-card flex-1 flex flex-col items-center justify-between">
                     <!-- Changed text color to white -->
