@@ -468,12 +468,10 @@
         #about .dynamic-background-image {
             background-image: url('./assets/Photo6.jpg');
         }
-        /* START MODIFICATION: Remove background-color and backdrop-filter from #about */
+        /* START MODIFICATION */
         #about {
-            /* background-color: rgba(255, 255, 255, 0.05); */ /* Sedikit transparan untuk efek glassmorphism */
-            /* backdrop-filter: blur(10px); */ /* Efek blur */
-            /* -webkit-backdrop-filter: blur(10px); */ /* Dukungan browser lama */
             position: relative; /* Diperlukan untuk section-overlay */
+            /* Hapus background-color dan backdrop-filter dari sini */
         }
         /* END MODIFICATION */
 
@@ -495,6 +493,15 @@
             backdrop-filter: blur(5px); /* Blur effect */
             -webkit-backdrop-filter: blur(5px); /* For Safari support */
         }
+
+        /* START MODIFICATION */
+        /* Specific overlay style for #about */
+        #about .section-overlay {
+            background-color: rgba(255, 255, 255, 0.05); /* Sedikit transparan untuk efek glassmorphism */
+            backdrop-filter: blur(10px); /* Efek blur */
+            -webkit-backdrop-filter: blur(10px); /* Dukungan browser lama */
+        }
+        /* END MODIFICATION */
 
         /* Content positioning over overlay */
         #about .max-w-5xl, #wedding-quote .max-w-3xl {
@@ -699,7 +706,7 @@
         .map-background-overlay {
             position: absolute;
             inset: 0;
-            background-color: rgba(0, 0, 0, 0.4); /* Changed to match default section-overlay */
+            background-color: rgba(139, 69, 19, 0); /* Mengubah warna menjadi transparan penuh */
             backdrop-filter: none; /* Menghapus efek blur */
             -webkit-backdrop-filter: none;
             z-index: 1; /* Di atas peta, di bawah konten utama */
@@ -1761,6 +1768,7 @@
             e.preventDefault(); // Prevent vertical scrolling
             const scrollAmount = e.deltaY || e.deltaX; // Get scroll amount
             thumbnailCarouselContainer.scrollLeft += scrollAmount; // Apply horizontal scroll
+
             clearTimeout(galleryScrollTimeout); // Clear previous timeout
             galleryScrollTimeout = setTimeout(handleGalleryScrollEnd, 150); // Set new timeout for snapping
             resetGalleryAutoSlide(); // Reset auto-slide
