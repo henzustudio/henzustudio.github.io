@@ -1252,6 +1252,10 @@
         let photoDragStartX = 0; // Initial X position when drag starts
         let photoCurrentDragTranslateX = 0; // Current transformX when drag starts
         let photoItemWidth = 0; // Width of a single photo item including gap
+        // Variabel baru untuk menghitung momentum
+        let photoLastMoveX = 0;
+        let photoLastMoveTime = 0;
+
 
         function initializePhotoCarousel() {
             // Get original image sources from the initial HTML structure
@@ -1340,8 +1344,8 @@
             smoothPhotoSlide(0.8); // Default transition for auto-slide
         }
 
-        function smoothPhotoSlide(transitionDuration = 0.8) {
-            photoCarouselWrapper.style.transition = `transform ${transitionDuration}s ease-in-out`;
+        function smoothPhotoSlide(transitionDuration = 0.8, easing = 'ease-in-out') {
+            photoCarouselWrapper.style.transition = `transform ${transitionDuration}s ${easing}`;
             photoCarouselWrapper.style.transform = `translateX(-${currentPhotoSlideIndex * photoItemWidth}px)`;
 
             // Seamless looping logic
@@ -1353,7 +1357,7 @@
                     photoCarouselWrapper.style.transform = `translateX(-${currentPhotoSlideIndex * photoItemWidth}px)`;
                     // Re-enable transition after a very small delay to avoid flicker
                     setTimeout(() => {
-                        photoCarouselWrapper.style.transition = `transform ${transitionDuration}s ease-in-out`;
+                        photoCarouselWrapper.style.transition = `transform ${transitionDuration}s ${easing}`;
                     }, 50);
                 }, transitionDuration * 1000); // Wait for current animation to finish
             } 
@@ -1365,7 +1369,7 @@
                     photoCarouselWrapper.style.transform = `translateX(-${currentPhotoSlideIndex * photoItemWidth}px)`;
                     // Re-enable transition after a very small delay to avoid flicker
                     setTimeout(() => {
-                        photoCarouselWrapper.style.transition = `transform ${transitionDuration}s ease-in-out`;
+                        photoCarouselWrapper.style.transition = `transform ${transitionDuration}s ${easing}`;
                     }, 50);
                 }, transitionDuration * 1000); // Wait for current animation to finish
             }
@@ -1380,6 +1384,9 @@
             const transformMatrix = window.getComputedStyle(photoCarouselWrapper).getPropertyValue('transform');
             photoCurrentDragTranslateX = transformMatrix === 'none' ? 0 : parseFloat(transformMatrix.split(',')[4]);
 
+            photoLastMoveX = photoDragStartX; // Initialize last move position
+            photoLastMoveTime = new Date().getTime(); // Initialize last move time
+
             clearInterval(carouselAutoSlideInterval); // Stop auto-slide during manual drag
             photoCarouselWrapper.style.transition = 'none'; // Disable transition for immediate movement
         }
@@ -1389,8 +1396,10 @@
             e.preventDefault(); // Prevent default touch/mouse behavior (e.g., scrolling)
             const x = (e.clientX || e.touches[0].clientX);
             const diffX = x - photoDragStartX;
-            // Apply the drag movement
             photoCarouselWrapper.style.transform = `translateX(${photoCurrentDragTranslateX + diffX}px)`;
+
+            photoLastMoveX = x; // Update last move position
+            photoLastMoveTime = new Date().getTime(); // Update last move time
         }
 
         function handlePhotoDragEnd(e) {
@@ -1398,21 +1407,41 @@
             isPhotoDragging = false;
             photoCarouselContainer.classList.remove('dragging'); // Remove dragging cursor style
 
-            // Calculate the final position after drag
             const endX = (e.clientX || (e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientX : photoDragStartX));
-            const draggedDistance = endX - photoDragStartX;
-            const finalTranslateX = photoCurrentDragTranslateX + draggedDistance;
+            const dragEndTime = new Date().getTime();
 
-            // Determine the closest slide index based on the final position
-            // We divide by photoItemWidth and round to find the nearest full item index.
-            let targetSlideIndex = Math.round(Math.abs(finalTranslateX) / photoItemWidth);
+            // Calculate the last segment's velocity
+            const lastMoveDuration = dragEndTime - photoLastMoveTime;
+            const lastMoveDistance = endX - photoLastMoveX;
             
-            // Ensure targetSlideIndex stays within the bounds of the concatenated list
-            // This is primarily for safety, but the looping logic will handle most cases
-            targetSlideIndex = Math.max(0, Math.min(photoItems.length - 1, targetSlideIndex));
+            let velocity = 0;
+            if (lastMoveDuration > 0) {
+                velocity = lastMoveDistance / lastMoveDuration; // pixels per millisecond
+            }
 
+            const momentumMultiplier = 150; // Sesuaikan nilai ini untuk mengontrol kekuatan momentum
+            const minimumVelocityForMomentum = 0.2; // Hanya terapkan momentum jika flick cukup cepat
+
+            let momentumOffset = 0;
+            if (Math.abs(velocity) > minimumVelocityForMomentum) {
+                momentumOffset = velocity * momentumMultiplier;
+            }
+
+            // Get the current position after the drag ends
+            const currentTranslateX = parseFloat(photoCarouselWrapper.style.transform.replace('translateX(', '').replace('px)', ''));
+
+            // Calculate the target X position with momentum applied
+            const targetXWithMomentum = currentTranslateX + momentumOffset;
+
+            // Calculate the target slide index based on the new momentum-adjusted position
+            let targetSlideIndex = Math.round(-targetXWithMomentum / photoItemWidth);
+
+            // Ensure the targetSlideIndex is within valid bounds (0 to photoItems.length - 1)
+            targetSlideIndex = Math.max(0, Math.min(photoItems.length - 1, targetSlideIndex));
+            
             currentPhotoSlideIndex = targetSlideIndex; // Update the main index
-            smoothPhotoSlide(); // Snap to the closest slide with smooth transition
+            smoothPhotoSlide(0.6, 'ease-out'); // Gunakan durasi yang lebih lama dan ease-out untuk momentum
+
             startPhotoAutoSlide(); // Restart auto-slide
         }
 
