@@ -727,8 +727,9 @@
             z-index: 2; /* Pastikan di atas wedding-quote */
             /* Padding disesuaikan dengan py-10 di HTML */
             /* Mengatur margin negatif untuk menempatkan carousel di tengah transisi visual */
-            margin-top: -5rem;
-            margin-bottom: -5rem;
+            /* Removed negative margins */
+            margin-top: 0;
+            margin-bottom: 0;
         }
 
         /* Hapus pseudo-elemen ::before karena tidak lagi diperlukan untuk background dan blur */
@@ -858,7 +859,7 @@
             </div>
         </section>
 
-        <section id="wedding-quote" class="py-20 px-4 md:px-8 text-center">
+        <section id="wedding-quote" class="py-20 md:py-12 px-4 md:px-8 text-center">
             <div class="section-overlay"></div>
             <div class="max-w-3xl mx-auto relative z-10">
                 <!-- Added mb-12 for more bottom margin -->
@@ -870,7 +871,7 @@
             </div>
         </section>
 
-        <section id="photo-carousel-section" class="py-10 px-4 md:px-8 text-center">
+        <section id="photo-carousel-section" class="py-8 px-4 md:px-8 text-center">
             <div class="photo-carousel-container">
                 <div class="photo-carousel-wrapper">
                     <!-- Initial photo items for carousel -->
@@ -896,7 +897,7 @@
             </div>
         </section>
 
-        <section id="events" class="py-20 px-4 md:px-8 text-center">
+        <section id="events" class="py-20 md:py-12 px-4 md:px-8 text-center">
             <div class="map-background-container">
                 <iframe
                     src="https://www.openstreetmap.org/export/embed.html?bbox=115.404129,-8.557778,115.405129,-8.556778&amp;layer=mapnik&amp;marker=-8.557278,115.404629"
