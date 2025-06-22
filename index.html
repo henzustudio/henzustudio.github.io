@@ -25,7 +25,7 @@
         }
         
         /* Container untuk latar belakang dinamis */
-        .cover-header-bg, .header-bg, #rsvp, #gifts, #about, #wedding-quote, #closing-message {
+        .cover-header-bg, .header-bg, #rsvp, #gifts, #about, #wedding-quote {
             position: relative;
             overflow: hidden; /* Penting untuk clipping gambar latar belakang yang diskalakan */
             color: white; /* Pastikan warna teks putih untuk bagian-bagian ini */
@@ -37,7 +37,7 @@
             inset: 0; /* Mengisi seluruh area induk relatif */
             z-index: -1; /* Tempatkan di belakang konten */
             background-size: cover;
-            background-position: center center;
+            background-position: center center; /* Default, bisa di-override */
             will-change: transform; /* Petunjuk optimisasi browser */
             transition: transform 0.05s linear; /* Transisi sangat cepat untuk kelancaran JS */
         }
@@ -451,19 +451,10 @@
             object-position: 50% 50%;
             opacity: 0;
             left: 100%;
-            /* Tambahkan transisi untuk transform */
-            transition: opacity 1s ease-in-out, left 1s ease-in-out, transform 0.1s linear; /* Transisi linear untuk scale */
-            transform: scale(1.2); /* Awalnya sedikit di-zoom */
-        }
-
-        /* Fixed background images for sections */
-        #rsvp, #gifts, #about, #wedding-quote {
-            position: relative;
-            /* background-size: cover; */ /* Dikelola oleh JS sekarang */
-            /* background-position: center center; */ /* Dikelola oleh JS sekarang */
-            /* background-attachment: fixed; */ /* Dikelola oleh JS sekarang */
-            color: white; /* Ensure text color is white for these sections */
-            /* transition: background-size 0.5s ease-out, background-position 0.5s ease-out; */ /* Dihapus */
+            will-change: transform; /* Petunjuk optimisasi browser */
+            /* Transisi untuk opacity dan left, transform akan dikontrol JS */
+            transition: opacity 1s ease-in-out, left 1s ease-in-out; 
+            /* transform: scale(1.2); */ /* Dihapus, akan dikontrol oleh JS */
         }
 
         #rsvp .dynamic-background-image {
@@ -476,6 +467,13 @@
 
         #about .dynamic-background-image {
             background-image: url('./assets/Photo6.jpg');
+            background-position: center top; /* Perubahan di sini: fokus pada bagian atas gambar */
+        }
+        #about {
+            background-color: rgba(255, 255, 255, 0.05); /* Sedikit transparan untuk efek glassmorphism */
+            backdrop-filter: blur(10px); /* Efek blur */
+            -webkit-backdrop-filter: blur(10px); /* Dukungan browser lama */
+            position: relative; /* Diperlukan untuk section-overlay */
         }
 
         #wedding-quote .dynamic-background-image {
@@ -1044,7 +1042,7 @@
 
         <section id="closing-message" class="relative h-screen flex flex-col items-center justify-between text-center text-white overflow-hidden py-12">
             <!-- Background Image Div -->
-            <div class="dynamic-background-image" style="background-image: url('./assets/Photo2.jpg');"></div>
+            <div class="dynamic-background-image" style="background-image: url('./assets/Photo2.jpg'); background-position: 50% 30%;"></div>
             <div class="absolute inset-0 z-10" style="background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 50%, #8B4513 100%);"></div>
             
             <div class="relative z-20 p-6 max-w-4xl mx-auto flex flex-col items-center w-full text-top">
@@ -1170,102 +1168,63 @@
 
         let bgSlides = [];
         let bgSlideshowInterval;
-        let ticking = false; // Flag for requestAnimationFrame
 
-        // Fungsi untuk memulai slideshow background hero
-        function startHeroBackgroundSlideshow() {
-            bgSlides = document.querySelectorAll('#background-slideshow .bg-slide');
-            if (bgSlides.length === 0) return;
+        // Variabel untuk menyimpan tinggi viewport awal
+        let initialViewportHeight = window.innerHeight;
+        let ticking = false; // Flag untuk requestAnimationFrame
 
-            // Reset all slides to hidden and off-screen to the right
-            bgSlides.forEach((slide, index) => {
-                slide.style.opacity = '0';
-                slide.style.left = '100%';
+        function updateBackgrounds() {
+            const scrollY = window.scrollY;
+            const currentViewportHeight = window.innerHeight;
+
+            // Hitung faktor skala global berdasarkan perubahan tinggi viewport
+            // Sesuaikan multiplier (e.g., 0.03) untuk mengontrol intensitas efek skala
+            const globalScaleFactor = 1 + (1 - (currentViewportHeight / initialViewportHeight)) * 0.03;
+
+            // Tangani slide latar belakang slideshow hero
+            bgSlides.forEach(slide => {
+                const parallaxFactor = 0.2; // Sesuaikan untuk intensitas paralaks bagian hero
+                const translateY = -scrollY * parallaxFactor;
+                // Gabungkan translateY paralaks dengan skala global
+                slide.style.transform = `scale(${globalScaleFactor * 1.2}) translateY(${translateY}px)`; // 1.2 adalah zoom asli
             });
 
-            // Make the first slide visible and in place
-            bgSlides[0].style.opacity = '1';
-            bgSlides[0].style.left = '0%';
+            // Tangani gambar latar belakang dinamis lainnya
+            const dynamicBgImages = document.querySelectorAll('.dynamic-background-image');
+            dynamicBgImages.forEach(bgImage => {
+                const parentSection = bgImage.parentElement;
+                if (!parentSection) return; // Pastikan elemen induk ada
 
-            handleParallaxScroll(); // Apply initial parallax
-
-            clearInterval(bgSlideshowInterval); // Clear any existing interval
-            bgSlideshowInterval = setInterval(() => {
-                const prevBgSlide = bgSlides[currentBgSlide];
+                const sectionTop = parentSection.offsetTop;
+                const sectionHeight = parentSection.offsetHeight;
                 
-                currentBgSlide = (currentBgSlide + 1) % bgSlides.length;
-                const nextBgSlide = bgSlides[currentBgSlide];
+                // Sesuaikan faktor paralaks per bagian jika perlu, atau gunakan yang umum
+                const sectionParallaxFactor = 0.15; // Perubahan di sini: Mengurangi intensitas paralaks
+                
+                let translateY = 0;
+                // Hitung posisi elemen latar belakang relatif terhadap scroll dari bagian atas dokumen
+                const offsetFromViewportTop = sectionTop - scrollY;
+                translateY = offsetFromViewportTop * -sectionParallaxFactor;
 
-                // Fade out and move previous slide left
-                prevBgSlide.style.opacity = '0';
-                prevBgSlide.style.left = '-100%';
+                // Batasi pergerakan Y agar tidak terlalu jauh di luar elemen induknya
+                const maxTranslateY = sectionHeight * (sectionParallaxFactor + (globalScaleFactor - 1));
+                const minTranslateY = -sectionHeight * (sectionParallaxFactor + (globalScaleFactor - 1));
 
-                // Prepare next slide (no transition for this preparation step)
-                nextBgSlide.style.transition = 'none';
-                nextBgSlide.style.left = '100%';
-                void nextBgSlide.offsetWidth; // Force reflow to apply 'none' immediately
-                nextBgSlide.style.transition = 'opacity 1s ease-in-out, left 1s ease-in-out, transform 0.1s linear'; // Re-enable transition, linear for transform
+                translateY = Math.max(minTranslateY, Math.min(maxTranslateY, translateY));
 
-                // Fade in and move next slide to center
-                nextBgSlide.style.opacity = '1';
-                nextBgSlide.style.left = '0%';
+                bgImage.style.transform = `scale(${globalScaleFactor}) translateY(${translateY}px)`;
+            });
 
-                // After a short delay, reset the previous slide's position without transition
-                // This prepares it for the next cycle
-                setTimeout(() => {
-                    prevBgSlide.style.transition = 'none';
-                    prevBgSlide.style.left = '100%';
-                    void prevBgSlide.offsetWidth; // Force reflow
-                    prevBgSlide.style.transition = 'opacity 1s ease-in-out, left 1s ease-in-out, transform 0.1s linear'; // Re-enable transition, linear for transform
-                }, 1000); // Match this with the transition duration
-            }, 5000); // Change slide every 5 seconds
-
-            // Attach scroll listener to window
-            window.removeEventListener('scroll', handleParallaxScroll); // Remove any old listener
-            window.addEventListener('scroll', handleParallaxScroll);
-            handleParallaxScroll(); // Call once to set initial parallax position
+            ticking = false; // Atur ulang flag
         }
 
-        function handleParallaxScroll() {
+        // Handler untuk scroll/resize yang dioptimalkan dengan requestAnimationFrame
+        function onScrollOrResize() {
             if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    const scrollY = window.scrollY; // Current scroll position from the top of the document
-                    const parallaxFactor = 0.2; // This factor controls how fast the background slides move relative to the page scroll.
-
-                    bgSlides.forEach(slide => {
-                        const translateY = -scrollY * parallaxFactor;
-                        slide.style.transform = `scale(1.2) translateY(${translateY}px)`;
-                    });
-
-                    // Update dynamic backgrounds for other sections (like RSVP, About, Gifts, Quote)
-                    const dynamicBgImages = document.querySelectorAll('.dynamic-background-image');
-                    dynamicBgImages.forEach(bgImage => {
-                        const parentSection = bgImage.parentElement;
-                        if (!parentSection) return;
-
-                        const sectionTop = parentSection.offsetTop;
-                        const sectionHeight = parentSection.offsetHeight;
-                        const viewportHeight = window.innerHeight;
-
-                        const parallaxIntensity = 0.2; 
-                        let translateY = 0;
-                        const sectionCenter = sectionTop + (sectionHeight / 2);
-                        const viewportCenter = scrollY + (viewportHeight / 2);
-                        const centerDiff = sectionCenter - viewportCenter;
-
-                        translateY = centerDiff * (1 - parallaxIntensity);
-                        const maxOffset = sectionHeight * parallaxIntensity / 2;
-                        translateY = Math.max(-maxOffset, Math.min(maxOffset, translateY));
-
-                        bgImage.style.transform = `scale(1) translateY(${translateY}px)`; // Adjusted scale to 1 for these sections
-                    });
-
-                    ticking = false;
-                });
+                window.requestAnimationFrame(updateBackgrounds);
                 ticking = true;
             }
         }
-
 
         let currentPhotoSlideIndex = 0;
         let photoCarouselContainer = document.querySelector('.photo-carousel-container');
@@ -1503,6 +1462,10 @@
             setTimeout(() => {
                 coverScreen.style.display = 'none';
             }, 1000);
+
+            // Re-evaluate background positions and scales immediately after opening
+            initialViewportHeight = window.innerHeight; // Recalculate initial height for scaling
+            onScrollOrResize();
         });
 
         function saveDateToCalendar() {
@@ -1663,7 +1626,7 @@
             
             // Scroll to the initial position without smooth behavior first
             setTimeout(() => {
-                const initialScrollPosition = galleryThumbnailItems[currentGalleryIndex].offsetLeft - (thumbnailCarouselContainer.offsetWidth / 2) + (galleryThumbnailItems[currentGalleryIndex].offsetWidth / 2);
+                const initialScrollPosition = galleryThumbnailItems[currentGalleryIndex].offsetLeft - (thumbnailCarouselContainer.offsetWidth / 2) + (thumbnailCarouselContainer.offsetWidth / 2);
                 thumbnailCarouselContainer.scrollTo({
                     left: initialScrollPosition,
                     behavior: 'auto'
@@ -1820,7 +1783,7 @@
                 setTimeout(() => {
                     thumbnailCarouselContainer.style.scrollBehavior = 'auto'; // Disable smooth scroll for instant jump
                     const targetIndex = galleryImagesData.length + currentGalleryIndex;
-                    const targetScroll = galleryThumbnailItems[targetIndex].offsetLeft - (thumbnailCarouselContainer.offsetWidth / 2) + (galleryThumbnailItems[targetIndex].offsetWidth / 2);
+                    const targetScroll = galleryThumbnailItems[targetIndex].offsetLeft - (thumbnailCarouselContainer.offsetWidth / 2) + (thumbnailCarouselContainer.offsetWidth / 2);
                     thumbnailCarouselContainer.scrollLeft = targetScroll;
                     currentGalleryIndex = targetIndex;
                     thumbnailCarouselContainer.style.scrollBehavior = 'smooth'; // Re-enable smooth scroll
@@ -1984,7 +1947,6 @@
 
                     blessingCard.appendChild(nameElement);
                     blessingCard.appendChild(messageElement);
-                    blessingCard.appendChild(timestampElement); // Tambahkan timestamp element
                     blessingsListDiv.appendChild(blessingCard);
                 });
             }, error => {
@@ -1996,15 +1958,16 @@
         // Initialize Firebase when the DOM is fully loaded
         document.addEventListener('DOMContentLoaded', () => {
             initializeFirebase();
-            // Panggil handleParallaxScroll secara langsung saat DOMContentLoaded,
-            // karena ini juga akan menangani pembaruan untuk dynamicBgImages
-            handleParallaxScroll(); 
+            initialViewportHeight = window.innerHeight; // Set initial height on DOM load
+            onScrollOrResize(); // Initial call to position backgrounds
         });
 
-        // Tambahkan event listener untuk memanggil fungsi handleParallaxScroll saat ukuran jendela berubah dan saat scroll
-        // onScrollOrResize sudah tidak diperlukan karena handleParallaxScroll langsung menggunakan requestAnimationFrame
-        window.addEventListener('scroll', handleParallaxScroll);
-        window.addEventListener('resize', handleParallaxScroll);
+        // Tambahkan event listener untuk memanggil fungsi updateBackgrounds saat ukuran jendela berubah dan saat scroll
+        window.addEventListener('scroll', onScrollOrResize);
+        window.addEventListener('resize', () => {
+            initialViewportHeight = window.innerHeight; // Perbarui tinggi viewport awal saat resize
+            onScrollOrResize();
+        });
 
     </script>
 </body>
