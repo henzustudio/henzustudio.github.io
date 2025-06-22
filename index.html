@@ -23,26 +23,29 @@
         h1, h2, h3 {
             font-family: 'Playfair Display', serif;
         }
+        .cover-header-bg, .header-bg, #rsvp, #gifts, #about, #wedding-quote {
+            /* Properti latar belakang umum untuk semua bagian dengan latar belakang tetap */
+            background-size: cover;
+            background-position: center center; /* Pastikan selalu di tengah */
+            background-attachment: fixed;
+            color: white; /* Pastikan warna teks putih untuk bagian-bagian ini */
+            /* Transisi untuk properti transform untuk penskalaan yang lebih halus */
+            transform: scale(1); /* Skala awal */
+            transform-origin: center center; /* Titik anchor di tengah */
+            transition: transform 0.3s ease-out; /* Transisi untuk skala */
+        }
+
         .cover-header-bg {
             background-image: url('./assets/Photo1.jpg');
-            background-size: cover;
-            background-position: 50% 50%;
-            background-attachment: fixed;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
             padding-bottom: 2.5rem;
-            /* Tambahkan transisi untuk background-size dan background-position */
-            transition: background-size 0.5s ease-out, background-position 0.5s ease-out;
         }
         .header-bg {
             background-image: url('./assets/Photo2.jpg');
-            background-size: cover;
-            background-position: 50% 30%;
-            background-attachment: fixed;
-            /* Tambahkan transisi untuk background-size dan background-position */
-            transition: background-size 0.5s ease-out, background-position 0.5s ease-out;
+            background-position: 50% 30%; /* Tetap gunakan ini jika ingin offset vertikal */
         }
         .section-title {
             color: white;
@@ -441,20 +444,9 @@
             object-position: 50% 50%;
             opacity: 0;
             left: 100%;
-            /* Tambahkan transisi untuk transform */
-            transition: opacity 1s ease-in-out, left 1s ease-in-out, transform 0.1s linear; /* Transisi linear untuk scale */
+            /* Transisi untuk opacity, left, dan transform (untuk parallax dan skala) */
+            transition: opacity 1s ease-in-out, left 1s ease-in-out, transform 0.3s ease-out; /* Perubahan di sini */
             transform: scale(1.2);
-        }
-
-        /* Fixed background images for sections */
-        #rsvp, #gifts, #about, #wedding-quote {
-            position: relative;
-            background-size: cover;
-            background-position: center center; /* Pastikan selalu di tengah */
-            background-attachment: fixed;
-            color: white; /* Ensure text color is white for these sections */
-            /* Tambahkan transisi untuk background-size dan background-position */
-            transition: background-size 0.5s ease-out, background-position 0.5s ease-out;
         }
 
         #rsvp {
@@ -467,6 +459,10 @@
 
         #about {
             background-image: url('./assets/Photo6.jpg');
+            background-color: rgba(255, 255, 255, 0.05); /* Sedikit transparan untuk efek glassmorphism */
+            backdrop-filter: blur(10px); /* Efek blur */
+            -webkit-backdrop-filter: blur(10px); /* Dukungan browser lama */
+            position: relative; /* Diperlukan untuk section-overlay */
         }
 
         #wedding-quote {
@@ -663,20 +659,7 @@
             -webkit-backdrop-filter: blur(3px);
             height: 300px;
         }
-        #about {
-            /* Latar belakang transparan dengan efek blur */
-            background-image: url('./assets/Photo6.jpg'); /* Menambahkan gambar background */
-            background-size: cover;
-            background-position: center center; /* Pastikan selalu di tengah */
-            background-attachment: fixed;
-            background-color: rgba(255, 255, 255, 0.05); /* Sedikit transparan untuk efek glassmorphism */
-            backdrop-filter: blur(10px); /* Efek blur */
-            -webkit-backdrop-filter: blur(10px); /* Dukungan browser lama */
-            position: relative; /* Diperlukan untuk section-overlay */
-            color: white; /* Mengubah warna teks untuk kontras */
-            /* Tambahkan transisi untuk background-size dan background-position */
-            transition: background-size 0.5s ease-out, background-position 0.5s ease-out;
-        }
+        
         #about .text-gray-200 { /* Mengubah warna teks di dalam about */
             color: rgba(255, 255, 255, 0.9);
         }
@@ -1147,7 +1130,7 @@
             if (backgroundMusic.paused) {
                 backgroundMusic.play().catch(error => {
                     console.log("Autoplay was prevented:", error);
-                    alertMessage("Musik tidak dapat diputar otomatis. Silakan klik tombol play di pojok kanan kanan.");
+                    alertMessage("Musik tidak dapat diputar otomatis. Silakan klik tombol play di pojok kanan bawah.");
                 });
                 playIcon.style.display = 'none';
                 pauseIcon.style.display = 'block';
@@ -1164,6 +1147,9 @@
         let bgSlides = [];
         let bgSlideshowInterval;
 
+        // Variabel untuk menyimpan tinggi viewport awal
+        let initialViewportHeight = window.innerHeight;
+
         function startHeroBackgroundSlideshow() {
             bgSlides = document.querySelectorAll('#background-slideshow .bg-slide');
             if (bgSlides.length === 0) return;
@@ -1178,65 +1164,70 @@
             bgSlides[0].style.opacity = '1';
             bgSlides[0].style.left = '0%';
 
-            handleParallaxScroll(); // Apply initial parallax
+            handleParallaxScroll(); // Terapkan paralaks awal
 
-            clearInterval(bgSlideshowInterval); // Clear any existing interval
+            clearInterval(bgSlideshowInterval); // Hapus interval yang sudah ada
             bgSlideshowInterval = setInterval(() => {
                 const prevBgSlide = bgSlides[currentBgSlide];
                 
                 currentBgSlide = (currentBgSlide + 1) % bgSlides.length;
                 const nextBgSlide = bgSlides[currentBgSlide];
 
-                // Fade out and move previous slide left
+                // Fade out dan pindahkan slide sebelumnya ke kiri
                 prevBgSlide.style.opacity = '0';
                 prevBgSlide.style.left = '-100%';
 
-                // Prepare next slide (no transition for this preparation step)
+                // Siapkan slide berikutnya (tanpa transisi untuk langkah persiapan ini)
                 nextBgSlide.style.transition = 'none';
                 nextBgSlide.style.left = '100%';
-                void nextBgSlide.offsetWidth; // Force reflow to apply 'none' immediately
-                nextBgSlide.style.transition = 'opacity 1s ease-in-out, left 1s ease-in-out, transform 0.1s linear'; // Re-enable transition, linear for transform
-
-                // Fade in and move next slide to center
+                void nextBgSlide.offsetWidth; // Paksa reflow untuk menerapkan 'none' segera
+                // Aktifkan kembali transisi untuk opacity, left, dan transform (dengan durasi 0.3s ease-out)
+                nextBgSlide.style.transition = 'opacity 1s ease-in-out, left 1s ease-in-out, transform 0.3s ease-out';
+                
+                // Fade in dan pindahkan slide berikutnya ke tengah
                 nextBgSlide.style.opacity = '1';
                 nextBgSlide.style.left = '0%';
 
-                // After a short delay, reset the previous slide's position without transition
-                // This prepares it for the next cycle
+                // Setelah penundaan singkat, atur ulang posisi slide sebelumnya tanpa transisi
+                // Ini mempersiapkannya untuk siklus berikutnya
                 setTimeout(() => {
                     prevBgSlide.style.transition = 'none';
                     prevBgSlide.style.left = '100%';
-                    void prevBgSlide.offsetWidth; // Force reflow
-                    prevBgSlide.style.transition = 'opacity 1s ease-in-out, left 1s ease-in-out, transform 0.1s linear'; // Re-enable transition, linear for transform
-                }, 1000); // Match this with the transition duration
-            }, 5000); // Change slide every 5 seconds
+                    void prevBgSlide.offsetWidth; // Paksa reflow
+                    // Aktifkan kembali transisi
+                    prevBgSlide.style.transition = 'opacity 1s ease-in-out, left 1s ease-in-out, transform 0.3s ease-out';
+                }, 1000); // Sesuaikan ini dengan durasi transisi
+            }, 5000); // Ganti slide setiap 5 detik
 
-            // Attach scroll listener to window
-            window.removeEventListener('scroll', handleParallaxScroll); // Remove any old listener
+            // Pasang pendengar scroll ke jendela
+            window.removeEventListener('scroll', handleParallaxScroll); // Hapus pendengar lama
             window.addEventListener('scroll', handleParallaxScroll);
-            handleParallaxScroll(); // Call once to set initial parallax position
+            handleParallaxScroll(); // Panggil sekali untuk mengatur posisi paralaks awal
         }
 
         function handleParallaxScroll() {
-            const scrollY = window.scrollY; // Current scroll position from the top of the document
-            // This factor controls how fast the background slides move relative to the page scroll.
-            // A value of 0.2 means the slide moves 20% of the scroll distance, making it appear slower.
+            const scrollY = window.scrollY; // Posisi scroll saat ini dari bagian atas dokumen
             const parallaxFactor = 0.2; 
-
-            // Calculate translateY for parallax effect
-            // A negative value for translateY moves the element upwards when scrolling down.
-            // This creates the illusion that the background is moving slower than the foreground.
             const translateY = -scrollY * parallaxFactor;
             
             bgSlides.forEach(slide => {
-                // Apply the transform. scale(1.2) is kept for the zoom effect.
+                // Terapkan transform. scale(1.2) dipertahankan untuk efek zoom.
                 slide.style.transform = `scale(1.2) translateY(${translateY}px)`;
             });
-            // The 'overflow: hidden' on #hero-after-cover will handle clipping
-            // when the background slides move outside its boundaries, so there's no
-            // need for complex checks or resets that could cause an "elastic" effect.
         }
 
+        // Fungsi baru untuk menangani penskalaan latar belakang tetap saat ukuran jendela berubah
+        function handleBackgroundScaleOnResize() {
+            const fixedBackgroundElements = document.querySelectorAll('.cover-header-bg, .header-bg, #rsvp, #gifts, #about, #wedding-quote');
+            
+            fixedBackgroundElements.forEach(element => {
+                const currentHeight = window.innerHeight;
+                // Hitung faktor skala berdasarkan perbandingan tinggi saat ini dengan tinggi awal
+                // Sesuaikan multiplier (0.03) untuk mengontrol intensitas efek skala
+                const scaleFactor = 1 + (1 - (currentHeight / initialViewportHeight)) * 0.03; 
+                element.style.transform = `scale(${scaleFactor})`;
+            });
+        }
 
         let currentPhotoSlideIndex = 0;
         let photoCarouselContainer = document.querySelector('.photo-carousel-container');
@@ -1964,7 +1955,15 @@
         }
 
         // Initialize Firebase when the DOM is fully loaded
-        document.addEventListener('DOMContentLoaded', initializeFirebase);
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeFirebase();
+            // Panggil fungsi penskalaan saat DOM dimuat
+            handleBackgroundScaleOnResize();
+        });
+
+        // Tambahkan event listener untuk memanggil fungsi penskalaan saat ukuran jendela berubah
+        window.addEventListener('resize', handleBackgroundScaleOnResize);
+
     </script>
 </body>
 </html>
