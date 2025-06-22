@@ -320,6 +320,7 @@
             justify-content: center;
             align-items: center;
         }
+        /* Media queries for responsive circular photo size */
         @media (max-width: 768px) {
             .circular-photo {
                 width: 100px;
@@ -497,8 +498,8 @@
         #wedding-quote .max-w-3xl {
             position: relative;
             z-index: 1;
-            padding-top: 2.5rem; /* Revert to original py-10 top padding */
-            padding-bottom: 5rem; /* Extra padding to push content up from overlap area (e.g., 80px) */
+            /* Default for desktop: photo height 150px, half = 75px. Clearance = 4rem (64px) */
+            padding-bottom: calc(75px + 4rem); /* 75px overlap + 64px content clearance */
         }
 
 
@@ -694,8 +695,6 @@
             background-color: transparent;
             position: relative; /* Penting untuk penempatan iframe absolut */
             overflow: hidden; /* Memastikan iframe tidak meluap */
-            /* Margin negatif dihapus untuk menghindari tumpang tindih yang tidak diinginkan dan memperbaiki posisi */
-            /* Reverted margin-top to its original state or adjusted as needed */
         }
 
         .map-background-container {
@@ -718,44 +717,54 @@
             z-index: 1; /* Di atas peta, di bawah konten utama */
         }
 
-
         #blessings {
             /* Latar belakang menjadi solid untuk menutupi slide foto */
             background-color: #4A4A4A;
         }
+
         #photo-carousel-section {
-            /* Hapus background dan efek blur dari sini */
-            /* background-image: url('./assets/Photo4.jpg'); */
-            /* background-size: cover; */
-            /* background-position: center; */
-            /* background-repeat: no-repeat; */
-            /* background-attachment: fixed; */
-            
-            position: relative; /* Diperlukan untuk tumpang tindih */
-            /* Padding disesuaikan dengan py-10 di HTML */
-            /* Removed negative margins */
+            position: relative; /* Diperlukan untuk tumpukan */
+            z-index: 10; /* Pastikan di atas section wedding-quote dan events */
+            /* Default (Desktop): photo height 150px, half = 75px */
+            margin-top: -75px;
+            margin-bottom: -75px;
         }
-
-        /* Hapus pseudo-elemen ::before karena tidak lagi diperlukan untuk background dan blur */
-        /*
-        #photo-carousel-section::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom, 
-                                        rgba(139, 69, 19, 0.7) 0%,
-                                        rgba(139, 69, 19, 0.7) 50%,
-                                        transparent 50%,
-                                        transparent 100%);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            z-index: 0;
+        /* Responsif untuk photo-carousel-section margins */
+        @media (max-width: 768px) {
+            #photo-carousel-section {
+                margin-top: -50px; /* Half of 100px photo height */
+                margin-bottom: -50px; /* Half of 100px photo height */
+            }
+            #wedding-quote .max-w-3xl {
+                padding-bottom: calc(50px + 4rem); /* Half photo height + 4rem clearance */
+            }
+            #events h2 {
+                padding-top: calc(50px + 4rem); /* Half photo height + 4rem clearance */
+            }
         }
-        */
-
-        #photo-carousel-section .photo-carousel-container {
-            position: relative; /* Pertahankan posisi relatif untuk konten carousel */
-            /* Kelas Tailwind default untuk pemusatan dan lebar sudah ada */
+        @media (max-width: 480px) {
+            #photo-carousel-section {
+                margin-top: -40px; /* Half of 80px photo height */
+                margin-bottom: -40px; /* Half of 80px photo height */
+            }
+            #wedding-quote .max-w-3xl {
+                padding-bottom: calc(40px + 4rem); /* Half photo height + 4rem clearance */
+            }
+            #events h2 {
+                padding-top: calc(40px + 4rem); /* Half photo height + 4rem clearance */
+            }
+        }
+        @media (max-width: 400px) {
+            #photo-carousel-section {
+                margin-top: -30px; /* Half of 60px photo height */
+                margin-bottom: -30px; /* Half of 60px photo height */
+            }
+            #wedding-quote .max-w-3xl {
+                padding-bottom: calc(30px + 4rem); /* Half photo height + 4rem clearance */
+            }
+            #events h2 {
+                padding-top: calc(30px + 4rem); /* Half photo height + 4rem clearance */
+            }
         }
 
         #closing-message .absolute.inset-0.z-10 {
@@ -862,10 +871,9 @@
             </div>
         </section>
 
-        <section id="wedding-quote" class="px-4 md:px-8 text-center relative z-0">
+        <section id="wedding-quote" class="py-10 px-4 md:px-8 text-center relative z-0">
             <div class="section-overlay"></div>
-            <!-- Added pt-10 and pb-20 to push content and provide space for carousel overlap -->
-            <div class="max-w-3xl mx-auto relative z-10 pt-10 pb-20">
+            <div class="max-w-3xl mx-auto relative z-10">
                 <p class="text-base md:text-lg italic leading-relaxed text-white mb-0">
                     "Ya Tuhan Yang Maha Pengasih, anugrahkan kepada pasangan ini tanpa terpisahkan, panjang umur, semoga pernikahan ini dianugrahkan putra-putri dan cucu yang memberi penghiburan, tinggal di rumah yang penuh kebahagiaan."
                 </p>
@@ -873,7 +881,7 @@
             </div>
         </section>
 
-        <section id="photo-carousel-section" class="py-0 px-4 md:px-8 text-center -mt-20 -mb-20 relative z-10">
+        <section id="photo-carousel-section" class="px-4 md:px-8 text-center relative z-10">
             <div class="photo-carousel-container">
                 <div class="photo-carousel-wrapper">
                     <!-- Initial photo items for carousel -->
@@ -899,7 +907,7 @@
             </div>
         </section>
 
-        <section id="events" class="px-4 md:px-8 text-center relative z-0">
+        <section id="events" class="pb-10 px-4 md:px-8 text-center relative z-0">
             <div class="map-background-container">
                 <iframe
                     src="https://www.openstreetmap.org/export/embed.html?bbox=115.404129,-8.557778,115.405129,-8.556778&amp;layer=mapnik&amp;marker=-8.557278,115.404629"
@@ -908,8 +916,7 @@
                 </iframe>
                 <div class="map-background-overlay"></div>
             </div>
-            <!-- Added pt-20 to push content down from overlap area -->
-            <h2 class="text-4xl md:text-5xl section-title mb-4 relative z-20 pt-20">Detail Acara</h2>
+            <h2 class="text-4xl md:text-5xl section-title mb-4 relative z-20">Detail Acara</h2>
             <div class="flex flex-col md:flex-row justify-center items-stretch space-y-12 md:space-y-0 md:space-x-12 max-w-6xl mx-auto relative z-20">
                 <div class="event-card flex-1 flex flex-col items-center justify-between">
                     <!-- Changed text color to white -->
