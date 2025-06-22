@@ -468,12 +468,10 @@
         #about .dynamic-background-image {
             background-image: url('./assets/Photo6.jpg');
         }
-        /* START MODIFICATION */
         #about {
             position: relative; /* Diperlukan untuk section-overlay */
             /* Hapus background-color dan backdrop-filter dari sini */
         }
-        /* END MODIFICATION */
 
         #wedding-quote .dynamic-background-image {
             background-image: url('./assets/Photo4.jpg'); /* Background image for the quote section */
@@ -495,11 +493,12 @@
         }
 
         /* START MODIFICATION */
-        /* Specific overlay style for #about */
+        /* Hapus gaya khusus untuk #about .section-overlay */
+        /* Ini akan membuatnya menggunakan gaya .section-overlay default */
         #about .section-overlay {
-            background-color: rgba(255, 255, 255, 0.05); /* Sedikit transparan untuk efek glassmorphism */
-            backdrop-filter: blur(10px); /* Efek blur */
-            -webkit-backdrop-filter: blur(10px); /* Dukungan browser lama */
+            /* background-color: rgba(255, 255, 255, 0.05); */
+            /* backdrop-filter: blur(10px); */
+            /* -webkit-backdrop-filter: blur(10px); */
         }
         /* END MODIFICATION */
 
@@ -832,7 +831,9 @@
             <!-- Background Image Div -->
             <div class="dynamic-background-image" style="background-image: url('./assets/Photo6.jpg');"></div>
             <div class="section-overlay"></div>
-            <div class="max-w-5xl mx-auto relative z-10">
+            <!-- START MODIFICATION -->
+            <div class="max-w-5xl mx-auto relative z-10 card p-10 rounded-lg shadow-xl">
+            <!-- END MODIFICATION -->
                 <div class="flex flex-col md:flex-row items-center justify-center space-y-12 md:space-y-0 md:space-x-20">
                     <div class="flex flex-col items-center">
                         <img src="./assets/About Me.jpg" alt="Hendra" class="w-48 h-48 rounded-full object-cover shadow-xl border-4 border-D4AF37 mb-6">
@@ -1259,7 +1260,7 @@
             // Get original image sources from the initial HTML structure
             const initialImageElements = Array.from(document.querySelectorAll('#photo-carousel-section .photo-carousel-wrapper .photo-carousel-item img'));
             originalPhotosData = initialImageElements.map(img => img.src);
-            totalOriginalPhotos = originalPhotosData.length;
+            totalOriginalPhotos = originalImageElements.length;
 
             // Clear the wrapper before re-populating with clones and originals
             photoCarouselWrapper.innerHTML = '';
