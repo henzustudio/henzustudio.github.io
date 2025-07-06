@@ -52,28 +52,32 @@
 
         <section id="opening-message">
             <div id="opening-message-overlay"></div>
-            <div class="opening-message-content">
+            <div class="message-box">
+                <div class="message-content">
                 <br>
                  <div class="balinese-script">ᬒᬁ ᬲ᭄ᬯᬲ᭄ᬢ᭄ᬬᬲ᭄ᬢᬸ</div>
                 <br>
                 <p id="opening-message-text">Atas Asung Kertha Wara Nugraha Ida Sang Hyang Widhi Wasa/Tuhan Yang Maha Esa, kami bermaksud mengundang Bapak/Ibu/Saudara/i pada acara Resepsi Pernikahan putra-putri kami</p>
                 </div>
-            </div>
-            <div id="about-us">
+                <br>
+                <div id="about-us">
                 <div class="container">
                     <div class="column">
                         <img class="profile-pic" src="./assets/About Me.jpg" alt="Hendra">
                         <h3>Komang Hendra Supradnyana</h3>
-                        <p>Putra dari Bapak I Nyoman Adiputra & Ibu Ni Desak Made Marheni</p>
+                        <p>Anak Ketiga</p>
+                        <p>Bapak I Nyoman Adiputra &</p>
+                        <p>Ibu Ni Desak Made Marheni</p>
+                        <br>
                         <a href="https://www.instagram.com/hendrasupradnyana/" target="_blank">
                             <button class="glass-button-style">
-                                <span class="h-1 w-1 mr-2">
+                               
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                                         <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
                                         <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                                     </svg>
-                                </span>
+                               
                                 <span class="font-medium">@hendrasupradnyana</span>
                             </button>
                         </a>
@@ -82,7 +86,10 @@
                     <div class="column">
                         <img class="profile-pic" src="./assets/About Girl.jpg" alt="Maylin">
                         <h3>Ni Kadek Maylin Franza</h3>
-                        <p>Putri dari Bapak I Nyoman Sutiarsa & Ibu Ni Nengah Sudiani</p>
+                        <p>Anak Kedua</p>
+                        <p>Bapak I Nyoman Sutiarsa</p>
+                        <p>& Ibu Ni Nengah Sudiani</p>
+                        <br>
                         <a href="https://www.instagram.com/maylinfranz/" target="_blank">
                             <button class="glass-button-style">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -94,6 +101,7 @@
                             </button>
                         </a>
                     </div>
+                </div>
                 </div>
             </div>
         </section>
@@ -109,6 +117,7 @@
                             <h4>Kamis, 25 September 2025</h4>
                             <p>Pukul 11.00 WITA - 22.00 WITA</p>
                         </div>
+                        <br>
                         <div class="detail-item">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto text-accent mb-1" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
@@ -116,13 +125,14 @@
                             <h5>Kediaman Mempelai Pria</h5>
                             <p>Jl. Warapsari No.2, Desa Gelgel, Kec. Klungkung, Kabupaten Klungkung, Bali</p>
                         </div>
+                        <br>
                         <div class="container-center">
-                            <div class="column-center">
+                            <div class="column-button">
                                 <button onclick="saveDateToCalendar()" class="outline-button-style">
                                     <span>🗓️ Simpan Tanggal</span>
                                 </button>
                             </div>
-                            <div class="column-center">
+                            <div class="column-button">
                                 <a href="https://maps.app.goo.gl/eJzz1nNFYSz4thmS6" target="_blank">
                                     <button class="outline-button-style">
                                         <span>🗺️ Buka Maps</span>
@@ -141,9 +151,11 @@
                     <h2>Konfirmasi Kehadiran</h2>
                     <p>Mohon mengirimkan konfirmasi kehadiran kepada mempelai melalui form berikut:</p>
                     <div class="glass-input-container">
-                        <div class="form-group">
+                        
                             <label for="rsvp-name">Nama Lengkap:</label>
+                            <div class="data-input">
                             <input type="text" id="rsvp-name" class="glass-input-alt data-input" placeholder="Masukkan nama" required>
+                            </div>
                             <div class="text-label">
                                 <label for="rsvp-guests">Jumlah Orang:</label>
                             </div>
@@ -153,9 +165,9 @@
                                     <option value="2">2</option>
                                 </select>
                             </div>
-                        </div>
+                        
                     </div>
-                    <div class="glass-input-container">
+                    <div class="button-container">
                         <button onclick="sendRsvp()" id="submit-rsvp" class="blue-button-style">Kirim Konfirmasi</button>
                     </div>
                 </div>
@@ -253,8 +265,10 @@
         </section>
 
         <section id="closing-message" class="closing-message-overlay">
-            <div>
+            <div class="message-content">
+                <br>
                 <p id="closing-message-text">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu kepada kedua mempelai. Atas kehadiran dan doa restunya kami ucapkan terima kasih.</p>
+                <br>
                 <div class="balinese-script">ᬒᬁ ᬰᬦ᭄ᬢᬶᬄ ᬰᬦ᭄ᬢᬶᬄ ᬰᬦ᭄ᬢᬶᬄ ᬒᬁ</div>
             </div>
             <div class="signature">
@@ -265,18 +279,17 @@
     
 
     <footer>
-        <p>Designed with love by:</p>
+        <p class="footer-text">Designed with love by:</p>
             <a href="https://www.instagram.com/henzustudio/" target="_blank">
-                <button class="glass-button-style">
-                    <span class="h-1 w-1 mr-2">
+                <div class="henzu-studio">
+                    
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                             <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
                             <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                         </svg>
-                    </span>
                     <span class="font-medium">@henzustudio</span>
-                </button>
+                    </div>
             </a>
         <p class="footer-text">&copy; 2025 Undangan Online Hendra & Maylin. All rights reserved.</p>
     </footer>
