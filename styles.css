@@ -38,9 +38,6 @@ body {
 
 /* Konten utama (sudah ada di belakang cover) */
 
-#main-content {
-    padding: 0;
-}
 
 
 .balinese-script {
@@ -361,7 +358,7 @@ textarea {
 /* Start of Website */
 .cover-header {
     position: relative;
-    background-image: url('');
+    background-image: url('./assets/Photo1.jpg');
     background-size: cover;
     background-position: 50% 50%;
     background-attachment: fixed;
