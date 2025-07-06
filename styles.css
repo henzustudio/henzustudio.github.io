@@ -2,7 +2,8 @@ body {
     font-family: 'San Francisco', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     background: linear-gradient(to bottom, #4A4A4A, #333333);
     color: #ffffff;
-    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
 }
 /* Cover awal */
 #cover {
@@ -37,7 +38,6 @@ body {
 }
 
 /* Konten utama (sudah ada di belakang cover) */
-
 
 
 .balinese-script {
@@ -1140,10 +1140,6 @@ footer {
             
     .nav-left, .nav-right {
         width: 20%;
-    }
-            
-    body {
-        padding: 10px;
     }
 }
 
