@@ -2,17 +2,12 @@ window.history.scrollRestoration = 'manual';
 
 // COVER SECTION
 // Cover screen functionality // Belum fungsi
-document.getElementById("open-invitation-button").addEventListener("click", function () {
-  const coverScreen = document.getElementById("cover-header");
-  coverScreen.classList.add("slide-up");
-  document.body.style.overflow = 'auto'; // Enable scrolling
-});
-setTimeout(() => {
-    coverScreen.style.display = 'none';
-}, 1000); // Hide cover screen after animation
+function masukWebsite() {
+    document.getElementById('cover').classList.add('slide-up')
+}
 
 
-// URL guest functionality // Belum fungsi
+// URL guest functionality
     const urlParams = new URLSearchParams(window.location.search);
     const guestNameFromUrl = urlParams.get("to");
     const guestNameInput = document.getElementById('guest-name-input');
