@@ -4,6 +4,43 @@ body {
     color: #ffffff;
     overflow-x: hidden;
 }
+/* Cover awal */
+#cover {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    z-index: 9999;
+
+/* Transisi untuk animasi */
+transition: 0.8s ease-in-out;
+}
+
+.cover::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+    pointer-events: none;
+}
+
+#cover.slide-up {
+transform: translateY(-100%);
+}
+
+/* Konten utama (sudah ada di belakang cover) */
+
+
+
+
 .balinese-script {
     font-family: 'Noto Sans Balinese', sans-serif;
     font-size: 2.5rem;
