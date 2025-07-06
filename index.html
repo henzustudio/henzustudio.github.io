@@ -14,17 +14,17 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header class="cover-header">
+    <header id="cover" class="cover-header">
         <div class="cover-content">
             <p class="cover-title">Pawiwahan</p>
             <h1 class="cover-name">Hendra & Maylin</h1>
             <p class="guest-name">Kepada Yth. Bapak/Ibu/Saudara/i</p>
             <input type="text" id="guest-name-input" class="glass-input" placeholder="Nama Tamu Undangan">
-            <button id="open-invitation-button" class="glass-button-style">Buka Undangan</button>
+            <button id="open-invitation-button" class="glass-button-style" onclick="masukWebsite()">Buka Undangan</button>
         </div>
     </header>
 
-    <main>
+    <main id="main-content">
         <section id="hero">
             <div id="hero-slideshow">
                 <img class="bg-slide" src="./assets/Photo3.jpg" alt="Background 1">
@@ -267,7 +267,7 @@
                 <h1>Hendra & Maylin</h1>
             </div>
         </section>  
-    </main>
+    
 
     <footer>
         <p>Designed with love by:</p>
@@ -285,6 +285,7 @@
             </a>
         <p class="footer-text">&copy; 2025 Undangan Online Hendra & Maylin. All rights reserved.</p>
     </footer>
+    </main>
 
     <audio id="background-music" loop>
         <source src="./assets/music.mp3" type="audio/mp3">
