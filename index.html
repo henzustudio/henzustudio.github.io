@@ -3,1091 +3,288 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Undangan Pernikahan Hendra & Maylin</title>
+    <title>Undangan Resepsi Hendra & Maylin</title>
     <link rel="icon" type="image/x-xicon" href="./assets/favicon.png">
-    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Balinese&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore-compat.js"></script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            /* Latar Belakang Website menjadi gradasi abu-abu gelap */
-            background: linear-gradient(to bottom, #4A4A4A, #333333);
-            color: #4A4A4A;
-            overflow-x: hidden;
-        }
-        h1, h2, h3 {
-            font-family: 'Playfair Display', serif;
-        }
-        .cover-header-bg {
-            background-image: url('./assets/Photo1.jpg');
-            background-size: cover;
-            background-position: 50% 50%;
-            background-attachment: fixed;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            padding-bottom: 2.5rem;
-            /* Tambahkan transisi untuk background-size dan background-position */
-            transition: background-size 0.5s ease-out, background-position 0.5s ease-out;
-        }
-        .header-bg {
-            background-image: url('./assets/Photo2.jpg');
-            background-size: cover;
-            background-position: 50% 30%;
-            background-attachment: fixed;
-            /* Tambahkan transisi untuk background-size dan background-position */
-            transition: background-size 0.5s ease-out, background-position 0.5s ease-out;
-        }
-        .section-title {
-            color: white;
-            font-weight: 700;
-            position: relative;
-            display: inline-block;
-            padding-bottom: 0.5rem;
-        }
-        .section-title::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            bottom: 0;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 2px;
-            background-color: white;
-        }
-        .btn-primary {
-            background-color: #D4AF37;
-            color: white;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .btn-primary:hover {
-            background-color: #B8860B;
-            transform: translateY(-2px);
-        }
-        .card {
-            background-color: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow:
-                0 8px 25px rgba(0, 0, 0, 0.08),
-                inset 3px 3px 6px rgba(255, 255, 255, 0.4),
-                inset -3px -3px 6px rgba(0, 0, 0, 0.2);
-            border-radius: 1rem;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-            color: #333333;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        .text-accent {
-            color: rgba(255, 255, 255, 0.8);
-        }
-        .countdown-box {
-            background-color: rgba(220, 220, 220, 0.3);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow:
-                0 4px 6px rgba(0, 0, 0, 0.1),
-                inset 3px 3px 6px rgba(255, 255, 255, 0.4),
-                inset -3px -3px 6px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease-in-out;
-            outline: none;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-            color: white;
-            cursor: default;
-
-            border-radius: 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            /* Countdown box memiliki lebar yang sama dan tidak berubah */
-            width: 100px;
-            height: 100px;
-            padding: 0.5rem;
-            text-align: center;
-        }
-        .countdown-box .digit {
-            font-size: 2.75rem; /* Menyesuaikan ukuran font */
-            line-height: 1;
-            margin-bottom: 0.25rem;
-            color: white;
-        }
-        .countdown-box .label {
-            font-size: 1rem; /* Menyesuaikan ukuran font */
-            line-height: 1;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        /* Countdown box size adjustments for smaller screens */
-        @media (max-width: 767px) { /* For screens smaller than 768px (common breakpoint for tablets/phones) */
-            .countdown-box {
-                width: 75px;
-                height: 75px;
-                padding: 0.25rem;
-            }
-            .countdown-box .digit {
-                font-size: 2rem;
-            }
-            .countdown-box .label {
-                font-size: 0.75rem;
-            }
-        }
-
-        @media (max-width: 479px) { /* For very small mobile screens */
-            .countdown-box {
-                width: 60px;
-                height: 60px;
-                padding: 0.1rem;
-            }
-            .countdown-box .digit {
-                font-size: 1.5rem;
-            }
-            .countdown-box .label {
-                font-size: 0.6rem;
-            }
-        }
-        /* Menghapus media queries untuk countdown-box agar lebarnya tetap */
-        /* @media (min-width: 640px) { ... } */
-        /* @media (min-width: 768px) { ... } */
-        /* @media (min-width: 1024px) { ... } */
-
-        .event-card {
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            background-color: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow:
-                0 5px 15px rgba(0, 0, 0, 0.05),
-                inset 3px 3px 6px rgba(255, 255, 255, 0.4),
-                inset -3px -3px 6px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease;
-            color: #333333;
-        }
-        .event-card:hover {
-            transform: translateY(-5px);
-        }
-        .balinese-script {
-            font-family: 'Noto Sans Balinese', sans-serif;
-            font-size: 2.5rem;
-            color: white;
-            margin-bottom: 1rem;
-        }
-        .music-toggle-button {
-            position: fixed;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            display: none;
-        }
-        .music-toggle-button svg {
-            width: 24px;
-            height: 24px;
-            fill: currentColor;
-        }
-
-        .glass-button-style {
-            background-color: rgba(220, 220, 220, 0.3);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow:
-                0 4px 6px rgba(0, 0, 0, 0.1),
-                inset 3px 3px 6px rgba(255, 255, 255, 0.4),
-                inset -3px -3px 6px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease-in-out;
-            outline: none;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-            color: white; /* Mengubah warna teks menjadi putih */
-            cursor: pointer;
-        }
-        .glass-button-style:hover {
-            background-color: rgba(220, 220, 220, 0.4);
-            box-shadow:
-                0 6px 10px rgba(0, 0, 0, 0.15),
-                inset 2px 2px 5px rgba(255, 255, 255, 0.5),
-                inset -2px -2px 5px rgba(0, 0, 0, 0.25);
-            transform: translateY(-2px);
-        }
-        .glass-button-style:active {
-            background-color: rgba(220, 220, 220, 0.25);
-            box-shadow:
-                0 2px 4px rgba(0, 0, 0, 0.1),
-                inset 1px 1px 3px rgba(255, 255, 255, 0.3),
-                inset -1px -1px 3px rgba(0, 0, 0, 0.15);
-            transform: translateY(0);
-        }
-
-        .gold-accent-button {
-            background-color: rgba(212, 175, 55, 0.5);
-            color: white;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow:
-                0 4px 6px rgba(0, 0, 0, 0.1),
-                inset 3px 3px 6px rgba(255, 255, 255, 0.4),
-                inset -3px -3px 6px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease-in-out;
-            outline: none;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-        }
-        .gold-accent-button:hover {
-            background-color: rgba(184, 134, 11, 0.6);
-            box-shadow:
-                0 6px 10px rgba(0, 0, 0, 0.15),
-                inset 2px 2px 5px rgba(255, 255, 255, 0.5),
-                inset -2px -2px 5px rgba(0, 0, 0, 0.25);
-            transform: translateY(-2px);
-        }
-        .gold-accent-button:active {
-            background-color: rgba(160, 120, 10, 0.7);
-            box-shadow:
-                0 2px 4px rgba(0, 0, 0, 0.1),
-                inset 1px 1px 3px rgba(255, 255, 255, 0.3),
-                inset -1px -1px 3px rgba(0, 0, 0, 0.15);
-            transform: translateY(0);
-        }
-
-        .map-container {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 0.5rem;
-            margin-top: 1.5rem;
-        }
-        .map-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
-
-        .circular-photo {
-            border-radius: 50%;
-            object-fit: cover;
-            width: 150px;
-            height: 150px;
-            /* Mengubah outline emas menjadi putih */
-            border: 4px solid white;
-        }
-
-        .photo-carousel-container {
-            position: relative;
-            width: 100%;
-            max-width: 1152px;
-            margin: 0 auto;
-            overflow: hidden;
-            cursor: grab;
-        }
-        .photo-carousel-container.dragging {
-            cursor: grabbing;
-        }
-
-        .photo-carousel-wrapper {
-            display: flex;
-            gap: 1rem;
-            transition: transform 0.8s ease-in-out;
-        }
-
-        .photo-carousel-item {
-            flex-shrink: 0;
-            width: calc((100% - 3 * 1rem) / 4);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        /* Media queries for responsive circular photo size */
-        @media (max-width: 768px) {
-            .circular-photo {
-                width: 100px;
-                height: 100px;
-            }
-        }
-        @media (max-width: 480px) {
-            .circular-photo {
-                width: 80px;
-                height: 80px;
-            }
-        }
-        @media (max-width: 400px) {
-            .circular-photo {
-                width: 60px;
-                height: 60px;
-            }
-        }
-
-        #thumbnail-carousel-container {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        #thumbnail-carousel-container::-webkit-scrollbar {
-            display: none;
-        }
-
-        #our-gallery .max-w-4xl.mx-auto {
-            position: relative;
-            width: 100%;
-            padding-bottom: 75%;
-            height: 0;
-            overflow: hidden;
-        }
-
-        #main-gallery-preview {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .gallery-thumbnail-item {
-            position: relative;
-            width: 150px;
-            height: 112.5px;
-            object-fit: cover;
-            border: 3px solid transparent;
-            transition: border-color 0.3s ease, transform 0.3s ease;
-            border-radius: 0.5rem;
-            cursor: pointer;
-        }
-        .gallery-thumbnail-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
-            border-radius: 0.5rem;
-            transition: opacity 0.3s ease;
-            z-index: 1;
-        }
-        .gallery-thumbnail-item.active-thumbnail {
-            /* Mengubah outline emas menjadi putih */
-            border-color: white;
-            transform: scale(1.08);
-        }
-        .gallery-thumbnail-item.active-thumbnail::before {
-            opacity: 0;
-        }
-
-        #guest-name-input {
-            background-color: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-        }
-        #guest-name-input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* Styles for hero section and fixed background */
-        #hero-content-overlay {
-            position: relative;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-            padding-bottom: 3rem;
-            z-index: 1;
-            background: transparent;
-        }
-
-        /* Perubahan utama: hero-after-cover diatur ke fixed */
-        #hero-after-cover {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        #background-slideshow {
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-        }
-
-        .bg-slide {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: 50% 50%;
-            opacity: 0;
-            left: 100%;
-            /* Tambahkan transisi untuk transform */
-            transition: opacity 1s ease-in-out, left 1s ease-in-out, transform 0.1s linear; /* Transisi linear untuk scale */
-            transform: scale(1.2);
-        }
-
-        /* Fixed background images for sections */
-        #rsvp, #gifts, #about, #wedding-quote {
-            position: relative;
-            background-size: cover;
-            background-position: center center; /* Pastikan selalu di tengah */
-            background-attachment: fixed;
-            color: white; /* Ensure text color is white for these sections */
-            /* Tambahkan transisi untuk background-size dan background-position */
-            transition: background-size 0.5s ease-out, background-position 0.5s ease-out;
-        }
-
-        #rsvp {
-            background-image: url('./assets/Photo4.jpg');
-        }
-
-        #gifts {
-            background-image: url('./assets/Photo5.jpg');
-        }
-
-        #about {
-            background-image: url('./assets/Photo6.jpg');
-        }
-
-        #wedding-quote {
-            background-image: url('./assets/Photo4.jpg'); /* Background image for the quote section */
-        }
-
-        /* Default overlay style for fixed background sections */
-        .section-overlay {
-            position: absolute;
-            inset: 0;
-            background-color: rgba(0, 0, 0, 0.4); /* Default dark transparent overlay */
-            z-index: 0;
-        }
-
-        /* Specific overlay style for wedding-quote to apply blur and desired color */
-        #wedding-quote .section-overlay {
-            background-color: rgba(139, 69, 19, 0.7); /* Transparent dark brown color */
-            backdrop-filter: blur(5px); /* Blur effect */
-            -webkit-backdrop-filter: blur(5px); /* For Safari support */
-        }
-
-        /* Content positioning over overlay */
-        #about .max-w-5xl {
-            position: relative;
-            z-index: 1;
-        }
-        /* Style for content in wedding-quote section for overlap */
-        #wedding-quote .max-w-3xl {
-            position: relative;
-            z-index: 1;
-            /* Default for desktop: photo height 150px, half = 75px. Clearance = 4rem (64px) */
-            padding-bottom: calc(75px + 4rem); /* 75px overlap + 64px content clearance */
-        }
-
-
-        #rsvp .card, #gifts .card {
-            position: relative;
-            z-index: 1;
-            background-color: rgba(255, 255, 255, 0.2);
-            color: #333333;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow:
-                0 8px 25px rgba(0, 0, 0, 0.08),
-                inset 3px 3px 6px rgba(255, 255, 255, 0.4),
-                inset -3px -3px 6px rgba(0, 0, 0, 0.2);
-        }
-
-        #rsvp .section-title, #gifts .section-title, #about .section-title, #wedding-quote .section-title {
-            color: white;
-        }
-        #rsvp .section-title::after, #gifts .section-title::after, #about .section-title::after, #wedding-quote .section-title::after {
-            background-color: white;
-        }
-
-        .font-elegant {
-            font-family: 'Cormorant Garamond', serif;
-            font-weight: 700;
-        }
-
-        .gift-box {
-            background-color: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 1.5rem;
-            font-size: 0.9rem;
-            color: white; /* Changed gift-box text to white */
-        }
-        .gift-box .font-semibold {
-            font-size: 1.125rem;
-        }
-        .gift-box .text-lg {
-            font-size: 0.95rem;
-        }
-        .gift-box .text-xl {
-            font-size: 1.05rem;
-        }
-        .gift-box .btn-primary {
-            padding: 0.6rem 1.2rem;
-            font-size: 0.85rem;
-        }
-
-        @media (min-width: 640px) {
-            .gift-box {
-                padding: 1.5rem;
-                font-size: 1rem;
-            }
-            .gift-box .font-semibold {
-                font-size: 1.25rem;
-            }
-            .gift-box .text-lg {
-                font-size: 1rem;
-            }
-            .gift-box .text-xl {
-                font-size: 1.125rem;
-            }
-            .gift-box .btn-primary {
-                padding: 0.75rem 1.5rem;
-                font-size: 0.9rem;
-            }
-        }
-
-        @media (min-width: 768px) {
-            .gift-box {
-                padding: 2rem;
-                font-size: 1rem;
-            }
-            .gift-box .font-semibold {
-                font-size: 1.25rem;
-            }
-            .gift-box .text-lg {
-                font-size: 1.125rem;
-            }
-            .gift-box .text-xl {
-                font-size: 1.25rem;
-            }
-            .gift-box .btn-primary {
-                padding: 0.75rem 1.5rem;
-                font-size: 1rem;
-            }
-        }
-
-        .alert-message {
-            font-size: 0.9rem;
-            padding: 0.5rem 1rem;
-        }
-
-        .glass-input {
-            background-color: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white; /* Changed glass-input text to white */
-        }
-        .glass-input::placeholder {
-            color: rgba(255, 255, 255, 0.7); /* Changed glass-input placeholder to white */
-        }
-        .glass-input:focus {
-            /* Mengubah outline emas menjadi putih */
-            border-color: white;
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
-        }
-
-        /* Styling for RSVP guests dropdown options */
-        #rsvp-guests {
-            /* Ensure the text displayed in the actual select box (when closed) is white */
-            color: white;
-            /* Reset default browser appearance to allow custom styling */
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            /* Custom arrow icon (white color) */
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 0.75rem center;
-            background-size: 1.25em; /* Adjust size as needed */
-            padding-right: 2.5rem; /* Make space for the arrow */
-        }
-
-        #rsvp-guests option {
-            background-color: white; /* Default background of options in the dropdown list */
-            color: black; /* Text color of options in the dropdown list (when not hovered/selected) */
-        }
-
-        #rsvp-guests option:hover {
-            background-color: #A0A0A0; /* Gray background on hover */
-            color: white; /* White text on hover */
-        }
-
-        /* Note: option:checked applies when the option is selected AND the dropdown is open */
-        #rsvp-guests option:checked {
-            background-color: white; /* Background of the actively selected option in the list */
-            color: black; /* Text color of the actively selected option in the list */
-        }
-
-
-        #blessings-list .bg-gray-50 {
-            background-color: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white; /* Changed blessing list background to white */
-        }
-        #blessings-list .text-gray-800 {
-            color: white; /* Changed blessing name to white */
-        }
-        #blessings-list .text-gray-700 {
-            color: white; /* Changed blessing message to white */
-        }
-        #blessings-list .text-gray-500 {
-            color: rgba(255, 255, 255, 0.8); /* Changed blessing timestamp to white */
-        }
-
-        /* Background colors for sections that should obscure the fixed slideshow */
-        #opening-message {
-            /* Warna latar belakang disesuaikan untuk menciptakan ilusi gradasi blur */
-            background: linear-gradient(to bottom, transparent 0%, rgba(139, 69, 19, 0.3) 50%, rgba(139, 69, 19, 0.7) 100%);
-            backdrop-filter: blur(3px); /* Menerapkan blur dasar yang halus */
-            -webkit-backdrop-filter: blur(3px);
-            height: 300px;
-        }
-        #about {
-            /* Latar belakang transparan dengan efek blur */
-            background-image: url('./assets/Photo6.jpg'); /* Menambahkan gambar background */
-            background-size: cover;
-            background-position: center center; /* Pastikan selalu di tengah */
-            background-attachment: fixed;
-            background-color: rgba(255, 255, 255, 0.05); /* Sedikit transparan untuk efek glassmorphism */
-            backdrop-filter: blur(10px); /* Efek blur */
-            -webkit-backdrop-filter: blur(10px); /* Dukungan browser lama */
-            position: relative; /* Diperlukan untuk section-overlay */
-            color: white; /* Mengubah warna teks untuk kontras */
-            /* Tambahkan transisi untuk background-size dan background-position */
-            transition: background-size 0.5s ease-out, background-position 0.5s ease-out;
-        }
-        #about .text-gray-200 { /* Mengubah warna teks di dalam about */
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        #events {
-            /* Latar belakang dihapus untuk menampilkan peta */
-            background-color: transparent;
-            position: relative; /* Penting untuk penempatan iframe absolut */
-            overflow: hidden; /* Memastikan iframe tidak meluap */
-        }
-        /* Default padding-top for #events h2 (desktop and larger screens) */
-        #events h2 {
-            padding-top: 10rem; /* Increased top padding for desktop */
-        }
-
-        .map-background-container {
-            position: absolute;
-            inset: 0;
-            z-index: 0; /* Pastikan di belakang konten */
-        }
-        .map-background-container iframe {
-            width: 100%;
-            height: 100%;
-            border: 0;
-            filter: grayscale(50%) brightness(80%); /* Efek grayscale dan sedikit gelap pada peta */
-        }
-        .map-background-overlay {
-            position: absolute;
-            inset: 0;
-            background-color: rgba(139, 69, 19, 0); /* Mengubah warna menjadi transparan penuh */
-            backdrop-filter: none; /* Menghapus efek blur */
-            -webkit-backdrop-filter: none;
-            z-index: 1; /* Di atas peta, di bawah konten utama */
-        }
-
-        #blessings {
-            /* Latar belakang menjadi solid untuk menutupi slide foto */
-            background-color: #4A4A4A;
-        }
-
-        #photo-carousel-section {
-            position: relative; /* Diperlukan untuk tumpukan */
-            z-index: 10; /* Pastikan di atas section wedding-quote dan events */
-            /* Default (Desktop): photo height 150px, half = 75px */
-            margin-top: -75px;
-            margin-bottom: -75px;
-        }
-        /* Responsif untuk photo-carousel-section margins */
-        @media (max-width: 768px) {
-            #photo-carousel-section {
-                margin-top: -50px; /* Half of 100px photo height */
-                margin-bottom: -50px; /* Half of 100px photo height */
-            }
-            #wedding-quote .max-w-3xl {
-                padding-bottom: calc(50px + 4rem); /* Half photo height + 4rem clearance */
-            }
-            /* Keempat, menimpa padding-top untuk #events h2 pada ukuran layar tablet */
-            #events h2 {
-                padding-top: calc(50px + 6rem); /* Half photo height + 6rem clearance */
-            }
-        }
-        @media (max-width: 480px) {
-            #photo-carousel-section {
-                margin-top: -40px; /* Half of 80px photo height */
-                margin-bottom: -40px; /* Half of 80px photo height */
-            }
-            #wedding-quote .max-w-3xl {
-                padding-bottom: calc(40px + 4rem); /* Half photo height + 4rem clearance */
-            }
-            /* Kelima, menimpa padding-top untuk #events h2 pada ukuran layar mobile kecil */
-            #events h2 {
-                padding-top: calc(40px + 6rem); /* Half photo height + 6rem clearance */
-            }
-        }
-        @media (max-width: 400px) {
-            #photo-carousel-section {
-                margin-top: -30px; /* Half of 60px photo height */
-                margin-bottom: -30px; /* Half of 60px photo height */
-            }
-            #wedding-quote .max-w-3xl {
-                padding-bottom: calc(30px + 4rem); /* Half photo height + 4rem clearance */
-            }
-            /* Keenam, menimpa padding-top untuk #events h2 pada ukuran layar mobile terkecil */
-            #events h2 {
-                padding-top: calc(30px + 6rem); /* Half photo height + 6rem clearance */
-            }
-        }
-
-        #closing-message .absolute.inset-0.z-10 {
-            /* Gradien penutup berakhir dengan warna coklat tua solid */
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 50%, #8B4513 100%);
-        }
-        footer {
-            /* Footer kembali menjadi warna coklat tua solid */
-            background-color: #8B4513;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body class="antialiased">
-    <div id="cover-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-F8F4E3 transition-transform duration-1000 ease-in-out">
-        <header class="cover-header-bg relative h-full w-full text-center text-white">
-            <div class="absolute inset-0 bg-black opacity-40"></div>
-            <div class="relative z-10 p-6 max-w-4xl mx-auto flex flex-col items-center">
-                <p class="text-base md:text-lg mb-0 tracking-wider">Pawiwahan</p>
-                <h1 class="text-3xl md:text-5xl font-bold mb-1 leading-tight text-shadow-lg">Hendra & Maylin</h1>
-                <p class="text-sm md:text-base italic mb-1">Kepada Bapak/Ibu/Saudara/i</p>
-                <input type="text" id="guest-name-input" class="mt-0.5 px-3 py-2 rounded-lg text-center w-full max-w-xs md:max-w-sm mx-auto text-base glass-input" placeholder="Nama Tamu Undangan">
-                <button id="open-invitation-button" class="mt-2 px-6 py-3 rounded-full gold-accent-button text-base font-semibold">Buka Undangan</button>
-            </div>
-        </header>
-    </div>
+<body>
+    <header class="cover-header">
+        <div class="cover-content">
+            <p class="cover-title">Pawiwahan</p>
+            <h1 class="cover-name">Hendra & Maylin</h1>
+            <p class="guest-name">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+            <input type="text" id="guest-name-input" class="glass-input" placeholder="Nama Tamu Undangan">
+            <button id="open-invitation-button" class="glass-button-style">Buka Undangan</button>
+        </div>
+    </header>
 
-    <div id="main-content">
-        <!-- hero-after-cover sekarang menjadi elemen fixed di belakang konten -->
-        <div id="hero-after-cover">
-            <div id="background-slideshow">
+    <main>
+        <section id="hero">
+            <div id="hero-slideshow">
                 <img class="bg-slide" src="./assets/Photo3.jpg" alt="Background 1">
                 <img class="bg-slide" src="./assets/Photo2.jpg" alt="Background 2">
                 <img class="bg-slide" src="./assets/Photo1.jpg" alt="Background 3">
             </div>
-        </div>
-
-        <section id="hero-content-overlay" class="relative h-screen flex flex-col items-center justify-end p-6 max-w-4xl mx-auto w-full">
-            <p class="text-lg md:text-xl mb-0 tracking-wider text-white">Pawiwahan</p>
-            <h1 class="text-4xl md:text-6xl font-bold mb-2 leading-tight text-white text-center">Hendra & Maylin</h1>
-            
-            <div id="hero-countdown-container" class="flex justify-center space-x-2 mt-2 mb-12 max-w-sm mx-auto">
+            <div id="hero-content">
+                <p class="cover-title">Pawiwahan</p>
+                <h1 class="cover-name">Hendra & Maylin</h1>
+                <div id="hero-countdown" class="countdown-container">
                 <div class="countdown-box">
-                    <span id="hero-days" class="digit">00</span>
+                    <span id="days" class="digit">00</span>
                     <span class="label">Hari</span>
                 </div>
                 <div class="countdown-box">
-                    <span id="hero-hours" class="digit">00</span>
+                    <span id="hours" class="digit">00</span>
                     <span class="label">Jam</span>
                 </div>
                 <div class="countdown-box">
-                    <span id="hero-minutes" class="digit">00</span>
+                    <span id="minutes" class="digit">00</span>
                     <span class="label">Menit</span>
                 </div>
                 <div class="countdown-box">
-                    <span id="hero-seconds" class="digit">00</span>
+                    <span id="seconds" class="digit">00</span>
                     <span class="label">Detik</span>
                 </div>
             </div>
-        </section>
-
-        <section id="opening-message" class="py-10 px-4 md:px-8 text-center">
-            <div class="max-w-3xl mx-auto">
-                <br>
-                <div class="balinese-script text-3xl md:text-4xl mb-4">ᬒᬁ ᬲ᭄ᬯᬲ᭄ᬢ᭄ᬬᬲ᭄ᬢᬸ</div>
-                <br>
-                <p class="text-base md:text-lg leading-relaxed text-gray-200">
-                    Atas Asung Kertha Wara Nugraha Ida Sang Hyang Widhi Wasa/Tuhan Yang Maha Esa, kami bermaksud mengundang Bapak/Ibu/Saudara/i pada acara Resepsi Pernikahan putra-putri kami
-                </p>
             </div>
         </section>
-        
-        <section id="about" class="py-20 px-4 md:px-8 text-center">
-            <div class="section-overlay"></div>
-            <div class="max-w-5xl mx-auto relative z-10">
-                <div class="flex flex-col md:flex-row items-center justify-center space-y-12 md:space-y-0 md:space-x-20">
-                    <div class="flex flex-col items-center">
-                        <img src="./assets/About Me.jpg" alt="Hendra" class="w-48 h-48 rounded-full object-cover shadow-xl border-4 border-D4AF37 mb-6">
-                        <h3 class="text-2xl md:text-3xl font-semibold text-accent mb-2">Komang Hendra Supradnyana</h3>
-                        <p class="text-sm md:text-base text-gray-200">Putra dari Bapak I Nyoman Adiputra & Ibu Ni Desak Made Marheni</p>
-                        <a href="https://www.instagram.com/hendrasupradnyana/" target="_blank" class="mt-4 inline-flex items-center px-4 py-2 glass-button-style rounded-full text-sm md:text-base font-medium">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                                <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
-                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                            </svg>
-                            <span class="font-medium">@hendrasupradnyana</span>
-                        </a>
-                    </div>
-                    <div class="text-6xl text-accent font-bold">&</div>
-                    <div class="flex flex-col items-center">
-                        <img src="./assets/About Girl.jpg" alt="Maylin" class="w-48 h-48 rounded-full object-cover shadow-xl border-4 border-D4AF37 mb-6">
-                        <h3 class="text-2xl md:text-3xl font-semibold text-accent mb-2">Ni Kadek Maylin Franza</h3>
-                        <p class="text-sm md:text-base text-gray-200">Putri dari Bapak I Nyoman Sutiarsa & Ibu Ni Nengah Sudiani</p>
-                        <a href="https://www.instagram.com/maylinfranz/" target="_blank" class="mt-4 inline-flex items-center px-4 py-2 glass-button-style rounded-full text-sm md:text-base font-medium">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                                <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
-                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                            </svg>
-                            <span class="font-medium">@maylinfranz</span>
-                        </a>
-                    </div>
+
+        <section id="opening-message">
+            <div id="opening-message-overlay"></div>
+            <div class="opening-message-content">
+                <br>
+                 <div class="balinese-script">ᬒᬁ ᬲ᭄ᬯᬲ᭄ᬢ᭄ᬬᬲ᭄ᬢᬸ</div>
+                <br>
+                <p id="opening-message-text">Atas Asung Kertha Wara Nugraha Ida Sang Hyang Widhi Wasa/Tuhan Yang Maha Esa, kami bermaksud mengundang Bapak/Ibu/Saudara/i pada acara Resepsi Pernikahan putra-putri kami</p>
                 </div>
             </div>
-        </section>
-
-        <section id="wedding-quote" class="py-10 px-4 md:px-8 text-center relative z-0">
-            <div class="section-overlay"></div>
-            <div class="max-w-3xl mx-auto relative z-10">
-                <p class="text-base md:text-lg italic leading-relaxed text-white mb-0">
-                    "Ya Tuhan Yang Maha Pengasih, anugrahkan kepada pasangan ini tanpa terpisahkan, panjang umur, semoga pernikahan ini dianugrahkan putra-putri dan cucu yang memberi penghiburan, tinggal di rumah yang penuh kebahagiaan."
-                </p>
-                <p class="text-base font-semibold text-gray-200 mb-0">(Reg Weda X. 85.42)</p>
-            </div>
-        </section>
-
-        <section id="photo-carousel-section" class="px-4 md:px-8 text-center relative z-10">
-            <div class="photo-carousel-container">
-                <div class="photo-carousel-wrapper">
-                    <!-- Initial photo items for carousel -->
-                    <div class="photo-carousel-item">
-                        <img src="./assets/Photo1.jpg" alt="Momen 1" class="circular-photo">
+            <div id="about-us">
+                <div class="container">
+                    <div class="column">
+                        <img class="profile-pic" src="./assets/About Me.jpg" alt="Hendra">
+                        <h3>Komang Hendra Supradnyana</h3>
+                        <p>Putra dari Bapak I Nyoman Adiputra & Ibu Ni Desak Made Marheni</p>
+                        <a href="https://www.instagram.com/hendrasupradnyana/" target="_blank">
+                            <button class="glass-button-style">
+                                <span class="h-1 w-1 mr-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                        <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
+                                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                    </svg>
+                                </span>
+                                <span class="font-medium">@hendrasupradnyana</span>
+                            </button>
+                        </a>
                     </div>
-                    <div class="photo-carousel-item">
-                        <img src="./assets/Photo2.jpg" alt="Momen 2" class="circular-photo">
-                    </div>
-                    <div class="photo-carousel-item">
-                        <img src="./assets/Photo3.jpg" alt="Momen 3" class="circular-photo">
-                    </div>
-                    <div class="photo-carousel-item">
-                        <img src="./assets/Photo4.jpg" alt="Momen 4" class="circular-photo">
-                    </div>
-                    <div class="photo-carousel-item">
-                        <img src="./assets/Photo5.jpg" alt="Momen 5" class="circular-photo">
-                    </div>
-                    <div class="photo-carousel-item">
-                        <img src="./assets/Photo6.jpg" alt="Momen 6" class="circular-photo">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="events" class="pb-10 px-4 md:px-8 text-center relative z-0">
-            <div class="map-background-container">
-                <iframe
-                    src="https://www.openstreetmap.org/export/embed.html?bbox=115.404129,-8.557778,115.405129,-8.556778&amp;layer=mapnik&amp;marker=-8.557278,115.404629"
-                    title="OpenStreetMap Location"
-                    allowfullscreen="" aria-hidden="false" tabindex="0">
-                </iframe>
-                <div class="map-background-overlay"></div>
-            </div>
-            <h2 class="text-4xl md:text-5xl section-title mb-4 relative z-20">Detail Acara</h2>
-            <div class="flex flex-col md:flex-row justify-center items-stretch space-y-12 md:space-y-0 md:space-x-12 max-w-6xl mx-auto relative z-20">
-                <div class="event-card flex-1 flex flex-col items-center justify-between">
-                    <!-- Changed text color to white -->
-                    <h3 class="text-3xl md:text-4xl font-semibold text-white mb-6">Resepsi</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
-                        <div class="flex flex-col items-center justify-center text-center">
-                            <p class="text-lg md:text-xl font-bold text-white mb-3" id="event-date">Kamis, 25 September 2025</p>
-                            <p class="text-base md:text-lg mb-3"><span class="font-medium text-white" id="event-time">11:00 - 22:00 WITA</span></p>
-                            <p class="text-base md:text-lg mb-6 text-white">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto text-accent mb-1" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                    <h3 class="column-center">&</h3>
+                    <div class="column">
+                        <img class="profile-pic" src="./assets/About Girl.jpg" alt="Maylin">
+                        <h3>Ni Kadek Maylin Franza</h3>
+                        <p>Putri dari Bapak I Nyoman Sutiarsa & Ibu Ni Nengah Sudiani</p>
+                        <a href="https://www.instagram.com/maylinfranz/" target="_blank">
+                            <button class="glass-button-style">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                    <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
+                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                                 </svg>
-                                <strong>Lokasi:</strong><br>
-                                <span class="font-bold text-base md:text-lg text-white mt-1">Kediaman Mempelai Pria</span><br>
-                                <span class="font-medium text-base md:text-lg" id="event-location">Jl. Warapsari No.2, Gelgel, Kec. Klungkung, Kabupaten Klungkung, Bali</span>
-                            </p>
+                                <span class="font-medium">@maylinfranz</span>
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="invitation-details">
+            <div id="invitation-header">
+                <h2>Detail Acara</h2>
+            </div>
+            <div id="invitation-content">
+                <div class="event-card">
+                    <h3>Resepsi</h3>
+                    <div class="details-container">
+                        <div class="detail-item">
+                            <h4>Kamis, 25 September 2025</h4>
+                            <p>Pukul 11.00 WITA - 22.00 WITA</p>
                         </div>
-                        <div class="flex flex-col items-center justify-center">
-                            <div class="flex flex-col space-y-4 mt-6 w-full">
-                                <button onclick="saveDateToCalendar()" class="px-7 py-3 rounded-full glass-button-style text-base md:text-lg font-medium w-full">Simpan Tanggal</button>
-                                <a id="open-map-button" href="#" target="_blank" class="px-7 py-3 rounded-full glass-button-style text-base md:text-lg font-medium text-center w-full">Buka Map</a>
+                        <div class="detail-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto text-accent mb-1" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            </svg>
+                            <h5>Kediaman Mempelai Pria</h5>
+                            <p>Jl. Warapsari No.2, Desa Gelgel, Kec. Klungkung, Kabupaten Klungkung, Bali</p>
+                        </div>
+                        <div class="container-center">
+                            <div class="column-center">
+                                <button onclick="saveDateToCalendar()" class="outline-button-style">
+                                    <span>🗓️ Simpan Tanggal</span>
+                                </button>
+                            </div>
+                            <div class="column-center">
+                                <a href="https://maps.app.goo.gl/eJzz1nNFYSz4thmS6" target="_blank">
+                                    <button class="outline-button-style">
+                                        <span>🗺️ Buka Maps</span>
+                                    </button>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </section>
 
-        <section id="rsvp" class="py-20 px-4 md:px-8 text-center">
-            <div class="section-overlay"></div>
-            <h2 class="text-4xl md:text-5xl section-title mb-12">Konfirmasi Kehadiran (RSVP)</h2>
-            <div class="max-w-3xl mx-auto card p-10 rounded-lg shadow-xl">
-                <p class="text-base leading-relaxed mb-8 text-white">
-                    Mohon mengirimkan konfirmasi kehadiran melalui form berikut:
-                </p>
-                <div class="space-y-6 mb-8">
-                    <div class="text-left">
-                        <label for="rsvp-name" class="block text-base font-medium text-white mb-2">Nama Lengkap:</label>
-                        <input type="text" id="rsvp-name" class="mt-1 block w-full px-4 py-3 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-base glass-input" placeholder="Masukkan nama lengkap Anda" required>
-                    </div>
-                    <div class="text-left">
-                        <label for="rsvp-guests" class="block text-base font-medium text-white mb-2">Jumlah Tamu (termasuk Anda):</label>
-                        <select id="rsvp-guests" class="mt-1 block w-full px-4 py-3 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-base glass-input">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                    </div>
-                </div>
-                <button onclick="sendRsvp()" class="px-8 py-4 rounded-full glass-button-style text-lg font-semibold">Kirim</button>
-                <p class="text-sm text-gray-500 mt-6 italic text-white">
-                    Setelah menekan tombol, Anda akan diarahkan ke formulir konfirmasi.
-                </p>
-            </div>
-        </section>
-
-        <section id="our-gallery" class="py-20 px-4 md:px-8 text-center">
-            <h2 class="text-4xl md:text-5xl section-title mb-12">Our Gallery</h2>
-
-            <div id="gallery-slideshow-wrapper">
-                <div class="max-w-4xl mx-auto mb-8 rounded-lg shadow-xl overflow-hidden card">
-                    <img id="main-gallery-preview" src="./assets/Photo7.jpg" alt="Main Gallery Photo" class="w-full h-auto object-cover rounded-lg">
-                </div>
-
-                <div id="thumbnail-carousel-container" class="relative w-full max-w-6xl mx-auto overflow-x-scroll whitespace-nowrap py-4 scroll-smooth">
-                    <div id="thumbnail-carousel-wrapper" class="inline-flex space-x-4 px-4">
-                        </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="gifts" class="py-20 px-4 md:px-8 text-center">
-            <div class="section-overlay"></div>
-            <h2 class="text-4xl md:text-5xl section-title mb-12">Kirim Tanda Kasih</h2>
-            <div class="max-w-3xl mx-auto card p-10 rounded-lg shadow-xl">
-                <p class="text-base leading-relaxed mb-8 text-white">
-                    Tanpa mengurangi rasa hormat kami, bagi tamu yang ingin mengirim hadiah kepada kedua mempelai dapat mengirimnya melalui:
-                </p>
-                <div class="space-y-6 mb-8">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="text-left rounded-lg border gift-box">
-                            <p class="font-semibold text-lg md:text-xl text-white">Bank Mandiri</p>
-                            <p class="text-base md:text-lg text-white">No. Rekening: <span id="bank-account" class="font-mono text-lg md:text-xl text-white">1234567890</span></p>
-                            <p class="text-base md:text-lg text-white">Atas Nama: Hendra</p>
-                            <button onclick="copyToClipboard('bank-account')" class="mt-4 px-6 py-3 rounded-full glass-button-style text-sm md:text-base font-medium">Salin No. Rekening</button>
-                        </div>
-                        <div class="text-left rounded-lg border gift-box">
-                            <p class="font-semibold text-lg md:text-xl text-white">Bank BCA</p>
-                            <p class="text-base md:text-lg text-white">No. Rekening: <span id="bank-account-2" class="font-mono text-lg md:text-xl text-white">081234567890</span></p>
-                            <p class="text-base md:text-lg text-white">Atas Nama: Maylin</p>
-                            <button onclick="copyToClipboard('bank-account-2')" class="mt-4 px-6 py-3 rounded-full glass-button-style text-sm md:text-base font-medium">Salin No. Rekening</button>
-                        </div>
-                    </div>
-                    <div class="text-left rounded-lg border gift-box">
-                        <p class="font-semibold text-lg md:text-xl text-white">Pengiriman Hadiah Fisik</p>
-                        <p class="text-base md:text-lg text-white">Maylin Franza</p>
-                        <p class="text-base md:text-lg"><span id="alamat-hadiah" class="font-mono text-lg md:text-xl text-white">Jl. Warapsari No.2, Gelgel, Kec. Klungkung, Kabupaten Klungkung, Bali</span></p>
-                        <button onclick="copyToClipboard('alamat-hadiah')" class="mt-4 px-6 py-3 rounded-full glass-button-style text-sm font-medium">Salin</button>
-                    </div>
-                </div>
-                <p class="text-base text-white italic">
-                    Terima kasih atas perhatian dan kebaikan hati Anda.
-                </p>
-            </div>
-        </section>
-
-        <section id="blessings" class="py-20 px-4 md:px-8 text-center">
-            <div class="max-w-3xl mx-auto card p-10 rounded-lg shadow-xl">
-                <h2 class="text-4xl md:text-5xl section-title mb-12">Ucapan Doa Restu</h2>
-                <div class="flex flex-col md:flex-row gap-8">
-                    <div class="w-full md:w-2/5 space-y-6">
-                        <div class="text-left">
-                            <input type="text" id="blessing-name" class="mt-1 block w-full px-4 py-3 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-base glass-input" placeholder="Nama Anda" required>
-                        </div>
-                        <div class="text-left">
-                            <textarea id="blessing-message" rows="4" class="mt-1 block w-full px-4 py-3 rounded-lg shadow-sm focus:ring-D4AF37 focus:border-D4AF37 text-base glass-input" placeholder="Tulis ucapan doa restu Anda di sini..." required></textarea>
-                        </div>
-                        <button onclick="sendBlessing()" class="px-8 py-4 rounded-full glass-button-style text-lg font-semibold w-full">Kirim Ucapan</button>
-                    </div>
-                    <div class="w-full md:w-3/5 text-left">
-                        <h3 class="text-2xl md:text-3xl font-semibold text-accent mb-6">Daftar Ucapan</h3>
-                        <div id="blessings-list" class="space-y-6">
+        <section id="feedback">
+            <div class="feedback-container">
+                <div id="RSVP" class="column">
+                    <h2>Konfirmasi Kehadiran</h2>
+                    <p>Mohon mengirimkan konfirmasi kehadiran kepada mempelai melalui form berikut:</p>
+                    <div class="glass-input-container">
+                        <div class="form-group">
+                            <label for="rsvp-name">Nama Lengkap:</label>
+                            <input type="text" id="rsvp-name" class="glass-input-alt data-input" placeholder="Masukkan nama" required>
+                            <div class="text-label">
+                                <label for="rsvp-guests">Jumlah Orang:</label>
                             </div>
+                            <div class="data-input">
+                                <select id="rsvp-guests" class="glass-input-alt">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-input-container">
+                        <button onclick="sendRsvp()" id="submit-rsvp" class="blue-button-style">Kirim Konfirmasi</button>
+                    </div>
+                </div>
+                <div id="gifts" class="column">
+                    <h2>Kirim Tanda Kasih</h2>
+                    <p>Tanpa mengurangi rasa hormat kami, bagi tamu undangan yang ingin mengirim hadiah kepada kedua mempelai dapat mengirimnya melalui:</p>
+                    <div class="glass-gift-container">
+                        <div class="text">
+                            <h5 class="no-margin">Bank Mandiri</h5>
+                            <p class="no-margin">Atas Nama: Hendra Supradnyana</p>
+                            <label for="mandiri" class="no-margin">No. Rekening:</label>
+                        </div>
+                        <div class="textarea-wrapper data-input">
+                            <input type="text" id="mandiri" class="glass-input-alt data-input" value="1234567890" readonly>
+                            <div class="copy-btn-wrapper">
+                                <button class="copy-btn" onclick="copyToClipboard('mandiri')">
+                                    <svg class="icon-copy" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="3.5" y="3.5" width="12" height="12" rx="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M16 8H18C19.1046 8 20 8.89543 20 10V18C20 19.1046 19.1046 20 18 20H10C8.89543 20 8 19.1046 8 18V16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-gift-container">
+                        <div class="text">
+                            <h5 class="no-margin">Bank BCA</h5>
+                            <p class="no-margin">Atas Nama: Maylin Franza</p>
+                            <label for="BCA" class="no-margin">No. Rekening:</label>
+                        </div>
+                        <div class="textarea-wrapper data-input">
+                            <input type="text" id="BCA" class="glass-input-alt data-input" value="081234567890" readonly>
+                            <div class="copy-btn-wrapper">
+                                <button class="copy-btn" onclick="copyToClipboard('BCA')">
+                                    <svg class="icon-copy" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="3.5" y="3.5" width="12" height="12" rx="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M16 8H18C19.1046 8 20 8.89543 20 10V18C20 19.1046 19.1046 20 18 20H10C8.89543 20 8 19.1046 8 18V16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-gift-container">
+                        <div class="text">
+                            <h5 class="no-margin">Pengiriman Kado</h5>
+                            <p class="no-margin">Atas Nama: Maylin Franza</p>
+                            <label for="gift-address" class="no-margin">Alamat:</label>
+                        </div>
+                        <div class="textarea-wrapper data-input">
+                            <textarea id="gift-address" class="glass-input-alt data-input" readonly>Jl. Warapsari No.2, Gelgel, Kec. Klungkung, Kabupaten Klungkung, Bali</textarea>
+                            <div class="copy-btn-wrapper">
+                                <button class="copy-btn" onclick="copyToClipboard('gift-address')">
+                                    <svg class="icon-copy" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="3.5" y="3.5" width="12" height="12" rx="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M16 8H18C19.1046 8 20 8.89543 20 10V18C20 19.1046 19.1046 20 18 20H10C8.89543 20 8 19.1046 8 18V16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <section id="closing-message" class="relative h-screen flex flex-col items-center justify-between text-center text-white overflow-hidden py-12">
-            <div class="header-bg absolute inset-0 z-0"></div> <div class="absolute inset-0 z-10" style="background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.4) 50%, #8B4513 100%);"></div>
             
-            <div class="relative z-20 p-6 max-w-4xl mx-auto flex flex-col items-center w-full text-top">
-                <p class="text-base leading-relaxed text-gray-200 mb-6">
-                    Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu kepada kedua mempelai. Atas kehadiran dan doa restunya kami ucapkan terima kasih.
-                </p>
-                <div class="balinese-script text-3xl md:text-4xl text-white">ᬒᬁ ᬰᬦ᭄ᬢᬶᬄ ᬰᬦ᭄ᬢᬶᬄ ᬰᬦ᭄ᬢᬶᬄ ᬒᬁ</div>
-            </div>
+        </section>
 
-            <div class="relative z-20 p-6 max-w-4xl mx-auto flex flex-col items-center w-full text-bottom">
-                <p class="text-lg mb-3">Kami yang berbahagia,</p>
-                <div class="flex justify-center w-full max-w-sm mx-auto mb-2">
-                    <p class="text-base md:text-lg text-white text-center mr-8">I Nyoman Adiputra<br>sekeluarga</p>
-                    <p class="text-base md:text-lg text-white text-center ml-8">I Nyoman Sutiarsa<br>sekeluarga</p>
+        <section id="gallery">
+            <h2>Galeri Foto</h2>
+            <div class="slideshow-container">
+                <div class="slideshow-wrapper">
+                    <div class="photos-track" id="photosTrack">
+                <!-- We'll populate this with JavaScript -->
+                    </div>
+            
+                    <div class="viewport-mask"></div>
+            
+                    <div class="navigation-areas">
+                        <div class="nav-left" id="navLeft"></div>
+                        <div class="nav-right" id="navRight"></div>
+                    </div>
                 </div>
-                <p class="text-4xl md:text-5xl font-semibold text-accent font-elegant mt-4">Hendra & Maylin</p>
+        
+                <div class="dots-container">
+                    <span class="dot active" onclick="currentSlide(1)"></span>
+                    <span class="dot" onclick="currentSlide(2)"></span>
+                    <span class="dot" onclick="currentSlide(3)"></span>
+                    <span class="dot" onclick="currentSlide(4)"></span>
+                    <span class="dot" onclick="currentSlide(5)"></span>
+                    <span class="dot" onclick="currentSlide(6)"></span>
+                </div>
             </div>
         </section>
 
-        <footer class="py-10 px-4 md:px-8 text-center text-white">
-            <p class="text-base mb-0">Designed with love by:</p>
-            <a href="https://www.instagram.com/henzustudio/" target="_blank" class="mt-1 inline-flex items-center px-4 py-2 glass-button-style rounded-full text-sm font-medium">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                    <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                </svg>
-                <span class="font-medium">@henzustudio</span>
+        <section id="wishes">
+            <h2>Doa Restu</h2>
+        </section>
+
+        <section id="closing-message" class="closing-message-overlay">
+            <div>
+                <p id="closing-message-text">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu kepada kedua mempelai. Atas kehadiran dan doa restunya kami ucapkan terima kasih.</p>
+                <div class="balinese-script">ᬒᬁ ᬰᬦ᭄ᬢᬶᬄ ᬰᬦ᭄ᬢᬶᬄ ᬰᬦ᭄ᬢᬶᬄ ᬒᬁ</div>
+            </div>
+            <div class="signature">
+                <p>Kami yang berbahagia,</p>
+                <h1>Hendra & Maylin</h1>
+            </div>
+        </section>  
+    </main>
+
+    <footer>
+        <p>Designed with love by:</p>
+            <a href="https://www.instagram.com/henzustudio/" target="_blank">
+                <button class="glass-button-style">
+                    <span class="h-1 w-1 mr-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </span>
+                    <span class="font-medium">@henzustudio</span>
+                </button>
             </a>
-            <p class="mt-4 text-sm text-gray-400">© 2025 Undangan Pernikahan Hendra & Maylin. Hak Cipta Dilindungi. <span id="user-id-display" class="text-xs text-gray-500"></span></p>
-        </footer>
-    </div>
+        <p class="footer-text">&copy; 2025 Undangan Online Hendra & Maylin. All rights reserved.</p>
+    </footer>
 
     <audio id="background-music" loop>
         <source src="./assets/music.mp3" type="audio/mp3">
@@ -1103,916 +300,6 @@
         </svg>
     </button>
 
-    <script>
-        window.history.scrollRestoration = 'manual';
-
-        const weddingDate = new Date("September 25, 2025 11:00:00").getTime();
-        const heroCountdownContainer = document.getElementById("hero-countdown-container");
-
-        const x = setInterval(function() {
-            const now = new Date().getTime();
-            const distance = weddingDate - now;
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById("hero-days").innerHTML = String(days).padStart(2, '0');
-            document.getElementById("hero-hours").innerHTML = String(hours).padStart(2, '0');
-            document.getElementById("hero-minutes").innerHTML = String(minutes).padStart(2, '0');
-            document.getElementById("hero-seconds").innerHTML = String(seconds).padStart(2, '0');
-
-            if (distance < 0) {
-                clearInterval(x);
-                heroCountdownContainer.style.display = 'none';
-            } else {
-                heroCountdownContainer.style.display = 'flex';
-            }
-        }, 1000);
-
-        function copyToClipboard(elementId) {
-            const copyText = document.getElementById(elementId).innerText;
-            const textArea = document.createElement("textarea");
-            textArea.value = copyText;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-        }
-
-        function alertMessage(message) {
-            const alertBox = document.createElement('div');
-            alertBox.className = 'fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white rounded-full shadow-xl opacity-0 transition-opacity duration-300 z-50 alert-message';
-            alertBox.innerText = message;
-            document.body.appendChild(alertBox);
-
-            setTimeout(() => {
-                alertBox.style.opacity = '1';
-            }, 10);
-
-            setTimeout(() => {
-                alertBox.style.opacity = '0';
-                alertBox.addEventListener('transitionend', () => alertBox.remove());
-            }, 3000);
-        }
-
-        const backgroundMusic = document.getElementById('background-music');
-        const musicToggleButton = document.getElementById('music-toggle-button');
-        const playIcon = document.getElementById('play-icon');
-        const pauseIcon = document.getElementById('pause-icon');
-        
-        function toggleMusic() {
-            if (backgroundMusic.paused) {
-                backgroundMusic.play().catch(error => {
-                    console.log("Autoplay was prevented:", error);
-                    alertMessage("Musik tidak dapat diputar otomatis. Silakan klik tombol play di pojok kanan kanan.");
-                });
-                playIcon.style.display = 'none';
-                pauseIcon.style.display = 'block';
-            } else {
-                backgroundMusic.pause();
-                playIcon.style.display = 'block';
-                pauseIcon.style.display = 'none';
-            }
-        }
-
-        musicToggleButton.addEventListener('click', toggleMusic);
-
-        let currentBgSlide = 0;
-        let bgSlides = [];
-        let bgSlideshowInterval;
-
-        function startHeroBackgroundSlideshow() {
-            bgSlides = document.querySelectorAll('#background-slideshow .bg-slide');
-            if (bgSlides.length === 0) return;
-
-            // Reset all slides to hidden and off-screen to the right
-            bgSlides.forEach((slide, index) => {
-                slide.style.opacity = '0';
-                slide.style.left = '100%';
-            });
-
-            // Make the first slide visible and in place
-            bgSlides[0].style.opacity = '1';
-            bgSlides[0].style.left = '0%';
-
-            handleParallaxScroll(); // Apply initial parallax
-
-            clearInterval(bgSlideshowInterval); // Clear any existing interval
-            bgSlideshowInterval = setInterval(() => {
-                const prevBgSlide = bgSlides[currentBgSlide];
-                
-                currentBgSlide = (currentBgSlide + 1) % bgSlides.length;
-                const nextBgSlide = bgSlides[currentBgSlide];
-
-                // Fade out and move previous slide left
-                prevBgSlide.style.opacity = '0';
-                prevBgSlide.style.left = '-100%';
-
-                // Prepare next slide (no transition for this preparation step)
-                nextBgSlide.style.transition = 'none';
-                nextBgSlide.style.left = '100%';
-                void nextBgSlide.offsetWidth; // Force reflow to apply 'none' immediately
-                nextBgSlide.style.transition = 'opacity 1s ease-in-out, left 1s ease-in-out, transform 0.1s linear'; // Re-enable transition, linear for transform
-
-                // Fade in and move next slide to center
-                nextBgSlide.style.opacity = '1';
-                nextBgSlide.style.left = '0%';
-
-                // After a short delay, reset the previous slide's position without transition
-                // This prepares it for the next cycle
-                setTimeout(() => {
-                    prevBgSlide.style.transition = 'none';
-                    prevBgSlide.style.left = '100%';
-                    void prevBgSlide.offsetWidth; // Force reflow
-                    prevBgSlide.style.transition = 'opacity 1s ease-in-out, left 1s ease-in-out, transform 0.1s linear'; // Re-enable transition, linear for transform
-                }, 1000); // Match this with the transition duration
-            }, 5000); // Change slide every 5 seconds
-
-            // Attach scroll listener to window
-            window.removeEventListener('scroll', handleParallaxScroll); // Remove any old listener
-            window.addEventListener('scroll', handleParallaxScroll);
-            handleParallaxScroll(); // Call once to set initial parallax position
-        }
-
-        function handleParallaxScroll() {
-            const scrollY = window.scrollY; // Current scroll position from the top of the document
-            // This factor controls how how fast the background slides move relative to the page scroll.
-            // A value of 0.2 means the slide moves 20% of the scroll distance, making it appear slower.
-            const parallaxFactor = 0.2; 
-
-            // Calculate translateY for parallax effect
-            // A negative value for translateY moves the element upwards when scrolling down.
-            // This creates the illusion that the background is moving slower than the foreground.
-            const translateY = -scrollY * parallaxFactor;
-            
-            bgSlides.forEach(slide => {
-                // Apply the transform. scale(1.2) is kept for the zoom effect.
-                slide.style.transform = `scale(1.2) translateY(${translateY}px)`;
-            });
-            // The 'overflow: hidden' on #hero-after-cover will handle clipping
-            // when the background slides move outside its boundaries, so there's no
-            // need for complex checks or resets that could cause an "elastic" effect.
-        }
-
-
-        let currentPhotoSlideIndex = 0;
-        let photoCarouselContainer = document.querySelector('.photo-carousel-container');
-        let photoCarouselWrapper = document.querySelector('.photo-carousel-wrapper');
-        let photoItems = []; // This will hold all div.photo-carousel-item elements
-        let originalPhotosData = []; // This will hold paths to original images
-        let totalOriginalPhotos = 0; // Number of unique original photos
-        let carouselAutoSlideInterval;
-
-        // Variables for drag/swipe functionality for photo carousel
-        let isPhotoDragging = false;
-        let photoDragStartX = 0; // Initial X position when drag starts
-        let photoCurrentDragTranslateX = 0; // Current transformX when drag starts
-        let photoItemWidth = 0; // Width of a single photo item including gap
-        // Variabel baru untuk menghitung momentum
-        let photoLastMoveX = 0;
-        let photoLastMoveTime = 0;
-
-
-        function initializePhotoCarousel() {
-            // Get original image sources from the initial HTML structure
-            const initialImageElements = Array.from(document.querySelectorAll('#photo-carousel-section .photo-carousel-wrapper .photo-carousel-item img'));
-            originalPhotosData = initialImageElements.map(img => img.src);
-            totalOriginalPhotos = originalPhotosData.length;
-
-            // Clear the wrapper before re-populating with clones and originals
-            photoCarouselWrapper.innerHTML = '';
-            photoItems = []; // Clear photoItems array
-
-            // Add clones of the last set of original items to the beginning for seamless backward looping
-            // We append them first, then the original set, then the clones of the first set.
-            // This creates a structure like: [CLONES_END_SET] [ORIGINAL_SET] [CLONES_START_SET]
-            // And we start display at the beginning of the ORIGINAL_SET (middle block).
-            for (let i = 0; i < totalOriginalPhotos; i++) {
-                const originalIndex = (totalOriginalPhotos - 1 - i); // Clone in reverse order for visual continuity when going left
-                const clonedDiv = document.createElement('div');
-                clonedDiv.className = 'photo-carousel-item';
-                const clonedImg = document.createElement('img');
-                clonedImg.src = originalPhotosData[originalIndex];
-                clonedImg.alt = `Momen Klon Akhir ${originalIndex + 1}`;
-                clonedImg.className = 'circular-photo';
-                clonedDiv.appendChild(clonedImg);
-                photoCarouselWrapper.appendChild(clonedDiv);
-                photoItems.push(clonedDiv);
-            }
-
-            // Add the original items
-            originalPhotosData.forEach((imgSrc, index) => {
-                const originalDiv = document.createElement('div');
-                originalDiv.className = 'photo-carousel-item';
-                const originalImg = document.createElement('img');
-                originalImg.src = imgSrc;
-                originalImg.alt = `Momen ${index + 1}`;
-                originalImg.className = 'circular-photo';
-                originalDiv.appendChild(originalImg);
-                photoCarouselWrapper.appendChild(originalDiv);
-                photoItems.push(originalDiv);
-            });
-
-            // Add clones of the first set of original items to the end for seamless forward looping
-            for (let i = 0; i < totalOriginalPhotos; i++) {
-                const clonedDiv = document.createElement('div');
-                clonedDiv.className = 'photo-carousel-item';
-                const clonedImg = document.createElement('img');
-                clonedImg.src = originalPhotosData[i];
-                clonedImg.alt = `Momen Klon Awal ${i + 1}`;
-                clonedImg.className = 'circular-photo';
-                clonedDiv.appendChild(clonedImg);
-                photoCarouselWrapper.appendChild(clonedDiv);
-                photoItems.push(clonedDiv);
-            }
-
-            // Calculate photoItemWidth after all items are in the DOM
-            setTimeout(() => {
-                if (photoItems.length > 0) {
-                    const style = window.getComputedStyle(photoCarouselWrapper);
-                    const gapValue = parseFloat(style.gap) || 0; // Get gap from wrapper
-                    photoItemWidth = photoItems[0].offsetWidth + gapValue;
-                }
-                // Initial position should be the start of the original (middle) set
-                currentPhotoSlideIndex = totalOriginalPhotos;
-                smoothPhotoSlide(0); // Set initial position instantly without animation
-                startPhotoAutoSlide(); // Start auto-sliding
-            }, 100); // Small delay to ensure rendering
-
-            // Add mouse/touch event listeners for dragging
-            photoCarouselContainer.addEventListener('mousedown', handlePhotoDragStart);
-            photoCarouselContainer.addEventListener('mousemove', handlePhotoDragMove);
-            photoCarouselContainer.addEventListener('mouseup', handlePhotoDragEnd);
-            photoCarouselContainer.addEventListener('mouseleave', handlePhotoDragEnd); // End drag if mouse leaves container
-
-            photoCarouselContainer.addEventListener('touchstart', handlePhotoDragStart);
-            photoCarouselContainer.addEventListener('touchmove', handlePhotoDragMove);
-            photoCarouselContainer.addEventListener('touchend', handlePhotoDragEnd);
-        }
-
-        function startPhotoAutoSlide() {
-            clearInterval(carouselAutoSlideInterval); // Clear any previous interval
-            carouselAutoSlideInterval = setInterval(nextPhotoSlide, 5000); // Auto-slide every 5 seconds
-        }
-
-        function nextPhotoSlide() {
-            currentPhotoSlideIndex++;
-            smoothPhotoSlide(0.8); // Default transition for auto-slide
-        }
-
-        function smoothPhotoSlide(transitionDuration = 0.8, easing = 'ease-in-out') {
-            photoCarouselWrapper.style.transition = `transform ${transitionDuration}s ${easing}`;
-            photoCarouselWrapper.style.transform = `translateX(-${currentPhotoSlideIndex * photoItemWidth}px)`;
-
-            // Seamless looping logic
-            // If we've moved past the second original set into the trailing clones
-            if (currentPhotoSlideIndex >= 2 * totalOriginalPhotos) {
-                setTimeout(() => {
-                    photoCarouselWrapper.style.transition = 'none'; // Disable transition for instant jump
-                    currentPhotoSlideIndex = currentPhotoSlideIndex - totalOriginalPhotos; // Jump back to equivalent in first original set
-                    photoCarouselWrapper.style.transform = `translateX(-${currentPhotoSlideIndex * photoItemWidth}px)`;
-                    // Re-enable transition after a very small delay to avoid flicker
-                    setTimeout(() => {
-                        photoCarouselWrapper.style.transition = `transform ${transitionDuration}s ${easing}`;
-                    }, 50);
-                }, transitionDuration * 1000); // Wait for current animation to finish
-            } 
-            // If we've moved before the first original set into the leading clones
-            else if (currentPhotoSlideIndex < totalOriginalPhotos) {
-                setTimeout(() => {
-                    photoCarouselWrapper.style.transition = 'none'; // Disable transition for instant jump
-                    currentPhotoSlideIndex = currentPhotoSlideIndex + totalOriginalPhotos; // Jump forward to equivalent in second original set
-                    photoCarouselWrapper.style.transform = `translateX(-${currentPhotoSlideIndex * photoItemWidth}px)`;
-                    // Re-enable transition after a very small delay to avoid flicker
-                    setTimeout(() => {
-                        photoCarouselWrapper.style.transition = `transform ${transitionDuration}s ${easing}`;
-                    }, 50);
-                }, transitionDuration * 1000); // Wait for current animation to finish
-            }
-        }
-
-        function handlePhotoDragStart(e) {
-            isPhotoDragging = true;
-            photoCarouselContainer.classList.add('dragging'); // Add dragging cursor style
-            photoDragStartX = (e.clientX || e.touches[0].clientX); // Get initial X position
-            
-            // Get current translateX to start dragging from current position
-            const transformMatrix = window.getComputedStyle(photoCarouselWrapper).getPropertyValue('transform');
-            photoCurrentDragTranslateX = transformMatrix === 'none' ? 0 : parseFloat(transformMatrix.split(',')[4]);
-
-            photoLastMoveX = photoDragStartX; // Initialize last move position
-            photoLastMoveTime = new Date().getTime(); // Initialize last move time
-
-            clearInterval(carouselAutoSlideInterval); // Stop auto-slide during manual drag
-            photoCarouselWrapper.style.transition = 'none'; // Disable transition for immediate movement
-        }
-
-        function handlePhotoDragMove(e) {
-            if (!isPhotoDragging) return;
-            e.preventDefault(); // Prevent default touch/mouse behavior (e.g., scrolling)
-            const x = (e.clientX || e.touches[0].clientX);
-            const diffX = x - photoDragStartX;
-            photoCarouselWrapper.style.transform = `translateX(${photoCurrentDragTranslateX + diffX}px)`;
-
-            photoLastMoveX = x; // Update last move position
-            photoLastMoveTime = new Date().getTime(); // Update last move time
-        }
-
-        function handlePhotoDragEnd(e) {
-            if (!isPhotoDragging) return;
-            isPhotoDragging = false;
-            photoCarouselContainer.classList.remove('dragging'); // Remove dragging cursor style
-
-            const endX = (e.clientX || (e.changedTouches && e.changedTouches[0] ? e.changedTouches[0].clientX : photoDragStartX));
-            const dragEndTime = new Date().getTime();
-
-            // Calculate the last segment's velocity
-            const lastMoveDuration = dragEndTime - photoLastMoveTime;
-            const lastMoveDistance = endX - photoLastMoveX;
-            
-            let velocity = 0;
-            if (lastMoveDuration > 0) {
-                velocity = lastMoveDistance / lastMoveDuration; // pixels per millisecond
-            }
-
-            const momentumMultiplier = 150; // Sesuaikan nilai ini untuk mengontrol kekuatan momentum
-            const minimumVelocityForMomentum = 0.2; // Hanya terapkan momentum jika flick cukup cepat
-
-            let momentumOffset = 0;
-            if (Math.abs(velocity) > minimumVelocityForMomentum) {
-                momentumOffset = velocity * momentumMultiplier;
-            }
-
-            // Get the current position after the drag ends
-            const currentTranslateX = parseFloat(photoCarouselWrapper.style.transform.replace('translateX(', '').replace('px)', ''));
-
-            // Calculate the target X position with momentum applied
-            const targetXWithMomentum = currentTranslateX + momentumOffset;
-
-            // Calculate the target slide index based on the new momentum-adjusted position
-            let targetSlideIndex = Math.round(-targetXWithMomentum / photoItemWidth);
-
-            // Ensure the targetSlideIndex is within valid bounds (0 to photoItems.length - 1)
-            targetSlideIndex = Math.max(0, Math.min(photoItems.length - 1, targetSlideIndex));
-            
-            currentPhotoSlideIndex = targetSlideIndex; // Update the main index
-            smoothPhotoSlide(0.6, 'ease-out'); // Gunakan durasi yang lebih lama dan ease-out untuk momentum
-
-            startPhotoAutoSlide(); // Restart auto-slide
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const mainContent = document.getElementById('main-content');
-            const weddingDateForLock = new Date("September 25, 2025 11:00:00").getTime();
-            const nowForLock = new Date().getTime();
-            const distanceForLock = weddingDateForLock - nowForLock;
-
-            // If the wedding date is in the future, prevent scrolling on body initially
-            if (distanceForLock >= 0) {
-                document.body.style.overflow = 'hidden';
-            }
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const guestNameFromUrl = urlParams.get('to');
-            const guestNameInput = document.getElementById('guest-name-input');
-
-            // Populate guest name input if present in URL
-            if (guestNameFromUrl) {
-                guestNameInput.value = decodeURIComponent(guestNameFromUrl);
-            }
-        });
-
-        document.getElementById('open-invitation-button').addEventListener('click', function() {
-            const coverScreen = document.getElementById('cover-screen');
-            coverScreen.style.transform = 'translateY(-100%)'; // Slide cover screen up
-            document.body.style.overflow = 'auto'; // Re-enable body scrolling
-                
-            const heroContentOverlaySection = document.getElementById('hero-content-overlay');
-            if (heroContentOverlaySection) {
-                heroContentOverlaySection.scrollIntoView({ behavior: 'smooth' }); // Smooth scroll to hero section
-            }
-
-            musicToggleButton.style.display = 'flex'; // Show music toggle button
-            backgroundMusic.play().then(() => {
-                playIcon.style.display = 'none';
-                pauseIcon.style.display = 'block';
-            }).catch(error => {
-                console.log("Autoplay was prevented:", error);
-                alertMessage("Musik tidak dapat diputar otomatis. Silakan klik tombol play di pojok kanan bawah.");
-                playIcon.style.display = 'block';
-                pauseIcon.style.display = 'none';
-            });
-            
-            startHeroBackgroundSlideshow(); // Start background slideshow
-            initializePhotoCarousel(); // Initialize photo carousel
-            initializeOurGallery(); // Initialize gallery
-
-            const eventLocationText = document.getElementById('event-location').innerText;
-            const openMapButton = document.getElementById('open-map-button');
-            if (openMapButton && eventLocationText) {
-                openMapButton.onclick = function(e) {
-                    e.preventDefault();
-                    openMapsApp(eventLocationText);
-                };
-            }
-
-            // Hide cover screen completely after transition
-            setTimeout(() => {
-                coverScreen.style.display = 'none';
-            }, 1000);
-        });
-
-        function saveDateToCalendar() {
-            const eventDateText = document.getElementById('event-date').innerText;
-            const eventTimeText = document.getElementById('event-time').innerText;
-            const eventLocationText = document.getElementById('event-location').innerText;
-
-            const eventTitle = "Resepsi Pernikahan Hendra & Maylin";
-            const eventDescription = "Merupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kami. Atas kehadiran dan doa restunya kami ucapkan terima kasih.";
-
-            // Parse date
-            const dateParts = eventDateText.match(/(\d{1,2})\s(\w+)\s(\d{4})/);
-            let day, monthName, year;
-            if (dateParts) {
-                day = parseInt(dateParts[1]);
-                monthName = dateParts[2];
-                year = parseInt(dateParts[3]);
-            } else {
-                console.error("Could not parse event date:", eventDateText);
-                alertMessage("Gagal menyimpan tanggal. Format tanggal tidak dikenali.");
-                return;
-            }
-
-            // Month mapping for Date object
-            const monthMap = {
-                "Januari": 0, "Februari": 1, "Maret": 2, "April": 3, "Mei": 4, "Juni": 5,
-                "Juli": 6, "Agustus": 7, "September": 8, "Oktober": 9, "November": 10, "Desember": 11
-            };
-            const month = monthMap[monthName];
-
-            // Parse time range
-            const timeRangeParts = eventTimeText.split(' - ');
-            if (timeRangeParts.length < 2) {
-                console.error("Could not parse event time range:", eventTimeText);
-                alertMessage("Gagal menyimpan tanggal. Format waktu tidak dikenali.");
-                return;
-            }
-
-            const startTimeStr = timeRangeParts[0].trim();
-            const endTimeStr = timeRangeParts[1].split(' ')[0].trim(); // Get only time, not WITA
-
-            const startTimeParts = startTimeStr.split(':');
-            const startHour = parseInt(startTimeParts[0]);
-            const startMinute = parseInt(startTimeParts[1]);
-
-            const endTimeParts = endTimeStr.split(':');
-            const endHour = parseInt(endTimeParts[0]);
-            const endMinute = parseInt(endTimeParts[1]);
-
-            // Create Date objects
-            const startDate = new Date(year, month, day, startHour, startMinute);
-            const endDate = new Date(year, month, day, endHour, endMinute);
-
-            // Helper to format date for Google Calendar URL
-            const formatDateTime = (date) => {
-                const pad = (num) => String(num).padStart(2, '0');
-                return `${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}T${pad(date.getHours())}${pad(date.getMinutes())}${pad(date.getSeconds())}`;
-            }; 
-
-            const formattedStartDate = formatDateTime(startDate);
-            const formattedEndDate = formatDateTime(endDate);
-
-            // Construct Google Calendar URL
-            const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${formattedStartDate}/${formattedEndDate}&details=${encodeURIComponent(eventDescription)}&location=${encodeURIComponent(eventLocationText)}&sf=true&output=xml`;
-
-            window.open(googleCalendarUrl, '_blank'); // Open in new tab
-        }
-
-        function openMapsApp(locationQuery) {
-            const encodedLocation = encodeURIComponent(locationQuery);
-            const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodedLocation}`;
-            window.open(mapUrl, '_blank'); // Open in new tab
-        }
-
-        function sendRsvp() {
-            const nameInput = document.getElementById('rsvp-name');
-            const guestsSelect = document.getElementById('rsvp-guests');
-            const name = nameInput.value.trim();
-            const guests = guestsSelect.value;
-
-            if (!name) {
-                alertMessage("Nama lengkap tidak boleh kosong!");
-                return;
-            }
-            if (guests < 1) {
-                alertMessage("Jumlah tamu minimal 1.");
-                return;
-            }
-
-            // REPLACE WITH YOUR GOOGLE FORM DETAILS
-            const formId = '1FAIpQLSfGWLeHQVOsCbZpwHqPx3zLBe5tvP2fnihyZ3jk9oBB7rnOjQ'; // Replace with your actual Google Form ID
-            const nameEntryId = '1590223346'; // Replace with the entry ID for Name field
-            const guestsEntryId = '882125067'; // Replace with the entry ID for Guests field
-
-            if (formId === 'YOUR_GOOGLE_FORM_ID_HERE' || nameEntryId === 'YOUR_NAME_ENTRY_ID' || guestsEntryId === 'YOUR_GUESTS_ENTRY_ID') {
-                alertMessage("Harap konfigurasikan Google Form Anda terlebih dahulu di kode JavaScript.");
-                console.error("Google Form IDs not configured. Please read the comments in sendRsvp() function.");
-                return;
-            }
-
-            const googleFormUrl = `https://docs.google.com/forms/d/e/${formId}/viewform?usp=pp_url&entry.${nameEntryId}=${encodeURIComponent(name)}&entry.${guestsEntryId}=${encodeURIComponent(guests)}`;
-
-            window.open(googleFormUrl, '_blank'); // Open Google Form in a new tab
-        }
-
-        const mainGalleryPreview = document.getElementById('main-gallery-preview');
-        const thumbnailCarouselContainer = document.getElementById('thumbnail-carousel-container');
-        const thumbnailCarouselWrapper = document.getElementById('thumbnail-carousel-wrapper');
-        let galleryThumbnailItems = [];
-        let isGalleryDragging = false;
-        let galleryStartX;
-        let galleryScrollLeft;
-        let galleryAutoSlideInterval;
-        let galleryScrollTimeout;
-        let currentGalleryIndex = 0;
-        const numClones = 2; // Number of clones at each end for seamless looping
-
-        const galleryImagesData = [
-            { thumb: "./assets/Photo2.jpg", full: "./assets/Photo2.jpg" },
-            { thumb: "./assets/Photo3.jpg", full: "./assets/Photo3.jpg" },
-            { thumb: "./assets/Photo4.jpg", full: "./assets/Photo4.jpg" },
-            { thumb: "./assets/Photo5.jpg", full: "./assets/Photo5.jpg" },
-            { thumb: "./assets/Photo6.jpg", full: "./assets/Photo6.jpg" },
-            { thumb: "./assets/Photo7.jpg", full: "./assets/Photo7.jpg" },
-        ];
-
-        function initializeOurGallery() {
-            thumbnailCarouselWrapper.innerHTML = ''; // Clear previous thumbnails
-
-            // Add clones of the end items to the beginning
-            for (let i = 0; i < numClones; i++) {
-                const imgData = galleryImagesData[galleryImagesData.length - numClones + i];
-                const clonedThumb = createThumbnailElement(imgData, true);
-                thumbnailCarouselWrapper.appendChild(clonedThumb);
-            }
-
-            // Add original images
-            galleryImagesData.forEach(imgData => {
-                const originalThumb = createThumbnailElement(imgData, false);
-                thumbnailCarouselWrapper.appendChild(originalThumb);
-            });
-
-            // Add clones of the start items to the end
-            for (let i = 0; i < numClones; i++) {
-                const imgData = galleryImagesData[i];
-                const clonedThumb = createThumbnailElement(imgData, true);
-                thumbnailCarouselWrapper.appendChild(clonedThumb);
-            }
-
-            // Get all thumbnail elements including clones
-            galleryThumbnailItems = Array.from(document.querySelectorAll('#thumbnail-carousel-wrapper .gallery-thumbnail-item'));
-
-            if (galleryThumbnailItems.length === 0) return;
-
-            // Set initial index to the first original image (after the leading clones)
-            currentGalleryIndex = numClones;
-            setActiveGalleryThumbnail(currentGalleryIndex);
-            
-            // Scroll to the initial position without smooth behavior first
-            setTimeout(() => {
-                const initialScrollPosition = galleryThumbnailItems[currentGalleryIndex].offsetLeft - (thumbnailCarouselContainer.offsetWidth / 2) + (thumbnailCarouselContainer.offsetWidth / 2);
-                thumbnailCarouselContainer.scrollTo({
-                    left: initialScrollPosition,
-                    behavior: 'auto'
-                });
-            }, 50);
-
-            // Add click listeners to thumbnails
-            galleryThumbnailItems.forEach((thumb, index) => {
-                thumb.addEventListener('click', () => {
-                    let originalIndex = index;
-                    // Adjust index if clicking on a clone
-                    if (index < numClones) {
-                        originalIndex = galleryImagesData.length - numClones + index;
-                    } else if (index >= galleryImagesData.length + numClones) {
-                        originalIndex = index - galleryImagesData.length;
-                    } else {
-                        originalIndex = index - numClones;
-                    }
-
-                    setActiveGalleryThumbnail(index); // Set active class for the clicked thumbnail
-                    centerThumbnailInView(galleryThumbnailItems[index]); // Center the clicked thumbnail
-                    resetGalleryAutoSlide(); // Reset auto-slide timer
-                    mainGalleryPreview.src = galleryImagesData[originalIndex].full; // Update main preview image
-                    mainGalleryPreview.alt = `Main Gallery Photo ${originalIndex + 1}`;
-                });
-            });
-
-            // Add drag event listeners for carousel
-            thumbnailCarouselContainer.addEventListener('mousedown', handleGalleryStart);
-            thumbnailCarouselContainer.addEventListener('mouseleave', handleGalleryEnd);
-            thumbnailCarouselContainer.addEventListener('mouseup', handleGalleryEnd);
-            thumbnailCarouselContainer.addEventListener('mousemove', handleGalleryMove);
-
-            thumbnailCarouselContainer.addEventListener('touchstart', handleGalleryStart);
-            thumbnailCarouselContainer.addEventListener('touchend', handleGalleryEnd);
-            thumbnailCarouselContainer.addEventListener('touchmove', handleGalleryMove);
-
-            // Handle scroll events for snapping and infinite loop
-            thumbnailCarouselContainer.addEventListener('scroll', () => {
-                clearTimeout(galleryScrollTimeout); // Clear previous timeout
-                galleryScrollTimeout = setTimeout(handleGalleryScrollEnd, 150); // Set timeout to run after scroll stops
-                resetGalleryAutoSlide(); // Reset auto-slide on manual scroll
-            });
-
-            // Handle wheel scroll for horizontal scrolling and snapping
-            thumbnailCarouselContainer.addEventListener('wheel', handleGalleryWheel, { passive: false });
-
-            startGalleryAutoSlide(); // Start auto-slide
-        }
-
-        function createThumbnailElement(imgData, isClone) {
-            const img = document.createElement('img');
-            img.src = imgData.thumb;
-            img.alt = "Gallery Thumbnail";
-            img.classList.add('gallery-thumbnail-item', 'cursor-pointer', 'rounded-lg', 'object-cover', 'shadow-md', 'transition-transform', 'duration-200', 'ease-in-out', 'transform', 'hover:scale-105');
-            img.dataset.fullSrc = imgData.full;
-            if (isClone) {
-                img.dataset.isClone = 'true';
-            }
-            return img;
-        }
-
-        function setActiveGalleryThumbnail(index) {
-            let originalIndex = 0; // Initialize originalIndex
-            
-            galleryThumbnailItems.forEach(thumb => {
-                thumb.classList.remove('active-thumbnail');
-            });
-
-            if (galleryThumbnailItems[index]) {
-                galleryThumbnailItems[index].classList.add('active-thumbnail');
-                // Determine the correct original image index based on clones
-                if (index < numClones) {
-                    originalIndex = galleryImagesData.length - numClones + index;
-                } else if (index >= galleryImagesData.length + numClones) {
-                    originalIndex = index - galleryImagesData.length;
-                } else {
-                    originalIndex = index - numClones;
-                }
-                mainGalleryPreview.src = galleryImagesData[originalIndex].full;
-                mainGalleryPreview.alt = `Main Gallery Photo ${originalIndex + 1}`;
-            }
-            currentGalleryIndex = index; // Update current index
-        }
-
-        function centerThumbnailInView(thumbElement) {
-            const containerWidth = thumbnailCarouselContainer.offsetWidth;
-            const thumbOffsetLeft = thumbElement.offsetLeft;
-            const thumbWidth = thumbElement.offsetWidth;
-
-            const targetScroll = thumbOffsetLeft - (containerWidth / 2) + (thumbWidth / 2);
-            thumbnailCarouselContainer.scrollTo({
-                left: targetScroll,
-                behavior: 'smooth'
-            });
-        }
-
-        function handleGalleryStart(e) {
-            isGalleryDragging = true;
-            thumbnailCarouselContainer.classList.add('dragging');
-            galleryStartX = (e.pageX || e.touches[0].pageX) - thumbnailCarouselContainer.offsetLeft;
-            galleryScrollLeft = thumbnailCarouselContainer.scrollLeft;
-            e.preventDefault(); // Prevent default browser drag behavior
-            clearInterval(galleryAutoSlideInterval); // Stop auto-slide when dragging starts
-        }
-
-        function handleGalleryEnd() {
-            if (!isGalleryDragging) return;
-            isGalleryDragging = false;
-            thumbnailCarouselContainer.classList.remove('dragging');
-            handleGalleryScrollEnd(); // Snap to closest item
-            resetGalleryAutoSlide(); // Restart auto-slide
-        }
-
-        function handleGalleryMove(e) {
-            if (!isGalleryDragging) return;
-            e.preventDefault(); // Prevent default touch/mouse behavior
-            const x = (e.pageX || e.touches[0].pageX) - thumbnailCarouselContainer.offsetLeft;
-            const walk = (x - galleryStartX) * 1.5; // Adjust scroll speed
-            thumbnailCarouselContainer.scrollLeft = galleryScrollLeft - walk;
-        }
-
-        function handleGalleryWheel(e) {
-            e.preventDefault(); // Prevent vertical scrolling
-            const scrollAmount = e.deltaY || e.deltaX; // Get scroll amount
-            thumbnailCarouselContainer.scrollLeft += scrollAmount; // Apply horizontal scroll
-
-            clearTimeout(galleryScrollTimeout); // Clear previous timeout
-            galleryScrollTimeout = setTimeout(handleGalleryScrollEnd, 150); // Set new timeout for snapping
-            resetGalleryAutoSlide(); // Reset auto-slide
-        }
-
-        function handleGalleryScrollEnd() {
-            const containerCenter = thumbnailCarouselContainer.scrollLeft + (thumbnailCarouselContainer.offsetWidth / 2);
-            let closestThumbIndex = 0;
-            let minDistance = Infinity;
-
-            // Find the thumbnail closest to the center of the container
-            galleryThumbnailItems.forEach((thumb, index) => {
-                const thumbCenter = thumb.offsetLeft + (thumb.offsetWidth / 2);
-                const distance = Math.abs(thumbCenter - containerCenter);
-
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    closestThumbIndex = index;
-                }
-            });
-
-            setActiveGalleryThumbnail(closestThumbIndex); // Set the closest thumbnail as active
-            centerThumbnailInView(galleryThumbnailItems[closestThumbIndex]); // Center it in view
-
-            // Handle seamless looping when scrolling into cloned sections
-            if (currentGalleryIndex < numClones) { // If scrolled into leading clones
-                setTimeout(() => {
-                    thumbnailCarouselContainer.style.scrollBehavior = 'auto'; // Disable smooth scroll for instant jump
-                    const targetIndex = galleryImagesData.length + currentGalleryIndex;
-                    const targetScroll = galleryThumbnailItems[targetIndex].offsetLeft - (thumbnailCarouselContainer.offsetWidth / 2) + (thumbnailCarouselContainer.offsetWidth / 2);
-                    thumbnailCarouselContainer.scrollLeft = targetScroll;
-                    currentGalleryIndex = targetIndex;
-                    thumbnailCarouselContainer.style.scrollBehavior = 'smooth'; // Re-enable smooth scroll
-                }, 150); // Short delay to allow visual scroll to finish
-            } 
-            else if (currentGalleryIndex >= galleryImagesData.length + numClones) { // If scrolled into trailing clones
-                setTimeout(() => {
-                    thumbnailCarouselContainer.style.scrollBehavior = 'auto'; // Disable smooth scroll
-                    const targetIndex = currentGalleryIndex - galleryImagesData.length;
-                    const targetScroll = galleryThumbnailItems[targetIndex].offsetLeft - (thumbnailCarouselContainer.offsetWidth / 2) + (thumbnailCarouselContainer.offsetWidth / 2);
-                    thumbnailCarouselContainer.scrollLeft = targetScroll;
-                    currentGalleryIndex = targetIndex;
-                    thumbnailCarouselContainer.style.scrollBehavior = 'smooth'; // Re-enable smooth scroll
-                }, 150); // Short delay
-            }
-        }
-
-        function startGalleryAutoSlide() {
-            clearInterval(galleryAutoSlideInterval); // Clear any existing interval
-            galleryAutoSlideInterval = setInterval(nextGallerySlide, 5000); // Start auto-slide every 5 seconds
-        }
-
-        function resetGalleryAutoSlide() {
-            clearInterval(galleryAutoSlideInterval); // Clear current interval
-            startGalleryAutoSlide(); // Start a new interval
-        }
-
-        function nextGallerySlide() {
-            let nextIndex = currentGalleryIndex + 1;
-            if (nextIndex < galleryThumbnailItems.length) {
-                setActiveGalleryThumbnail(nextIndex);
-                centerThumbnailInView(galleryThumbnailItems[nextIndex]); // Fixed typo here
-            } else {
-                // If at the end of all items (including clones), jump back to the start of original items
-                thumbnailCarouselContainer.style.scrollBehavior = 'auto';
-                currentGalleryIndex = numClones; // Set to the first original item's index
-                const targetScroll = galleryThumbnailItems[currentGalleryIndex].offsetLeft - (thumbnailCarouselContainer.offsetWidth / 2) + (thumbnailCarouselContainer.offsetWidth / 2);
-                thumbnailCarouselContainer.scrollLeft = targetScroll;
-                thumbnailCarouselContainer.style.scrollBehavior = 'smooth';
-                setActiveGalleryThumbnail(currentGalleryIndex);
-            }
-        }
-
-        let app;
-        let db;
-        let auth;
-        let userId;
-        let blessingsCollection;
-
-        async function initializeFirebase() {
-            try {
-                // Parse Firebase config from global variable
-                const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-                app = firebase.initializeApp(firebaseConfig);
-                db = firebase.firestore();
-                auth = firebase.auth();
-
-                // Sign in using custom token if available, otherwise anonymously
-                if (typeof __initial_auth_token !== 'undefined') {
-                    await auth.signInWithCustomToken(__initial_auth_token);
-                } else {
-                    await auth.signInAnonymously();
-                }
-
-                // Listen for auth state changes to set userId and initialize Firestore collection
-                auth.onAuthStateChanged(user => {
-                    if (user) {
-                        userId = user.uid; // Use Firebase UID if authenticated
-                    } else {
-                        userId = crypto.randomUUID(); // Generate random ID if anonymous
-                    }
-                    console.log("Firebase User ID:", userId);
-                    // Get app ID from global variable or use default
-                    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-                    // Construct Firestore collection path for public data
-                    blessingsCollection = db.collection(`artifacts/${appId}/public/data/blessings`);
-                    displayBlessings(); // Display existing blessings
-                    document.getElementById('user-id-display').innerText = `User ID: ${userId}`;
-                });
-            } catch (error) {
-                console.error("Error initializing Firebase:", error);
-                // Optionally show an alert or message to the user
-            }
-        }
-
-        async function sendBlessing() {
-            const nameInput = document.getElementById('blessing-name');
-            const messageInput = document.getElementById('blessing-message');
-            const name = nameInput.value.trim();
-            const message = messageInput.value.trim();
-
-            if (!name || !message) {
-                alertMessage("Nama dan ucapan tidak boleh kosong!");
-                return;
-            }
-
-            try {
-                // Add blessing document to Firestore
-                await blessingsCollection.add({
-                    name: name,
-                    message: message,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Server timestamp for consistency
-                    userId: userId // Store user ID with the blessing
-                });
-                nameInput.value = ''; // Clear input fields
-                messageInput.value = '';
-                alertMessage("Ucapan doa restu berhasil dikirim!");
-            }
-            catch (error) {
-                console.error("Error adding blessing:", error);
-                alertMessage("Gagal mengirim ucapan doa restu. Coba lagi nanti.");
-            }
-        }
-
-        function displayBlessings() {
-            const blessingsListDiv = document.getElementById('blessings-list');
-            if (!blessingsCollection) {
-                console.warn("Blessings collection not initialized yet.");
-                return;
-            }
-
-            // Listen for real-time updates to the blessings collection
-            blessingsCollection.onSnapshot(snapshot => {
-                blessingsListDiv.innerHTML = ''; // Clear existing list
-                const blessings = [];
-                snapshot.forEach(doc => {
-                    blessings.push({ id: doc.id, ...doc.data() });
-                });
-
-                // Sort blessings by timestamp in descending order (newest first)
-                blessings.sort((a, b) => {
-                    const timeA = a.timestamp ? (a.timestamp.toDate ? a.timestamp.toDate().getTime() : a.timestamp.getTime()) : 0;
-                    const timeB = b.timestamp ? (b.timestamp.toDate ? b.timestamp.toDate().getTime() : b.timestamp.getTime()) : 0;
-                    return timeB - timeA;
-                });
-
-                // Display each blessing
-                blessings.forEach(blessing => {
-                    const blessingCard = document.createElement('div');
-                    blessingCard.classList.add('p-4', 'rounded-lg', 'shadow-sm', 'border', 'glass-input');
-                    
-                    const nameElement = document.createElement('p');
-                    nameElement.className = 'font-semibold text-base text-white'; /* Changed to text-white */
-                    nameElement.innerText = blessing.name;
-
-                    const messageElement = document.createElement('p');
-                    messageElement.className = 'text-sm text-white mt-2'; /* Changed to text-white */
-                    messageElement.innerText = blessing.message;
-
-                    const timestampElement = document.createElement('p');
-                    timestampElement.className = 'text-sm text-white mt-2 italic'; /* Changed to text-white */
-                    if (blessing.timestamp && blessing.timestamp.toDate) {
-                        const date = blessing.timestamp.toDate();
-                        timestampElement.innerText = date.toLocaleString('id-ID', {
-                            year: 'numeric', month: 'long', day: 'numeric',
-                            hour: '2-digit', minute: '2-digit'
-                        });
-                    } else {
-                        timestampElement.innerText = 'Waktu tidak tersedia';
-                    }
-
-                    blessingCard.appendChild(nameElement);
-                    blessingCard.appendChild(messageElement);
-                    blessingsListDiv.appendChild(blessingCard);
-                });
-            }, error => {
-                console.error("Error listening to blessings:", error);
-                alertMessage("Gagal memuat ucapan doa restu.");
-            });
-        }
-
-        // Initialize Firebase when the DOM is fully loaded
-        document.addEventListener('DOMContentLoaded', initializeFirebase);
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
