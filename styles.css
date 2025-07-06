@@ -361,7 +361,7 @@ textarea {
 /* Start of Website */
 .cover-header {
     position: relative;
-    background-image: url('./assets/Photo1.jpg');
+    background-image: url('');
     background-size: cover;
     background-position: 50% 50%;
     background-attachment: fixed;
