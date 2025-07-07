@@ -223,6 +223,7 @@ let autoSlideInterval;
 let startX = 0;
 let currentX = 0;
 let isDragging = false;
+let isLooping = false;
 let isTransitioning = false;
 
         const photosTrack = document.getElementById('photosTrack');
@@ -345,6 +346,40 @@ let isTransitioning = false;
             }
         }
 
+        function swipeNextSlide() {
+    if (isLooping) return; // ❌ tahan swipe saat looping
+
+    currentSlideIndex++;
+    updateSlidePosition();
+
+    if (currentSlideIndex >= totalSlides) {
+        isLooping = true;
+        setTimeout(() => {
+            currentSlideIndex = 0;
+            updateSlidePosition(true);
+            isLooping = false;
+        }, 500);
+    }
+}
+
+
+function swipePrevSlide() {
+    if (isLooping) return;
+
+    currentSlideIndex--;
+    updateSlidePosition();
+
+    if (currentSlideIndex < 0) {
+        isLooping = true;
+        setTimeout(() => {
+            currentSlideIndex = totalSlides - 1;
+            updateSlidePosition(true);
+            isLooping = false;
+        }, 500);
+    }
+}
+
+
         function currentSlide(n) {
             if (isTransitioning) return;
             currentSlideIndex = n - 1;
@@ -381,23 +416,23 @@ let isTransitioning = false;
         }
 
         function handleEnd(e) {
-            if (!isDragging) return;
-            isDragging = false;
-            
-            const deltaX = currentX - startX;
-            console.log('Swipe deltaX:', deltaX); // Tambahkan ini untuk uji
-            const threshold = 40;
-            
-            if (Math.abs(deltaX) > 40) { // Diedit
-                if (deltaX > 0) {
-                    console.log('← prevSlide');
-                    prevSlide();
-                } else {
-                    console.log('→ nextSlide');
-                    nextSlide();
-                }
-            }
-            
+    if (!isDragging) return;
+    isDragging = false;
+
+    const deltaX = currentX - startX;
+    const threshold = 40;
+
+    if (Math.abs(deltaX) > threshold) {
+        if (deltaX > 0) {
+            console.log('← prevSlide');
+            swipePrevSlide(); // ✅ gunakan versi swipe
+        } else {
+            console.log('→ nextSlide');
+            swipeNextSlide(); // ✅ gunakan versi swipe
+        }
+    }
+
+     
             resetAutoSlide();
         }
 
