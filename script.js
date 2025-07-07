@@ -291,7 +291,7 @@ let isTransitioning = false;
                 photosTrack.style.transform = `translateX(${translateX}px)`;
                 // Force reflow
                 photosTrack.offsetHeight;
-                photosTrack.style.transition = 'transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                photosTrack.style.transition = 'transform 0.6s cubic-bezier(0.42, 0, 0.58, 1)';
             } else {
                 photosTrack.style.transform = `translateX(${translateX}px)`;
             }
@@ -312,22 +312,16 @@ let isTransitioning = false;
 
     currentSlideIndex++;
     updateSlidePosition();
-    
+    updateDot(currentSlideIndex >= totalSlides ? 0 : currentSlideIndex);
+
     if (currentSlideIndex >= totalSlides) {
-        updateDot(0); // ✅ Dot segera berubah
-        setTimeout(() => {
-            currentSlideIndex = 0;
-            updateSlidePosition(true);
-            setTimeout(() => {
-                isTransitioning = false;
-            }, 50);
-        }, 500);
-    } else {
-        updateDot(currentSlideIndex); // ✅ Dot normal
-        setTimeout(() => {
-            isTransitioning = false;
-        }, 500);
+        pendingLoopReset = 0; // akan di-reset ke slide 0
     }
+
+    // Tetap biarkan transition berjalan
+    setTimeout(() => {
+    isTransitioning = false;
+}, 600);
 }
 
 
@@ -337,22 +331,17 @@ let isTransitioning = false;
 
     currentSlideIndex--;
     updateSlidePosition();
-    
+    updateDot(currentSlideIndex < 0 ? totalSlides - 1 : currentSlideIndex);
+
     if (currentSlideIndex < 0) {
-        updateDot(totalSlides - 1); // ✅ Dot terakhir
-        setTimeout(() => {
-            currentSlideIndex = totalSlides - 1;
-            updateSlidePosition(true);
-            setTimeout(() => {
-                isTransitioning = false;
-            }, 50);
-        }, 500);
-    } else {
-        updateDot(currentSlideIndex); // ✅ Dot normal
-        setTimeout(() => {
-            isTransitioning = false;
-        }, 500);
+        pendingLoopReset = totalSlides - 1; // akan di-reset ke slide terakhir
     }
+
+    // Biarkan transisi jalan dulu
+    setTimeout(() => {
+    isTransitioning = false;
+}, 600);
+
 }
 
 
