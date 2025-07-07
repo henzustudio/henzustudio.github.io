@@ -222,6 +222,7 @@ const totalSlides = 6;
 let autoSlideInterval;
 let startX = 0;
 let currentX = 0;
+let pendingLoopReset = null;
 let isDragging = false;
 let isLooping = false;
 let isTransitioning = false;
@@ -305,75 +306,71 @@ let isTransitioning = false;
 
 
         function nextSlide() {
-            if (isTransitioning) return;
-            isTransitioning = true;
-            
-            currentSlideIndex++;
-            updateSlidePosition();
-            
-            // Check if we need to loop back
-            if (currentSlideIndex >= totalSlides) {
-                setTimeout(() => {
-                    currentSlideIndex = 0;
-                    updateSlidePosition(true);
-                    setTimeout(() => {
-                        isTransitioning = false;
-                    }, 50);
-                }, 500);
-            } else {
-                setTimeout(() => {
-                    isTransitioning = false;
-                }, 500);
-            }
-        }
+    if (isTransitioning) return;
+    isTransitioning = true;
+
+    currentSlideIndex++;
+    updateSlidePosition();
+    
+    if (currentSlideIndex >= totalSlides) {
+        updateDot(0); // ✅ Dot segera berubah
+        setTimeout(() => {
+            currentSlideIndex = 0;
+            updateSlidePosition(true);
+            setTimeout(() => {
+                isTransitioning = false;
+            }, 50);
+        }, 500);
+    } else {
+        updateDot(currentSlideIndex); // ✅ Dot normal
+        setTimeout(() => {
+            isTransitioning = false;
+        }, 500);
+    }
+}
+
 
         function prevSlide() {
-            if (isTransitioning) return;
-            isTransitioning = true;
-            
-            currentSlideIndex--;
-            updateSlidePosition();
-            
-            // Check if we need to loop back
-            if (currentSlideIndex < 0) {
-                setTimeout(() => {
-                    currentSlideIndex = totalSlides - 1;
-                    updateSlidePosition(true);
-                    setTimeout(() => {
-                        isTransitioning = false;
-                    }, 50);
-                }, 500);
-            } else {
-                setTimeout(() => {
-                    isTransitioning = false;
-                }, 500);
-            }
-        }
+    if (isTransitioning) return;
+    isTransitioning = true;
+
+    currentSlideIndex--;
+    updateSlidePosition();
+    
+    if (currentSlideIndex < 0) {
+        updateDot(totalSlides - 1); // ✅ Dot terakhir
+        setTimeout(() => {
+            currentSlideIndex = totalSlides - 1;
+            updateSlidePosition(true);
+            setTimeout(() => {
+                isTransitioning = false;
+            }, 50);
+        }, 500);
+    } else {
+        updateDot(currentSlideIndex); // ✅ Dot normal
+        setTimeout(() => {
+            isTransitioning = false;
+        }, 500);
+    }
+}
+
 
         function swipeNextSlide() {
     if (isLooping) return;
 
     currentSlideIndex++;
-    
-    if (currentSlideIndex >= totalSlides) {
-        // 1. Tampilkan dulu clone slide 1
-        updateSlidePosition();
-        
-        // 2. Segera update dot ke index 0 (slide pertama asli)
-        updateDot(0); // ✅ Dot aktif langsung, tanpa delay
 
-        // 3. Setelah 500ms, reset ke slide asli ke-0
+    if (currentSlideIndex >= totalSlides) {
+        updateSlidePosition();
+        updateDot(0);
         isLooping = true;
-        setTimeout(() => {
-            currentSlideIndex = 0;
-            updateSlidePosition(true);
-            isLooping = false;
-        }, 500);
+        pendingLoopReset = 0; // ← jadwal reset ke index 0 setelah transisi selesai
     } else {
         updateSlidePosition();
-        updateDot(currentSlideIndex); // normal update
+        updateDot(currentSlideIndex);
     }
 }
+
 
 
 
@@ -384,19 +381,15 @@ function swipePrevSlide() {
 
     if (currentSlideIndex < 0) {
         updateSlidePosition();
-        updateDot(totalSlides - 1); // ✅ aktifkan dot terakhir langsung
-
+        updateDot(totalSlides - 1);
         isLooping = true;
-        setTimeout(() => {
-            currentSlideIndex = totalSlides - 1;
-            updateSlidePosition(true);
-            isLooping = false;
-        }, 500);
+        pendingLoopReset = totalSlides - 1;
     } else {
         updateSlidePosition();
         updateDot(currentSlideIndex);
     }
 }
+
 
 
 
@@ -495,3 +488,15 @@ function swipePrevSlide() {
             updateSlidePosition(true);
             startAutoSlide();
         }, 100);
+        photosTrack.addEventListener('transitionend', () => {
+    if (pendingLoopReset !== null) {
+        const resetIndex = pendingLoopReset;
+        pendingLoopReset = null;
+        requestAnimationFrame(() => {
+            currentSlideIndex = resetIndex;
+            updateSlidePosition(true); // reposition tanpa animasi
+            isLooping = false;
+        });
+    }
+});
+
