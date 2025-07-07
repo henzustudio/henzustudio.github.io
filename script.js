@@ -368,26 +368,32 @@ let isTransitioning = false;
         // Touch/Mouse events for swipe
         function handleStart(e) {
             isDragging = true;
+            hasMoved = false;
             startX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
+            currentX = startX; // <-- tambahkan ini untuk memastikan nilai awal
             stopAutoSlide();
         }
 
         function handleMove(e) {
             if (!isDragging) return;
             currentX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+            hasMoved = true;
         }
 
-        function handleEnd() {
+        function handleEnd(e) {
             if (!isDragging) return;
             isDragging = false;
             
             const deltaX = currentX - startX;
-            const threshold = 50;
+            console.log('Swipe deltaX:', deltaX); // Tambahkan ini untuk uji
+            const threshold = 40;
             
-            if (Math.abs(deltaX) > threshold) {
+            if (Math.abs(deltaX) > 40) { // Diedit
                 if (deltaX > 0) {
+                    console.log('← prevSlide');
                     prevSlide();
                 } else {
+                    console.log('→ nextSlide');
                     nextSlide();
                 }
             }
@@ -402,7 +408,7 @@ let isTransitioning = false;
         photosTrack.addEventListener('mouseleave', handleEnd);
 
         photosTrack.addEventListener('touchstart', handleStart);
-        photosTrack.addEventListener('touchmove', handleMove);
+        photosTrack.addEventListener('touchmove', handleMove, { passive: false }); // Baru ditambahkan 
         photosTrack.addEventListener('touchend', handleEnd);
 
         // Navigation areas click events
