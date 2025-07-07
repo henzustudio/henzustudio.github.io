@@ -167,12 +167,15 @@ a:active {
     text-align: center;
 }
 svg {
-  width: 24px;
-  height: 24px;
+    width: 24px;
+    height: 24px;
 }
 .icon-copy {
-  width: 18px;
-  height: 18px;
+    width: 18px;
+    height: 18px;
+}
+.icon-map {
+    color: brown;
 }
 
 /* Glassmorphism Styles */
