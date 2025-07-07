@@ -19,6 +19,7 @@ body::before {
   pointer-events: none;
 }
 
+
 /* Cover awal */
 #cover {
     position: fixed;
@@ -1027,6 +1028,7 @@ footer {
     align-items: center;
     justify-content: center;
     position: relative;
+    
 }
 
 .photo-content {
@@ -1062,26 +1064,32 @@ footer {
 
 .slide-1 .photo-placeholder {
     background: url('./assets/Photo1.jpg') no-repeat center center;
+    background-size: cover;
 }
 
 .slide-2 .photo-placeholder {
     background: url('./assets/Photo2.jpg') no-repeat center center;
+    background-size: cover;
 }
 
 .slide-3 .photo-placeholder {
     background: url('./assets/Photo3.jpg') no-repeat center center;
+    background-size: cover;
 }
 
 .slide-4 .photo-placeholder {
     background: url('./assets/Photo4.jpg') no-repeat center center;
+    background-size: cover;
 }
 
 .slide-5 .photo-placeholder {
     background: url('./assets/Photo5.jpg') no-repeat center center;
+    background-size: cover;
 }
 
 .slide-6 .photo-placeholder {
     background: url('./assets/Photo6.jpg') no-repeat center center;
+    background-size: cover;
 }
 
 .viewport-mask {
