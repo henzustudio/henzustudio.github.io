@@ -1,18 +1,5 @@
 window.history.scrollRestoration = 'manual';
 
-// COVER SECTION
-// Cover screen functionality
-function masukWebsite() {
-    document.getElementById('cover').classList.add('slide-up')
-}
-
-function masukWebsite() {
-  document.getElementById('cover').classList.add('slide-up');
-  document.body.classList.remove('cover-active');
-}
-
-
-
 // URL guest functionality
     const urlParams = new URLSearchParams(window.location.search);
     const guestNameFromUrl = urlParams.get("to");
@@ -23,32 +10,49 @@ function masukWebsite() {
         guestNameInput.value = decodeURIComponent(guestNameFromUrl);
     }
 
-
-
-// MUSIC SECTION
-// Background music functionality // Belum fungsi
+// COVER SECTION
+// Cover screen functionality
+// 🔊 Variabel global hanya dideklarasikan sekali
 const backgroundMusic = document.getElementById('background-music');
 const musicToggleButton = document.getElementById('music-toggle-button');
 const playIcon = document.getElementById('play-icon');
 const pauseIcon = document.getElementById('pause-icon');
-        
- function toggleMusic() {
-    if (backgroundMusic.paused) {
-        backgroundMusic.play().catch(error => {
-            console.log("Autoplay was prevented:", error);
-            alertMessage("Musik tidak dapat diputar otomatis. Silakan klik tombol play di pojok kanan kanan.");
-        });
-        playIcon.style.display = 'none';
-        pauseIcon.style.display = 'block';
-    } else {
-        backgroundMusic.pause();
-        playIcon.style.display = 'block';
-        pauseIcon.style.display = 'none';
-    }
+
+// 🚪 Fungsi masuk undangan
+function masukWebsite() {
+  document.getElementById('cover').classList.add('slide-up');
+  document.body.classList.remove('cover-active');
+
+  musicToggleButton.style.display = 'flex';
+
+  backgroundMusic.play().then(() => {
+    playIcon.style.display = 'none';
+    pauseIcon.style.display = 'block';
+  }).catch(() => {
+    alert("Musik tidak dapat diputar otomatis. Silakan tekan tombol play.");
+    playIcon.style.display = 'block';
+    pauseIcon.style.display = 'none';
+  });
 }
 
-musicToggleButton.addEventListener('click', toggleMusic);
+// 🎵 Fungsi toggle play/pause musik
+function toggleMusic() {
+  if (backgroundMusic.paused) {
+    backgroundMusic.play().catch(error => {
+      console.log("Autoplay was prevented:", error);
+      alert("Musik tidak dapat diputar otomatis. Silakan klik tombol play.");
+    });
+    playIcon.style.display = 'none';
+    pauseIcon.style.display = 'block';
+  } else {
+    backgroundMusic.pause();
+    playIcon.style.display = 'block';
+    pauseIcon.style.display = 'none';
+  }
+}
 
+// 🎧 Jalankan toggle saat tombol musik diklik
+musicToggleButton.addEventListener('click', toggleMusic);
 
 
 // HERO SECTION
@@ -120,11 +124,11 @@ function saveDateToCalendar() {
     const startTimeStr = timeRangeParts[0].trim();
     const endTimeStr = timeRangeParts[1].split(' ')[0].trim();
 
-    const startTimeParts = startTimeStr.split(':');
+    const startTimeParts = startTimeStr.includes(':') ? startTimeStr.split(':') : startTimeStr.split('.');
     const startHour = parseInt(startTimeParts[0]);
     const startMinute = parseInt(startTimeParts[1]);
 
-    const endTimeParts = endTimeStr.split(':');
+    const endTimeParts = endTimeStr.includes(':') ? endTimeStr.split(':') : endTimeStr.split('.');
     const endHour = parseInt(endTimeParts[0]);
     const endMinute = parseInt(endTimeParts[1]);
 
@@ -141,6 +145,7 @@ function saveDateToCalendar() {
     const formattedStartDate = formatDateTime(startDate);
     const formattedEndDate = formatDateTime(endDate);
 
+    // TOMBOL BUKA MAPS
     // Construct Google Calendar URL
     const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${formattedStartDate}/${formattedEndDate}&details=${encodeURIComponent(eventDescription)}&location=${encodeURIComponent(eventLocationText)}&sf=true&output=xml`;
 
@@ -501,5 +506,3 @@ function swipePrevSlide() {
         });
     }
 });
-
-
