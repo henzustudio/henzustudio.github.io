@@ -1,10 +1,16 @@
 window.history.scrollRestoration = 'manual';
 
 // COVER SECTION
-// Cover screen functionality // Belum fungsi
+// Cover screen functionality
 function masukWebsite() {
     document.getElementById('cover').classList.add('slide-up')
 }
+
+function masukWebsite() {
+  document.getElementById('cover').classList.add('slide-up');
+  document.body.classList.remove('cover-active');
+}
+
 
 
 // URL guest functionality
