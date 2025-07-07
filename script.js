@@ -225,6 +225,7 @@ let currentX = 0;
 let pendingLoopReset = null;
 let isDragging = false;
 let isLooping = false;
+let queuedSwipe = null;
 let isTransitioning = false;
 
         const photosTrack = document.getElementById('photosTrack');
@@ -436,18 +437,17 @@ function swipePrevSlide() {
     const threshold = 40;
 
     if (Math.abs(deltaX) > threshold) {
-        if (deltaX > 0) {
-            console.log('← prevSlide');
-            swipePrevSlide(); // ✅ gunakan versi swipe
+        if (isLooping) {
+            queuedSwipe = deltaX > 0 ? 'prev' : 'next';
         } else {
-            console.log('→ nextSlide');
-            swipeNextSlide(); // ✅ gunakan versi swipe
+            if (deltaX > 0) swipePrevSlide();
+            else swipeNextSlide();
         }
     }
 
-     
-            resetAutoSlide();
-        }
+    resetAutoSlide();
+}
+
 
         // Event listeners
         photosTrack.addEventListener('mousedown', handleStart);
@@ -494,9 +494,17 @@ function swipePrevSlide() {
         pendingLoopReset = null;
         requestAnimationFrame(() => {
             currentSlideIndex = resetIndex;
-            updateSlidePosition(true); // reposition tanpa animasi
+            updateSlidePosition(true);
             isLooping = false;
+
+            // ✅ Eksekusi swipe yang tertunda jika ada
+            if (queuedSwipe) {
+                if (queuedSwipe === 'next') swipeNextSlide();
+                else swipePrevSlide();
+                queuedSwipe = null;
+            }
         });
     }
 });
+
 
