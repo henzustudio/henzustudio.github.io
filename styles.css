@@ -52,6 +52,11 @@ body::before {
     transform: translateY(-100%);
 }
 
+body.cover-active {
+  overflow: hidden;
+}
+
+
 /* Konten utama (sudah ada di belakang cover) */
 
 
