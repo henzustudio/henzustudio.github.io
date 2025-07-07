@@ -293,12 +293,16 @@ let isTransitioning = false;
             } else {
                 photosTrack.style.transform = `translateX(${translateX}px)`;
             }
-
-            // Update dots
-            dots.forEach((dot, index) => {
-                dot.classList.toggle('active', index === currentSlideIndex);
-            });
         }
+
+// Update dots
+            function updateDot(index) {
+    dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+    });
+}
+
+
 
         function nextSlide() {
             if (isTransitioning) return;
@@ -347,37 +351,53 @@ let isTransitioning = false;
         }
 
         function swipeNextSlide() {
-    if (isLooping) return; // ❌ tahan swipe saat looping
+    if (isLooping) return;
 
     currentSlideIndex++;
-    updateSlidePosition();
-
+    
     if (currentSlideIndex >= totalSlides) {
+        // 1. Tampilkan dulu clone slide 1
+        updateSlidePosition();
+        
+        // 2. Segera update dot ke index 0 (slide pertama asli)
+        updateDot(0); // ✅ Dot aktif langsung, tanpa delay
+
+        // 3. Setelah 500ms, reset ke slide asli ke-0
         isLooping = true;
         setTimeout(() => {
             currentSlideIndex = 0;
             updateSlidePosition(true);
             isLooping = false;
         }, 500);
+    } else {
+        updateSlidePosition();
+        updateDot(currentSlideIndex); // normal update
     }
 }
+
 
 
 function swipePrevSlide() {
     if (isLooping) return;
 
     currentSlideIndex--;
-    updateSlidePosition();
 
     if (currentSlideIndex < 0) {
+        updateSlidePosition();
+        updateDot(totalSlides - 1); // ✅ aktifkan dot terakhir langsung
+
         isLooping = true;
         setTimeout(() => {
             currentSlideIndex = totalSlides - 1;
             updateSlidePosition(true);
             isLooping = false;
         }, 500);
+    } else {
+        updateSlidePosition();
+        updateDot(currentSlideIndex);
     }
 }
+
 
 
         function currentSlide(n) {
