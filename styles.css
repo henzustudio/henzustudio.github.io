@@ -1,3 +1,9 @@
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+
 body {
   font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
   position: relative;
@@ -25,12 +31,19 @@ body::before {
     position: fixed;
     top: 0;
     left: 0;
+    right: 0;
+    overflow-x: hidden;
     width: 100%;
     height: 100%;
     color: white;
     display: flex;
     flex-direction: column;
     z-index: 9999;
+    transform: translateY(0) translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+    perspective: 1000px;
+    contain: layout style paint;
 
 /* Transisi untuk animasi */
     transition: 0.8s ease-in-out;
@@ -52,9 +65,15 @@ body::before {
     transform: translateY(-100%);
 }
 
-body.cover-active {
+html.cover-active {
   overflow: hidden;
 }
+
+body.cover-active {
+  overflow: hidden;
+  height: 100vh;
+}
+
 
 
 /* Konten utama (sudah ada di belakang cover) */
@@ -404,7 +423,6 @@ textarea {
     background-image: url('./assets/Photo1.jpg');
     background-size: cover;
     background-position: 50% 50%;
-    background-attachment: fixed;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -426,6 +444,21 @@ textarea {
     z-index: 1;
     pointer-events: none;
 }
+.cover-header,
+.cover-content,
+.cover-header-bg {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#cover,
+.cover-header,
+.cover-content,
+.cover-header-bg {
+  width: 100vw;
+  box-sizing: border-box;
+}
+
 .cover-content, .cover-header-bg {
     position: relative;
     z-index: 2;
@@ -515,7 +548,7 @@ textarea {
     z-index: 10;
     padding: 1.5rem;
     max-width: 800px;
-    margin: 2.5rem auto;
+    margin: 3rem auto;
     text-align: center;
 }
 
@@ -895,6 +928,9 @@ footer {
     .feedback-container {
         flex-direction: column;
     }
+    #hero-content {
+        margin: 5rem auto;
+    }
     .countdown-box {
         width: 75px;
         height: 75px;
@@ -929,6 +965,9 @@ footer {
     label {
         font-size: 0.875rem;
     }
+    #hero-content {
+        margin: 5.3rem auto;
+    }
     .countdown-box {
         width: 70px;
         height: 70px;
@@ -957,6 +996,9 @@ footer {
     label {
         font-size: 0.8rem
     }
+    #hero-content {
+        margin: 6rem auto;
+    }
     .container-center { /* perlu ditinjau ulang */
         flex-direction: column;
     }
@@ -984,6 +1026,9 @@ footer {
     }
     h3 {
         font-size: 1.25rem;
+    }
+    #hero-content {
+        margin: 6.5rem auto;
     }
     .countdown-box {
         width: 50px;
