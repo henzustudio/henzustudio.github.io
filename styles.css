@@ -229,7 +229,6 @@ svg {
     align-items: center;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     color: white;
-    padding: 12px 24px;
     border-radius: 100vmax;
     cursor: pointer;
 }
@@ -248,6 +247,10 @@ svg {
         inset 1px 1px 3px rgba(255, 255, 255, 0.3),
         inset -1px -1px 3px rgba(0, 0, 0, 0.15);
     transform: scale(0.95);
+}
+
+.general-button {
+    padding: 12px 24px;
 }
 
 /* Global Styles */
@@ -1220,8 +1223,8 @@ footer {
     bottom: 1.5rem;
     right: 1.5rem;
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1231,7 +1234,9 @@ footer {
 .music-toggle-button svg {
     width: 24px;
     height: 24px;
+    padding: 0;
     fill: currentColor;
+    filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.1));
 }
 
 /* Responsive design */
