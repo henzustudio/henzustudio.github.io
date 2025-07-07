@@ -1018,7 +1018,15 @@ footer {
     align-items: center;
     gap: 0.5rem;
     transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    touch-action: pan-y; /* agar gesture horizontal diizinkan */
+    -webkit-overflow-scrolling: touch; /* bantu performa scroll di iOS */
 }
+
+#photosTrack {
+    background: rgba(255, 0, 0, 0.1);
+    height: 523px;
+}
+
 
 .photo-item {
     flex-shrink: 0;
@@ -1116,11 +1124,14 @@ footer {
     width: 15%;
     height: 100%;
     cursor: pointer;
-    pointer-events: auto;
 }
 
 .nav-right {
     margin-left: auto;
+}
+
+.nav-left, .nav-right {
+    pointer-events: auto; /* tetap bisa klik kiri/kanan */
 }
 
 .dots-container {
