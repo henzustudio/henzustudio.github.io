@@ -1,14 +1,14 @@
 window.history.scrollRestoration = 'manual';
 
 // URL guest functionality
-    const urlParams = new URLSearchParams(window.location.search);
-    const guestNameFromUrl = urlParams.get("to");
-    const guestNameInput = document.getElementById('guest-name-input');
+const urlParams = new URLSearchParams(window.location.search);
+const guestNameFromUrl = urlParams.get("to");
+const guestNameInput = document.getElementById('guest-name-input');
 
-    // Populate guest name input if present in URL
-    if (guestNameFromUrl) {
-        guestNameInput.value = decodeURIComponent(guestNameFromUrl);
-    }
+// Populate guest name input if present in URL
+if (guestNameFromUrl) {
+    guestNameInput.value = decodeURIComponent(guestNameFromUrl);
+}
 
 // COVER SECTION
 // Cover screen functionality
@@ -84,7 +84,7 @@ const countdownInterval = setInterval(updateCountdown, 1000);
 
 
 // EVENT SECTION
-// Save date functionality // Belum fungsi
+// Save date functionality
 function saveDateToCalendar() {
     const eventDateText = document.getElementById("event-date").innerText;
     const eventTimeText = document.getElementById("event-time").innerText;
@@ -206,6 +206,7 @@ function copyToClipboard(elementId) {
     textArea.select();
     document.execCommand("copy");
     document.body.removeChild(textArea);
+    alertMessage("Berhasil disalin!");
 }
 
 // Alert message functionality // Belum fungsi
@@ -506,3 +507,5 @@ function swipePrevSlide() {
         });
     }
 });
+
+
