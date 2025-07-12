@@ -1,3 +1,7 @@
+document.addEventListener('DOMContentLoaded', () => {
+  // semua DOM-access di sini
+
+
 window.history.scrollRestoration = 'manual';
 
 // URL guest functionality
@@ -34,6 +38,7 @@ function masukWebsite() {
     pauseIcon.style.display = 'none';
   });
 }
+window.masukWebsite = masukWebsite;
 
 // 🎵 Fungsi toggle play/pause musik
 function toggleMusic() {
@@ -151,13 +156,14 @@ function saveDateToCalendar() {
 
     window.open(googleCalendarUrl, '_blank'); // Open in new tab
 }
+window.saveDateToCalendar = saveDateToCalendar;
 
 function openMapsApp(locationQuery) {
     const encodedLocation = encodeURIComponent(locationQuery);
     const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodedLocation}`;
     window.open(mapUrl, '_blank'); // Open in new tab
 }
-
+window.openMapsApp = openMapsApp;
 
 
 // RSVP SECTION
@@ -192,7 +198,7 @@ function sendRsvp() {
 
     window.open(googleFormUrl, '_blank'); // Open Google Form in a new tab
 }
-
+window.sendRsvp = sendRsvp;
 
 
 // GIFTS SECTION
@@ -208,8 +214,9 @@ function copyToClipboard(elementId) {
     document.body.removeChild(textArea);
     alertMessage("Terima kasih atas perhatian dan kebaikan hati Anda!");
 }
+window.copyToClipboard = copyToClipboard;
 
-// Alert message functionality // Belum fungsi
+// Alert message functionality
 function alertMessage(message) {
     const alertBox = document.createElement('div');
     alertBox.className = 'glass-button-style duration-300 z-50 alert-message';
@@ -401,6 +408,7 @@ function swipePrevSlide() {
             updateSlidePosition();
             resetAutoSlide();
         }
+window.currentSlide = currentSlide;
 
         function startAutoSlide() {
             autoSlideInterval = setInterval(nextSlide, 5000);
@@ -507,5 +515,175 @@ function swipePrevSlide() {
         });
     }
 });
+// END Gallery //
+
+});
+
+
+
+// FIREBASE
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import {
+  getAnalytics
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
+import {
+  getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import {
+  getFirestore, collection, doc, setDoc, onSnapshot, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+/* 2️⃣ Pindahkan config ke sini atau ekspor via window di HTML */
+const firebaseConfig = {
+    apiKey: "AIzaSyCl7Gu6RydnDB1txrFueXZnxBPN7gGjtjk",
+    authDomain: "doa-restu.firebaseapp.com",
+    databaseURL: "https://doa-restu-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "doa-restu",
+    storageBucket: "doa-restu.firebasestorage.app",
+    messagingSenderId: "883130310391",
+    appId: "1:883130310391:web:a3816d58d134432926bdf2",
+    measurementId: "G-KCP6V8GZQL"
+};
+
+const app  = initializeApp(firebaseConfig);
+getAnalytics(app);
+
+const db   = getFirestore(app);
+const auth = getAuth(app);
+
+/* 3️⃣ Lanjutkan logika blessing persis seperti kode Anda — tidak
+      perlu inisialisasi Firebase kedua kalinya. */
+
+let userId;
+let blessingsCollection;
+
+// Sign in (anonymous atau custom token)
+if (typeof __initial_auth_token !== 'undefined') {
+  signInWithCustomToken(auth, __initial_auth_token);
+} else {
+  signInAnonymously(auth);
+}
+
+// Cek status auth dan siapkan collection
+onAuthStateChanged(auth, user => {
+  if (user) {
+    userId = user.uid;
+  } else {
+    userId = crypto.randomUUID();
+  }
+
+  console.log("Firebase User ID:", userId);
+
+  const appId = typeof __app_id !== 'undefined' ? __app_id : 'blessings-list';
+  blessingsCollection = collection(db, "blessings-list");
+
+  displayBlessings();
+  document.getElementById('blessings-list').innerText = `User ID: ${userId}`;
+});
+
+// Fungsi kirim ucapan
+document.getElementById('sendBlessingBtn').addEventListener('click', sendBlessing);
+export async function sendBlessing() {
+  const nameInput = document.getElementById('blessing-name');
+  const messageInput = document.getElementById('blessing-message');
+  const name = nameInput.value.trim();
+  const message = messageInput.value.trim();
+  
+
+  if (!name || !message) {
+    alertMessage("Nama dan ucapan tidak boleh kosong!");
+    return;
+  }
+
+  try {
+    const uniqueId = `${name}-${Date.now()}`;
+    const docRef = doc(blessingsCollection, uniqueId); // nama jadi ID dokumen
+    await setDoc(docRef, {
+      name: name,
+      message: message,
+      timestamp: serverTimestamp(),
+      userId: userId
+    });
+
+    nameInput.value = '';
+    messageInput.value = '';
+    alertMessage("Ucapan doa restu berhasil dikirim!");
+  } catch (error) {
+    console.error("Error saving blessing:", error);
+    alertMessage("Gagal mengirim ucapan. Coba lagi nanti.");
+  }
+}
+
+// Tampilkan ucapan
+function displayBlessings() {
+  const blessingsListDiv = document.getElementById('blessings-list');
+  if (!blessingsCollection) return;
+
+  onSnapshot(blessingsCollection, snapshot => {
+    blessingsListDiv.innerHTML = '';
+    const blessings = [];
+
+    snapshot.forEach(doc => {
+      blessings.push({ id: doc.id, ...doc.data() });
+    });
+
+    blessings.sort((a, b) => {
+      const timeA = a.timestamp?.toDate?.() || new Date(0);
+      const timeB = b.timestamp?.toDate?.() || new Date(0);
+      return timeA - timeB;
+    });
+
+    blessings.forEach(blessing => {
+      const card = document.createElement('div');
+      card.className = 'blessing-input';
+
+      const nameEl = document.createElement('p');
+      nameEl.className = 'blessing-name';
+      nameEl.textContent = blessing.name;
+
+      const msgEl = document.createElement('p');
+      msgEl.className = 'text-sm text-black mt-2';
+      msgEl.textContent = blessing.message;
+
+      const timeEl = document.createElement('p');
+      timeEl.className = 'time-stamp';
+      timeEl.textContent = blessing.timestamp?.toDate?.().toLocaleString('id-ID', {
+        year: 'numeric', month: 'long', day: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      }) || 'Waktu tidak tersedia';
+
+      card.append(nameEl, msgEl, timeEl);
+      blessingsListDiv.appendChild(card);
+    });
+
+    // ⬇️ Scroll ke bawah agar ucapan terbaru terlihat
+blessingsListDiv.scrollTop = blessingsListDiv.scrollHeight;
+
+
+
+  }, err => {
+    console.error("Error listening to blessings:", err);
+    alertMessage("Gagal memuat ucapan.");
+  });
+}
+
+// Submit handler
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('contactForm');
+  if (form) {
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      sendBlessing();
+    });
+  }
+});
+
+// Fungsi alert (pastikan ini ada)
+function alertMessage(msg) {
+  alert(msg);
+}
+
 
 
