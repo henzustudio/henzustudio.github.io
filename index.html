@@ -82,7 +82,7 @@
                             </button>
                         </a>
                     </div>
-                    <h3 class="column-center">&</h3>
+                    <h3 class="column-and">&</h3>
                     <div class="column">
                         <img class="profile-pic" src="./assets/About Girl.jpg" alt="Maylin">
                         <h3>Ni Kadek Maylin Franza</h3>
@@ -234,7 +234,9 @@
         </section>
 
         <section id="gallery">
-            <h2>Galeri Foto</h2>
+            <div class="video-container">
+                <iframe width="mx-auto" src="https://www.youtube.com/embed/2P6zEPiebCA?si=6_fqbOv6drBFmWxz" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
             <div class="slideshow-container">
                 <div class="slideshow-wrapper">
                     <div class="photos-track" id="photosTrack">
@@ -260,8 +262,27 @@
             </div>
         </section>
 
-        <section id="wishes">
+        <section id="blessings">
             <h2>Doa Restu</h2>
+            <br>
+            <div class="container">
+                <div id="input-blessing" class="column-center">
+                    <div>
+                        <input type="text" id="blessing-name" class="glass-input-alt" placeholder="Nama anda" required>
+                    </div>
+                    <br>
+                    <div>
+                        <textarea id="blessing-message" class="glass-input-alt" placeholder="Tulis ucapan doa restu Anda di sini..." required></textarea>
+                    </div>
+                    <br>
+                    <button class="blue-button-style">Kirim Ucapan</button>
+                </div>
+                <div class="column">
+                    <div id="blessings-list"></div>
+                </div>
+
+            </div>
+
         </section>
 
         <section id="closing-message" class="closing-message-overlay">
@@ -269,7 +290,7 @@
                 <br>
                 <p id="closing-message-text">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu kepada kedua mempelai. Atas kehadiran dan doa restunya kami ucapkan terima kasih.</p>
                 <br>
-                <div class="balinese-script">ᬒᬁ ᬰᬦ᭄ᬢᬶᬄ ᬰᬦ᭄ᬢᬶᬄ ᬰᬦ᭄ᬢᬶᬄ ᬒᬁ</div>
+                <div class="balinese-script">ᬒᬁ ᬰᬦ᭄ᬢᬶᬄ ᭞ ᬰᬦ᭄ᬢᬶᬄ ᭞ ᬰᬦ᭄ᬢᬶᬄ ᬒᬁ</div>
             </div>
             <div class="signature">
                 <p>Kami yang berbahagia,</p>
