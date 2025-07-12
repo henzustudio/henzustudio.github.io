@@ -265,7 +265,10 @@
         <section id="blessings">
             <h2>Doa Restu</h2>
             <br>
-            <div class="container">
+            <div id="contactForm" class="container">
+                <div class="column">
+                    <div id="blessings-list"></div>
+                </div>
                 <div id="input-blessing" class="column-center">
                     <div>
                         <input type="text" id="blessing-name" class="glass-input-alt" placeholder="Nama anda" required>
@@ -275,12 +278,8 @@
                         <textarea id="blessing-message" class="glass-input-alt" placeholder="Tulis ucapan doa restu Anda di sini..." required></textarea>
                     </div>
                     <br>
-                    <button class="blue-button-style">Kirim Ucapan</button>
+                    <button id="sendBlessingBtn" class="blue-button-style">Kirim Ucapan</button>
                 </div>
-                <div class="column">
-                    <div id="blessings-list"></div>
-                </div>
-
             </div>
 
         </section>
@@ -329,7 +328,33 @@
             <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
         </svg>
     </button>
+    <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
 
-    <script src="script.js"></script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCl7Gu6RydnDB1txrFueXZnxBPN7gGjtjk",
+    authDomain: "doa-restu.firebaseapp.com",
+    databaseURL: "https://doa-restu-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "doa-restu",
+    storageBucket: "doa-restu.firebasestorage.app",
+    messagingSenderId: "883130310391",
+    appId: "1:883130310391:web:a3816d58d134432926bdf2",
+    measurementId: "G-KCP6V8GZQL"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+    </script>
+    <script>
+  window.__app_id = 'blessings-list'; // ganti dengan appId kamu
+</script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
