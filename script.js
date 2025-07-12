@@ -206,13 +206,13 @@ function copyToClipboard(elementId) {
     textArea.select();
     document.execCommand("copy");
     document.body.removeChild(textArea);
-    alertMessage("Berhasil disalin!");
+    alertMessage("Terima kasih atas perhatian dan kebaikan hati Anda!");
 }
 
 // Alert message functionality // Belum fungsi
 function alertMessage(message) {
     const alertBox = document.createElement('div');
-    alertBox.className = 'fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white rounded-full shadow-xl opacity-0 transition-opacity duration-300 z-50 alert-message';
+    alertBox.className = 'glass-button-style duration-300 z-50 alert-message';
     alertBox.innerText = message;
     document.body.appendChild(alertBox);
 
