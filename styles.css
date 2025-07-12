@@ -420,7 +420,7 @@ textarea {
 
 .alert-message {
   position: fixed;
-  bottom: 1.4rem;
+  bottom: 1.5rem;
   left: 1.5rem;
   max-height: 48px;
   height: 32px;
