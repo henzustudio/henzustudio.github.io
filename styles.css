@@ -31,7 +31,7 @@ body::before {
     top: 0;
     left: 0;
     right: 0;
-    overflow-x: hidden;
+    overflow: hidden;
     width: 100%;
     height: 100vh;
     color: white;
@@ -70,7 +70,6 @@ html.cover-active {
 
 body.cover-active {
   overflow: hidden;
-  height: 100vh;
 }
 
 .balinese-script {
