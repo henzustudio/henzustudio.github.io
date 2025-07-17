@@ -40,16 +40,6 @@ function masukWebsite() {
 }
 window.masukWebsite = masukWebsite;
 
-// Ukuran window
-function setVh() {
-  const vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty('--vh', `${vh}px`);
-}
-
-window.addEventListener('resize', setVh);
-window.addEventListener('orientationchange', setVh);
-setVh(); // jalankan saat pertama
-
 
   
 // 🎵 Fungsi toggle play/pause musik
