@@ -1,6 +1,5 @@
 html, body {
   width: 100%;
-  height: 100%;
   overflow-x: hidden;
 }
 
@@ -31,9 +30,9 @@ body::before {
     top: 0;
     left: 0;
     right: 0;
-    overflow: hidden;
+    overflow-x: hidden;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     color: white;
     display: flex;
     flex-direction: column;
@@ -70,6 +69,7 @@ html.cover-active {
 
 body.cover-active {
   overflow: hidden;
+  height: 100vh;
 }
 
 .balinese-script {
