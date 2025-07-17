@@ -236,6 +236,7 @@ function alertMessage(message) {
 
 //GALLERY SECTION
 // Gallery functionality
+let hasMoved = false;
 let currentSlideIndex = 0;
 const totalSlides = 6;
 let autoSlideInterval;
@@ -364,7 +365,7 @@ let isTransitioning = false;
 }
 
 
-        function swipeNextSlide() {
+function swipeNextSlide() {
     if (isLooping) return;
 
     currentSlideIndex++;
@@ -444,14 +445,17 @@ window.currentSlide = currentSlide;
 
     const deltaX = currentX - startX;
     const threshold = 40;
+    console.log('deltaX:', deltaX);
+    console.log('Swipe Direction:', deltaX > 0 ? '→ prev' : '← next');
 
-    if (Math.abs(deltaX) > threshold) {
-        if (isLooping) {
-            queuedSwipe = deltaX > 0 ? 'prev' : 'next';
-        } else {
-            if (deltaX > 0) swipePrevSlide();
-            else swipeNextSlide();
-        }
+    if (deltaX <= -threshold) {
+        // Geser ke kiri cukup jauh → next
+        if (isLooping) queuedSwipe = 'next';
+        else swipeNextSlide();
+    } else if (deltaX >= threshold) {
+        // Geser ke kanan cukup jauh → prev
+        if (isLooping) queuedSwipe = 'prev';
+        else swipePrevSlide();
     }
 
     resetAutoSlide();
